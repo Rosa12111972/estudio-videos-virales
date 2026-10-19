@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estudio de Vídeos Virales</title>
+<meta name="description" content="Crea gratis vídeos promocionales en 4K para cualquier negocio o nicho, con ganchos y estrategias de marketing para Reels, TikTok y Shorts.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23004225%22/><text x=%2250%22 y=%2268%22 font-size=%2260%22 text-anchor=%22middle%22 fill=%22%23ffffff%22 font-family=%22Georgia,serif%22>▶</text></svg>">
+<style>
+/* ============================================================
+   ESTUDIO DE VÍDEOS VIRALES
+   Todo funciona en el navegador: las fotos, vídeos y música que
+   subas no salen de tu ordenador. El vídeo se genera con <canvas>
+   y MediaRecorder y se descarga como MP4 o WebM.
+   ============================================================ */
+:root{
+  --ev-black:#111111;
+  --ev-accent:#004225;
+  --ev-accent-soft:#e6efe9;
+  --ev-gold:#c9a45c;
+  --ev-text:#3d3d3d;
+  --ev-white:#ffffff;
+  --ev-gray:#6b6b6b;
+  --ev-bg:#f7f6f4;
+  --ev-card:#ffffff;
+  --ev-border:#e5e1d8;
+  --radius:10px;
+  --font-serif:'Georgia','Times New Roman',serif;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-sans);color:var(--ev-text);background:var(--ev-bg);line-height:1.5;-webkit-font-smoothing:antialiased;}
+a{color:var(--ev-accent);}
+button,input,select,textarea{font:inherit;color:inherit;}
+header.top{background:var(--ev-black);color:#fff;padding:18px 16px;}
+header.top .in{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+header.top h1{font-family:var(--font-serif);font-weight:400;font-size:22px;letter-spacing:.3px;}
+header.top h1 span{color:var(--ev-gold);}
+header.top p{font-size:13px;color:#bdbdbd;}
+main{max-width:1280px;margin:0 auto;padding:24px 16px 80px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start;}
+@media (max-width:980px){main{grid-template-columns:minmax(0,1fr);}}
+.card{background:var(--ev-card);border:1px solid var(--ev-border);border-radius:var(--radius);padding:22px;margin-bottom:20px;}
+.card h2{font-family:var(--font-serif);font-weight:400;color:var(--ev-black);font-size:20px;margin-bottom:4px;display:flex;align-items:center;gap:10px;}
+.card h2 .n{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--ev-accent);color:#fff;font:600 13px var(--font-sans);align-items:center;justify-content:center;flex:none;}
+.card .sub{font-size:13.5px;color:var(--ev-gray);margin-bottom:16px;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media (max-width:600px){.grid2{grid-template-columns:1fr;}}
+label.f{display:block;font-size:12.5px;font-weight:600;color:var(--ev-black);margin-bottom:4px;}
+input[type=text],input[type=number],select,textarea{width:100%;border:1px solid var(--ev-border);border-radius:8px;padding:9px 11px;background:#fff;font-size:14px;}
+textarea{resize:vertical;min-height:62px;}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--ev-accent);outline-offset:-1px;}
+.hint{font-size:12px;color:var(--ev-gray);margin-top:3px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{border:1px solid var(--ev-border);background:#fff;border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer;}
+.chip.on{background:var(--ev-accent);border-color:var(--ev-accent);color:#fff;}
+.btn{border:0;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14px;cursor:pointer;background:var(--ev-accent);color:#fff;display:inline-flex;align-items:center;gap:8px;justify-content:center;}
+.btn:hover{filter:brightness(1.12);}
+.btn.ghost{background:#fff;color:var(--ev-black);border:1px solid var(--ev-border);}
+.btn.gold{background:var(--ev-gold);color:#111;}
+.btn.sm{padding:6px 10px;font-size:12.5px;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+.hooks{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;max-height:420px;overflow:auto;padding:2px;}
+.hook{border:1px solid var(--ev-border);border-radius:9px;padding:11px 12px;cursor:pointer;background:#fff;text-align:left;}
+.hook:hover{border-color:var(--ev-accent);}
+.hook.on{border-color:var(--ev-accent);background:var(--ev-accent-soft);box-shadow:0 0 0 1px var(--ev-accent) inset;}
+.hook .cat{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;color:var(--ev-accent);font-weight:700;}
+.hook .t{font-size:14px;color:var(--ev-black);margin:3px 0 4px;font-weight:600;}
+.hook .w{font-size:12px;color:var(--ev-gray);}
+.strats{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;}
+.toggles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px;margin-top:14px;}
+.tg{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--ev-border);border-radius:9px;padding:10px 12px;cursor:pointer;font-size:13px;}
+.tg input{margin-top:3px;accent-color:var(--ev-accent);}
+.tg b{color:var(--ev-black);display:block;font-size:13.5px;}
+.media{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.media .m{position:relative;width:74px;height:74px;border-radius:8px;overflow:hidden;background:#ddd;border:1px solid var(--ev-border);}
+.media .m img,.media .m video{width:100%;height:100%;object-fit:cover;display:block;}
+.media .m .x{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.7);color:#fff;border:0;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:12px;line-height:20px;}
+.media .m .i{position:absolute;left:4px;bottom:3px;color:#fff;font-size:11px;font-weight:700;text-shadow:0 1px 2px #000;}
+.quick{background:var(--ev-accent);color:#fff;border-radius:var(--radius);padding:18px 22px;margin-bottom:20px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.quick p{font-size:14px;max-width:520px;}
+.quick b{font-family:var(--font-serif);font-weight:400;font-size:18px;display:block;}
+.drop{border:2px dashed var(--ev-border);border-radius:10px;padding:18px;text-align:center;font-size:13.5px;color:var(--ev-gray);cursor:pointer;}
+.drop.over{border-color:var(--ev-accent);background:var(--ev-accent-soft);}
+.scene{display:grid;grid-template-columns:34px minmax(0,1fr) 150px;gap:10px;border:1px solid var(--ev-border);border-radius:9px;padding:10px;margin-bottom:8px;align-items:start;}
+@media (max-width:600px){.scene{grid-template-columns:30px minmax(0,1fr);}.scene .side{grid-column:2;}}
+.scene .idx{width:30px;height:30px;border-radius:7px;background:var(--ev-black);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;}
+.scene .role{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;color:var(--ev-accent);margin-bottom:4px;}
+.scene textarea{min-height:52px;}
+.scene .side{display:flex;flex-direction:column;gap:6px;}
+.scene .side .row{display:flex;gap:4px;}
+.scene .side .row .btn{flex:1;}
+aside{position:sticky;top:16px;}
+@media (max-width:980px){aside{position:static;order:-1;}.stage canvas{max-height:52vh;}}
+.stage{background:var(--ev-black);border-radius:16px;padding:14px;}
+.stage canvas{display:block;width:100%;max-height:68vh;object-fit:contain;border-radius:10px;background:#000;}
+.ctrl{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+.ctrl .btn{flex:1;min-width:110px;}
+.timeline{height:6px;background:#333;border-radius:3px;margin-top:12px;overflow:hidden;cursor:pointer;}
+.timeline div{height:100%;width:0;background:var(--ev-gold);}
+.meta{display:flex;justify-content:space-between;color:#aaa;font-size:12px;margin-top:6px;}
+.score{display:flex;align-items:center;gap:14px;}
+.score .big{font-family:var(--font-serif);font-size:44px;color:var(--ev-accent);line-height:1;}
+.checks{list-style:none;margin-top:10px;font-size:13px;}
+.checks li{padding:4px 0;display:flex;gap:8px;}
+.checks li .ok{color:var(--ev-accent);font-weight:700;}
+.checks li .ko{color:#b3261e;font-weight:700;}
+.out{white-space:pre-wrap;background:var(--ev-bg);border:1px solid var(--ev-border);border-radius:8px;padding:12px;font-size:13.5px;max-height:260px;overflow:auto;}
+.rec{display:none;align-items:center;gap:8px;color:#fff;font-size:13px;margin-top:10px;}
+.rec.on{display:flex;}
+.rec i{width:10px;height:10px;border-radius:50%;background:#e53935;animation:bl 1s infinite;}
+@keyframes bl{50%{opacity:.2}}
+.dl{margin-top:10px;display:none;}
+.dl.on{display:block;}
+.dl a{display:block;text-align:center;}
+.tips{font-size:13px;}
+.tips li{margin:0 0 6px 18px;}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="in">
+    <div>
+      <h1>Estudio de <span>Vídeos Virales</span></h1>
+      <p>Gancho + estrategia + tus fotos = vídeo listo para publicar, para cualquier negocio</p>
+    </div>
+    <p>Gratis · sin registro · hasta 4K · móvil y ordenador · tus archivos no salen de tu dispositivo</p>
+  </div>
+</header>
+
+<main>
+<div>
+
+  <div class="quick">
+    <p><b>¿Primera vez?</b>Elige tu nicho, sube unas fotos y pulsa el botón: la app elige el gancho y la estrategia por ti.</p>
+    <button class="btn gold" id="auto" type="button">⚡ Crear vídeo automático</button>
+  </div>
+
+  <!-- 1. Objetivo y datos -->
+  <section class="card">
+    <h2><span class="n">1</span>Objetivo y datos del vídeo</h2>
+    <p class="sub">Elige tu nicho y qué quieres conseguir. Los datos se rellenan con un ejemplo de tu sector: cámbialos por los tuyos.</p>
+
+    <label class="f" for="nicho">Nicho o sector</label>
+    <select id="nicho" style="margin-bottom:14px"></select>
+
+    <label class="f">Objetivo</label>
+    <div class="chips" id="objetivos"></div>
+
+    <div style="height:14px"></div>
+    <label class="f">Formato</label>
+    <div class="chips" id="formatos"></div>
+
+    <div style="height:14px"></div>
+    <label class="f">Calidad</label>
+    <div class="chips" id="calidades"></div>
+    <p class="hint">4K (2160×3840) da la máxima nitidez si tus fotos y clips tienen buena resolución. En móviles antiguos usa Full HD o HD.</p>
+
+    <div style="height:16px"></div>
+    <div class="grid2">
+      <div><label class="f" for="v-zona">Ciudad / zona</label><input type="text" id="v-zona" data-v="zona" value="Marbella"></div>
+      <div><label class="f" for="v-producto">Producto o servicio</label><input type="text" id="v-producto" data-v="producto" value="villa con vistas al mar"></div>
+      <div><label class="f" for="v-precio">Precio</label><input type="text" id="v-precio" data-v="precio" value="1.250.000 €"></div>
+      <div><label class="f" for="v-dato">Dato llamativo</label><input type="text" id="v-dato" data-v="dato" value="Los precios han subido un 12% este año"></div>
+      <div><label class="f" for="v-publico">Público</label><input type="text" id="v-publico" data-v="publico" value="familias que buscan su casa ideal"></div>
+      <div><label class="f" for="v-marca">Tu nombre / marca</label><input type="text" id="v-marca" data-v="marca" value="Tu marca"></div>
+      <div><label class="f" for="v-contacto">Contacto o @usuario</label><input type="text" id="v-contacto" data-v="contacto" value="@tuusuario"></div>
+      <div><label class="f" for="v-palabra">Palabra clave para comentarios</label><input type="text" id="v-palabra" data-v="palabra" value="INFO"></div>
+    </div>
+    <div style="height:12px"></div>
+    <label class="f" for="v-beneficios">3 puntos fuertes (uno por línea)</label>
+    <textarea id="v-beneficios" data-v="beneficios" rows="3">Piscina infinita frente al mar
+4 dormitorios con baño en suite
+A 5 minutos de la playa y de Puerto Banús</textarea>
+    <p class="hint">Consejo: usa *asteriscos* en cualquier texto para resaltar palabras en dorado dentro del vídeo.</p>
+  </section>
+
+  <!-- 2. Gancho -->
+  <section class="card">
+    <h2><span class="n">2</span>Elige el gancho (los 2 primeros segundos)</h2>
+    <p class="sub">El 70 % de la gente decide en 1-2 segundos si sigue mirando. El gancho es la primera escena del vídeo.</p>
+    <div class="chips" id="hookCats" style="margin-bottom:12px"></div>
+    <div class="hooks" id="hooks"></div>
+    <div class="row-actions">
+      <button class="btn ghost sm" id="randHook" type="button">🎲 Gancho al azar</button>
+    </div>
+  </section>
+
+  <!-- 3. Estrategia -->
+  <section class="card">
+    <h2><span class="n">3</span>Estrategia narrativa y tácticas virales</h2>
+    <p class="sub">La estructura decide si la gente se queda hasta el final (retención) y si actúa (comentar, guardar, escribir).</p>
+    <div class="strats" id="strats"></div>
+    <div class="toggles" id="tactics"></div>
+    <div style="height:14px"></div>
+    <div class="grid2">
+      <div>
+        <label class="f" for="cta">Llamada a la acción (CTA)</label>
+        <select id="cta"></select>
+      </div>
+      <div>
+        <label class="f" for="dur">Duración objetivo</label>
+        <select id="dur">
+          <option value="10">10 s · máxima retención</option>
+          <option value="20" selected>20 s · equilibrio</option>
+          <option value="30">30 s · más información</option>
+          <option value="custom">Ilimitada · elige los segundos</option>
+        </select>
+        <div id="durCustomBox" style="display:none;margin-top:8px">
+          <input type="number" id="durCustom" min="5" step="1" value="60" aria-label="Duración en segundos">
+          <p class="hint">Sin límite: 60, 180, 600 s… Las escenas se generan solas para cubrir el tiempo. Los vídeos largos en 4K ocupan mucho; para más de 3 minutos usa Full HD.</p>
+        </div>
+      </div>
+    </div>
+    <div class="row-actions">
+      <button class="btn" id="build" type="button">✨ Generar guion</button>
+    </div>
+  </section>
+
+  <!-- 4. Medios -->
+  <section class="card">
+    <h2><span class="n">4</span>Fotos, vídeos y música</h2>
+    <p class="sub">Sube fotos o clips de tu producto, local o servicio (se reparten entre las escenas) y, opcionalmente, una canción. Sin fotos se usa un fondo de marca.</p>
+    <div class="drop" id="drop">Arrastra aquí fotos o vídeos, o <b>haz clic para elegirlos</b></div>
+    <input type="file" id="files" accept="image/*,video/*" multiple hidden>
+    <div class="media" id="media"></div>
+    <div style="height:14px"></div>
+    <div class="grid2">
+      <div>
+        <label class="f" for="music">Música (opcional)</label>
+        <input type="file" id="music" accept="audio/*">
+        <p class="hint">Usa música con licencia o añade el audio en tendencia desde la propia app al publicar.</p>
+      </div>
+      <div>
+        <label class="f" for="logo">Tu logo o foto para la escena final (opcional)</label>
+        <input type="file" id="logo" accept="image/*">
+        <p class="hint">Aparece en un círculo junto a tu marca y contacto.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Escenas -->
+  <section class="card">
+    <h2><span class="n">5</span>Guion escena a escena</h2>
+    <p class="sub">Retoca textos, duración y foto de cada escena. Los cambios se ven al momento en la vista previa.</p>
+    <div id="scenes"></div>
+    <div class="row-actions">
+      <button class="btn ghost sm" id="addScene" type="button">+ Añadir escena</button>
+    </div>
+  </section>
+
+  <!-- 6. Publicación -->
+  <section class="card">
+    <h2><span class="n">6</span>Texto para publicar</h2>
+    <p class="sub">Descripción y hashtags coherentes con el gancho y la CTA del vídeo.</p>
+    <div class="out" id="caption"></div>
+    <div class="row-actions">
+      <button class="btn ghost sm" id="copyCap" type="button">Copiar texto</button>
+    </div>
+    <div style="height:16px"></div>
+    <ul class="tips">
+      <li><b>Primeros 60 minutos:</b> responde a todos los comentarios; el algoritmo premia la conversación temprana.</li>
+      <li><b>Mejores horas:</b> a la hora de comer y por la noche (13:00–14:30 y 20:30–22:30), de martes a jueves; revisa las estadísticas de tu cuenta para afinar.</li>
+      <li><b>Portada:</b> elige como portada el fotograma del gancho para que el perfil sea coherente.</li>
+      <li><b>Audio en tendencia:</b> añádelo en Instagram/TikTok a volumen bajo; multiplica el alcance.</li>
+      <li><b>Reutiliza:</b> publica el mismo vídeo en Reels, TikTok y Shorts con un día de diferencia.</li>
+    </ul>
+  </section>
+</div>
+
+<aside>
+  <div class="stage">
+    <canvas id="cv" width="1080" height="1920"></canvas>
+    <div class="timeline" id="timeline"><div id="tlbar"></div></div>
+    <div class="meta"><span id="tnow">0,0 s</span><span id="res"></span><span id="ttot">0,0 s</span></div>
+    <div class="ctrl">
+      <button class="btn gold" id="play" type="button">▶ Reproducir</button>
+      <button class="btn" id="export" type="button">⬇ Exportar vídeo</button>
+    </div>
+    <div class="rec" id="rec"><i></i>Grabando… mantén esta pestaña visible hasta que termine.</div>
+    <div class="dl" id="dl"><a class="btn gold" id="dlink" download>Descargar vídeo</a></div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <h2>Potencial viral</h2>
+    <div class="score"><div class="big" id="score">0</div><div class="sub" style="margin:0">sobre 100 · según buenas prácticas de retención y engagement</div></div>
+    <ul class="checks" id="checks"></ul>
+  </div>
+</aside>
+</main>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------------- Datos: objetivos, formatos, ganchos, estrategias ---------------- */
+var OBJETIVOS = [
+  {id:'vender',   label:'Vender un producto o servicio'},
+  {id:'captar',   label:'Conseguir clientes (leads)'},
+  {id:'autoridad',label:'Educar y ganar autoridad'},
+  {id:'marca',    label:'Marca personal'},
+  {id:'oferta',   label:'Lanzamiento u oferta'}
+];
+var FORMATOS = [
+  {id:'9:16', label:'9:16 · Reels / TikTok / Shorts', w:1080, h:1920},
+  {id:'4:5',  label:'4:5 · Feed Instagram / Facebook', w:1080, h:1350},
+  {id:'1:1',  label:'1:1 · Cuadrado',                  w:1080, h:1080},
+  {id:'16:9', label:'16:9 · YouTube horizontal',       w:1920, h:1080}
+];
+// q: factor sobre la base 1080 · br: bits por segundo al exportar
+var CALIDADES = [
+  {id:'4k',  label:'4K Ultra HD', q:2,   br:40e6},
+  {id:'fhd', label:'Full HD 1080p', q:1, br:12e6},
+  {id:'hd',  label:'HD 720p (móviles antiguos)', q:2/3, br:6e6}
+];
+
+// Datos de ejemplo, hashtags y ganchos propios de cada nicho
+var NICHOS = [
+  {id:'inmo', label:'🏡 Inmobiliaria', producto:'villa con vistas al mar', zona:'Marbella', precio:'1.250.000 €', dato:'Los precios han subido un 12% este año', publico:'familias que buscan casa', palabra:'INFO', ben:['Piscina infinita frente al mar','4 dormitorios con baño en suite','A 5 minutos de la playa'], tags:['inmobiliaria','casasenventa','realestate','luxuryhomes'], hooks:['POV: abres la puerta de tu *nueva casa* en {zona}','No pongas tu casa en venta *sin ver esto*']},
+  {id:'rest', label:'🍽️ Restaurante y comida', producto:'menú degustación', zona:'Madrid', precio:'45 €', dato:'El 80% de nuestros clientes repite', publico:'amantes de la buena comida', palabra:'MESA', ben:['Producto de temporada','Cocina abierta al público','Terraza con vistas'], tags:['restaurante','foodie','gastronomia','comida'], hooks:['Este plato se agota *cada noche* en {zona}','Probé el {producto} más comentado de {zona}…']},
+  {id:'moda', label:'👗 Moda', producto:'nueva colección de verano', zona:'Barcelona', precio:'desde 29 €', dato:'Solo 50 unidades por modelo', publico:'personas que quieren vestir diferente', palabra:'LOOK', ben:['Tejidos sostenibles','Diseño propio','Envío en 24 h'], tags:['moda','outfit','tendencias','fashion'], hooks:['3 looks con *una sola prenda*','El error de estilo que *todos* cometemos']},
+  {id:'belleza', label:'💄 Belleza y estética', producto:'tratamiento facial', zona:'Valencia', precio:'59 €', dato:'Resultados visibles desde la primera sesión', publico:'personas que quieren cuidar su piel', palabra:'CITA', ben:['Sin dolor','Productos profesionales','Resultados duraderos'], tags:['belleza','skincare','estetica','cuidadodelapiel'], hooks:['El antes y después que *no te esperas*','Deja de hacer esto con tu piel *ya*']},
+  {id:'fitness', label:'💪 Fitness y deporte', producto:'plan de entrenamiento de 8 semanas', zona:'online', precio:'49 €', dato:'El 90% abandona el gimnasio en 3 meses', publico:'personas que quieren ponerse en forma', palabra:'PLAN', ben:['Rutinas de 30 minutos','Plan de comidas incluido','Seguimiento semanal'], tags:['fitness','gym','entrenamiento','vidasana'], hooks:['Haz esto *5 minutos al día*','Por qué *no ves resultados* en el gimnasio']},
+  {id:'salud', label:'🩺 Salud y clínicas', producto:'primera consulta', zona:'Sevilla', precio:'gratis', dato:'1 de cada 3 personas lo sufre sin saberlo', publico:'pacientes que buscan un buen profesional', palabra:'CITA', ben:['Equipo especializado','Sin listas de espera','Atención personalizada'], tags:['salud','bienestar','clinica','saludable'], hooks:['La señal que tu cuerpo te da y *ignoras*','Un especialista responde: *¿es normal?*']},
+  {id:'tech', label:'💻 Tecnología y apps', producto:'app de productividad', zona:'online', precio:'gratis', dato:'Ahorra 5 horas a la semana', publico:'emprendedores y equipos', palabra:'APP', ben:['Fácil de usar','Funciona en móvil y ordenador','Sin permanencia'], tags:['tecnologia','apps','productividad','tech'], hooks:['La app que *nadie conoce* y lo cambia todo','Deja de perder tiempo con *esto*']},
+  {id:'edu', label:'🎓 Educación y cursos', producto:'curso online', zona:'online', precio:'97 €', dato:'Más de 2.000 alumnos formados', publico:'personas que quieren aprender algo nuevo', palabra:'CURSO', ben:['A tu ritmo','Certificado incluido','Soporte del profesor'], tags:['educacion','cursoonline','aprender','formacion'], hooks:['Lo que me hubiera gustado saber *antes de empezar*','Aprende esto en *menos de 1 minuto*']},
+  {id:'negocio', label:'📈 Negocios y coaching', producto:'mentoría para negocios', zona:'online', precio:'desde 199 €', dato:'El 70% de los negocios no tiene estrategia digital', publico:'emprendedores', palabra:'MENTOR', ben:['Plan de acción a medida','Sesiones 1 a 1','Resultados medibles'], tags:['emprendimiento','negocios','marketing','coaching'], hooks:['Así conseguí mis primeros *100 clientes*','Si tienes un negocio, *escucha esto*']},
+  {id:'viajes', label:'✈️ Viajes y turismo', producto:'escapada de fin de semana', zona:'Mallorca', precio:'desde 199 €', dato:'El destino más buscado del verano', publico:'parejas y familias viajeras', palabra:'VIAJE', ben:['Hotel con encanto','Excursiones incluidas','Cancelación gratis'], tags:['viajes','travel','turismo','escapadas'], hooks:['El rincón de {zona} que *casi nadie conoce*','No viajes a {zona} *sin saber esto*']},
+  {id:'ecom', label:'🛒 Tienda online', producto:'producto estrella', zona:'envío a toda España', precio:'24,99 €', dato:'Más de 1.000 opiniones de 5 estrellas', publico:'compradores online', palabra:'QUIERO', ben:['Envío gratis','Devolución en 30 días','Pago seguro'], tags:['tiendaonline','compras','ofertas','ecommerce'], hooks:['El producto que *se ha hecho viral*… ¿funciona?','Lo compré para probarlo y *mira esto*']},
+  {id:'motor', label:'🚗 Motor', producto:'coche seminuevo', zona:'Málaga', precio:'18.900 €', dato:'Con garantía de 2 años', publico:'conductores que buscan un coche fiable', palabra:'COCHE', ben:['Pocos kilómetros','Revisión completa','Financiación a medida'], tags:['coches','motor','automocion','cochesdeocasion'], hooks:['¿Cuánto crees que cuesta *este coche*?','3 cosas que revisar *antes de comprar* un coche']},
+  {id:'eventos', label:'💍 Bodas y eventos', producto:'organización de bodas', zona:'Toledo', precio:'presupuesto a medida', dato:'Las fechas del próximo año se están agotando', publico:'parejas que se casan', palabra:'BODA', ben:['Lo organizamos todo','Proveedores de confianza','Cero estrés'], tags:['bodas','eventos','novias','weddingplanner'], hooks:['La boda que *nos hizo llorar*','El error que arruina *muchas bodas*']},
+  {id:'mascotas', label:'🐶 Mascotas', producto:'peluquería canina', zona:'Bilbao', precio:'desde 25 €', dato:'Tu mascota merece lo mejor', publico:'dueños de perros y gatos', palabra:'GUAU', ben:['Productos naturales','Trato cariñoso','Recogida a domicilio'], tags:['mascotas','perros','gatos','petlovers'], hooks:['Su cara al *verse después* 😍','Lo que tu perro *intenta decirte*']},
+  {id:'hogar', label:'🛠️ Hogar y reformas', producto:'reforma de cocina', zona:'Zaragoza', precio:'desde 4.900 €', dato:'Reformada en solo 10 días', publico:'propietarios que quieren renovar', palabra:'REFORMA', ben:['Diseño 3D gratis','Materiales de calidad','Garantía de 5 años'], tags:['reformas','decoracion','hogar','interiorismo'], hooks:['De cocina vieja a *esto* en 10 días','Ideas para que tu casa parezca *más grande*']},
+  {id:'musica', label:'🎵 Música y artistas', producto:'nuevo single', zona:'todas las plataformas', precio:'gratis', dato:'Ya disponible en todas las plataformas', publico:'amantes de la música', palabra:'PLAY', ben:['Escúchalo ya','Videoclip oficial','Concierto en directo'], tags:['musica','nuevamusica','artista','musicanueva'], hooks:['Escribí esta canción *a las 3 de la mañana*…','Dale al play *si te atreves* 🎧']},
+  {id:'finanzas', label:'💰 Finanzas personales', producto:'asesoría financiera', zona:'online', precio:'primera sesión gratis', dato:'El 60% no ahorra ni el 10% de lo que gana', publico:'personas que quieren ahorrar e invertir', palabra:'DINERO', ben:['Plan de ahorro personalizado','Sin comisiones ocultas','Asesor independiente'], tags:['finanzas','ahorro','inversion','educacionfinanciera'], hooks:['La regla que uso para *ahorrar cada mes*','Si ganas menos de 2.000 €, *mira esto*']},
+  {id:'ong', label:'🤝 ONG y causas sociales', producto:'campaña solidaria', zona:'toda España', precio:'desde 5 €', dato:'Cada euro llega a quien lo necesita', publico:'personas comprometidas', palabra:'AYUDO', ben:['100% transparente','Proyectos reales','Impacto medible'], tags:['solidaridad','ong','ayuda','impactosocial'], hooks:['Con *5 €* puedes cambiar esto','Esta historia *te va a tocar*']},
+  {id:'otro', label:'✨ Otro / general', producto:'tu producto o servicio', zona:'tu ciudad', precio:'tu precio', dato:'Tu dato más llamativo', publico:'tu cliente ideal', palabra:'INFO', ben:['Beneficio 1','Beneficio 2','Beneficio 3'], tags:['emprendedores','negocio','marketingdigital'], hooks:[]}
+];
+
+// Ganchos universales · obj: objetivos donde encajan mejor
+var BASE_HOOKS = [
+  {cat:'Curiosidad', t:'Esto es lo que consigues con *{precio}*', w:'Abre un "hueco" de información: quieren ver el final.', obj:['vender','oferta']},
+  {cat:'Curiosidad', t:'¿Adivinas cuánto cuesta esto? 👀', w:'Invita a comentar el precio: dispara los comentarios.', obj:['vender']},
+  {cat:'Curiosidad', t:'Nadie te enseña esto… *hasta hoy*', w:'Exclusividad + secreto: sensación de acceso privado.', obj:['vender','autoridad']},
+  {cat:'Curiosidad', t:'Lo que nadie te cuenta sobre *{producto}*', w:'Promete información oculta y útil.', obj:['autoridad','captar','marca']},
+  {cat:'Error',      t:'El error que te hace *perder dinero* (y casi nadie lo sabe)', w:'El miedo a perder pesa más que la ganancia.', obj:['captar','autoridad']},
+  {cat:'Error',      t:'No elijas {producto} *sin ver esto*', w:'Orden directa + urgencia: frena el scroll.', obj:['vender','autoridad']},
+  {cat:'Error',      t:'3 errores que comete *todo el mundo*', w:'Lista + error: alta retención hasta el último punto.', obj:['autoridad','marca']},
+  {cat:'Números',    t:'*3 razones* para elegir {producto}', w:'Los números prometen un contenido corto y claro.', obj:['vender']},
+  {cat:'Números',    t:'{dato}', w:'Un dato sorprendente genera autoridad inmediata.', obj:['autoridad','captar','marca']},
+  {cat:'Números',    t:'Te lo enseño todo en *15 segundos*', w:'Promesa de tiempo: el espectador sabe que merece la pena.', obj:['vender','oferta']},
+  {cat:'POV',        t:'POV: por fin encuentras *lo que buscabas*', w:'Pone la mente en "yo disfrutándolo": deseo puro.', obj:['vender','marca']},
+  {cat:'POV',        t:'POV: eres {publico} y ves esto', w:'Identificación directa con tu público.', obj:['captar','vender']},
+  {cat:'Pregunta',   t:'¿Eres {publico}? *Mira esto*', w:'Filtra a tu público ideal desde el primer segundo.', obj:['captar']},
+  {cat:'Pregunta',   t:'¿Lo probarías? *Sí o no* 👇', w:'Pregunta binaria = comentarios fáciles = más alcance.', obj:['vender']},
+  {cat:'Pregunta',   t:'¿Merece la pena {producto} *en 2026*?', w:'La pregunta que tu público ya se hace.', obj:['autoridad']},
+  {cat:'Polémica',   t:'Opinión impopular: *esto no funciona* como te dicen', w:'La controversia suave genera debate en comentarios.', obj:['autoridad','marca']},
+  {cat:'Polémica',   t:'Lo barato *sale caro*. Te explico por qué', w:'Rompe una creencia: el espectador quiere el porqué.', obj:['vender','autoridad']},
+  {cat:'Historia',   t:'Hace un año empecé *desde cero*…', w:'Las historias personales crean conexión y confianza.', obj:['marca']},
+  {cat:'Historia',   t:'De "no funciona" a *resultados en 21 días*', w:'Transformación antes/después: prueba social.', obj:['captar','marca']},
+  {cat:'Historia',   t:'El día que un cliente me dijo *"no me lo creo"*…', w:'Arranque en mitad de la acción (in media res).', obj:['marca']},
+  {cat:'Urgencia',   t:'*Solo esta semana*: {producto} a {precio}', w:'La escasez de tiempo empuja a actuar ya.', obj:['oferta']},
+  {cat:'Urgencia',   t:'Quedan *muy pocas plazas*… te explico por qué', w:'Escasez + curiosidad: doble motivo para quedarse.', obj:['oferta','captar']},
+  {cat:'Urgencia',   t:'Esto *desaparece* el domingo ⏳', w:'Fecha límite clara: activa el miedo a perdérselo (FOMO).', obj:['oferta']},
+  {cat:'Retención',  t:'Espera al final: *lo mejor* viene ahora', w:'Promesa al final = vídeo visto completo.', obj:['vender','marca']},
+  {cat:'Retención',  t:'Guarda este vídeo, *lo vas a necesitar*', w:'Pide el "guardado", una de las señales que más pesan.', obj:['vender','captar','autoridad','marca','oferta']}
+];
+var ALL_OBJ=OBJETIVOS.map(function(o){return o.id;});
+var HOOKS=[];
+function buildHooks(n){
+  HOOKS=n.hooks.map(function(t){return {cat:'Tu nicho',t:t,w:'Gancho probado en '+n.label.replace(/^\S+\s/,'').toLowerCase()+'.',obj:ALL_OBJ};}).concat(BASE_HOOKS);
+}
+
+var CTAS = [
+  'Comenta *{palabra}* y te envío la info',
+  'Escríbeme por privado 📩',
+  'Pide tu *presupuesto gratis*',
+  'Guarda este vídeo y compártelo',
+  'Sígueme para más consejos',
+  'Link en mi bio 🔗',
+  'Reserva ya: {contacto}'
+];
+
+// Cada estrategia genera escenas (sin contar el gancho ni la CTA)
+var STRATS = [
+  {id:'aida', name:'AIDA', d:'Atención → Interés → Deseo → Acción. El clásico que nunca falla.',
+   gen:function(v,b){return ['*{producto}*\n{zona}', b[0]||'Calidad que se nota', 'Imagínate disfrutándolo…', '*{precio}*'];}},
+  {id:'pas', name:'Problema · Agitación · Solución', d:'Ideal para conseguir clientes y vender servicios.',
+   gen:function(v,b){return ['¿Cansado de *no conseguir resultados*?', 'Cada día que pasa pierdes *tiempo y dinero*', 'La solución: *{producto}*', b[0]||'Resultados desde el primer día'];}},
+  {id:'top3', name:'Lista Top 3', d:'Números en pantalla: la gente se queda hasta el 3.',
+   gen:function(v,b){return ['*1.* '+(b[0]||'Primer beneficio'), '*2.* '+(b[1]||'Segundo beneficio'), '*3.* '+(b[2]||'Tercer beneficio')];}},
+  {id:'demo', name:'Demostración rápida', d:'Enseña el producto en acción con cortes rápidos.',
+   gen:function(v,b){return ['Mira esto 👇', b[0]||'Paso 1', b[1]||'Paso 2', b[2]||'Paso 3', '{producto} · *{precio}*'];}},
+  {id:'tutorial', name:'Tutorial en 3 pasos', d:'Contenido útil que se guarda y se comparte.',
+   gen:function(v,b){return ['*Paso 1:* '+(b[0]||'...'), '*Paso 2:* '+(b[1]||'...'), '*Paso 3:* '+(b[2]||'...'), 'Así de fácil con *{producto}*'];}},
+  {id:'mito', name:'Mito vs Realidad', d:'Rompe creencias: genera debate y autoridad.',
+   gen:function(v,b){return ['MITO: "Ahora *no es buen momento*"', 'REALIDAD: {dato}', 'MITO: "Lo puedo hacer *yo solo*"', 'REALIDAD: un *profesional* marca la diferencia'];}},
+  {id:'historia', name:'Antes / Después', d:'Storytelling con transformación: prueba social.',
+   gen:function(v,b){return ['ANTES: *frustración* y cero resultados', 'Entonces probamos *{producto}*', 'DESPUÉS: '+(b[0]||'*resultados reales*'), 'Y tú puedes ser *el siguiente*'];}},
+  {id:'oferta', name:'Oferta limitada', d:'Escasez y urgencia para lanzamientos y promociones.',
+   gen:function(v,b){return ['Oferta *por tiempo limitado* ⏳', '{producto}', 'Ahora por *{precio}*', b[0]||'Calidad garantizada', '*Plazas limitadas*'];}}
+];
+
+var TACTICS = [
+  {id:'progress', name:'Barra de progreso', d:'Muestra cuánto queda: reduce el abandono.', on:true},
+  {id:'captions', name:'Subtítulos grandes', d:'El 85 % ve vídeos sin sonido.', on:true},
+  {id:'cuts', name:'Cortes con zoom', d:'Un "golpe" visual en cada cambio de escena.', on:true},
+  {id:'loop', name:'Bucle infinito', d:'El final enlaza con el inicio: se repite y suma visualizaciones.', on:false},
+  {id:'serie', name:'Formato serie (Parte 1)', d:'Engancha a seguirte para ver la parte 2.', on:false},
+  {id:'keyword', name:'Palabra clave en comentarios', d:'"Comenta INFO": dispara comentarios y leads.', on:true}
+];
+
+/* ---------------- Estado ---------------- */
+var S = {
+  nicho:'inmo', calidad:'4k', objetivo:'vender', formato:'9:16', hook:0, hookCat:'Todos', strat:'aida',
+  tactics:{}, cta:0, scenes:[], media:[], photo:null, music:null
+};
+TACTICS.forEach(function(t){S.tactics[t.id]=t.on;});
+
+var $ = function(id){return document.getElementById(id);};
+var cv = $('cv'), ctx = cv.getContext('2d');
+
+function store(k,v){try{localStorage.setItem('vpromo_'+k, JSON.stringify(v));}catch(e){}}
+function load(k){try{var v=localStorage.getItem('vpromo_'+k);return v?JSON.parse(v):null;}catch(e){return null;}}
+
+function vars(){
+  var v={};
+  document.querySelectorAll('[data-v]').forEach(function(el){v[el.dataset.v]=el.value.trim();});
+  return v;
+}
+function benefits(v){return (v.beneficios||'').split('\n').map(function(s){return s.trim();}).filter(Boolean);}
+function fill(str,v){return str.replace(/\{(\w+)\}/g,function(m,k){return v[k]!==undefined&&v[k]!==''?v[k]:m;});}
+function plain(s){return s.replace(/\*/g,'');}
+function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+/* ---------------- UI: chips ---------------- */
+function chips(el, items, cur, onPick){
+  el.innerHTML='';
+  items.forEach(function(it){
+    var b=document.createElement('button');
+    b.type='button'; b.className='chip'+(it.id===cur?' on':''); b.textContent=it.label;
+    b.onclick=function(){onPick(it.id);};
+    el.appendChild(b);
+  });
+}
+function renderObjetivos(){chips($('objetivos'),OBJETIVOS,S.objetivo,function(id){S.objetivo=id;autoStrat();renderObjetivos();renderHooks();build();});}
+function renderFormatos(){chips($('formatos'),FORMATOS,S.formato,function(id){S.formato=id;setSize();renderFormatos();refresh();});}
+function renderCalidades(){chips($('calidades'),CALIDADES,S.calidad,function(id){S.calidad=id;setSize();renderCalidades();refresh();});}
+function nicho(){return NICHOS.filter(function(n){return n.id===S.nicho;})[0]||NICHOS[0];}
+function renderNichos(){
+  var sel=$('nicho'); sel.innerHTML='';
+  NICHOS.forEach(function(n){var o=document.createElement('option');o.value=n.id;o.textContent=n.label;sel.appendChild(o);});
+  sel.value=S.nicho;
+}
+// Rellena los campos con el ejemplo del nicho (sin tocar marca ni contacto)
+function applyNicho(){
+  var n=nicho();
+  ['producto','zona','precio','dato','publico','palabra'].forEach(function(k){var el=document.querySelector('[data-v="'+k+'"]');el.value=n[k];store('v_'+k,el.value);});
+  var b=document.querySelector('[data-v="beneficios"]'); b.value=n.ben.join('\n'); store('v_beneficios',b.value);
+}
+$('nicho').onchange=function(){S.nicho=this.value;applyNicho();buildHooks(nicho());S.hookCat='Recomendados';autoStrat();renderHooks();renderCtas();build();};
+
+function autoStrat(){
+  S.strat={vender:'aida',captar:'pas',autoridad:'mito',marca:'historia',oferta:'oferta'}[S.objetivo]||'aida';
+  S.cta={vender:0,captar:2,autoridad:4,marca:4,oferta:5}[S.objetivo]||0;
+  $('cta').value=S.cta;
+  // primer gancho recomendado para el objetivo
+  for(var i=0;i<HOOKS.length;i++){if(HOOKS[i].obj.indexOf(S.objetivo)>-1){S.hook=i;break;}}
+  renderStrats();
+}
+
+/* ---------------- UI: ganchos ---------------- */
+function renderHooks(){
+  var cats=['Recomendados','Todos'];
+  HOOKS.forEach(function(h){if(cats.indexOf(h.cat)<0)cats.push(h.cat);});
+  if(S.hookCat==='Todos'&&!renderHooks.init){S.hookCat='Recomendados';renderHooks.init=true;}
+  chips($('hookCats'),cats.map(function(c){return {id:c,label:c};}),S.hookCat,function(c){S.hookCat=c;renderHooks();});
+  var v=vars(), box=$('hooks'); box.innerHTML='';
+  HOOKS.forEach(function(h,i){
+    if(S.hookCat==='Recomendados'&&h.obj.indexOf(S.objetivo)<0)return;
+    if(S.hookCat!=='Todos'&&S.hookCat!=='Recomendados'&&h.cat!==S.hookCat)return;
+    var b=document.createElement('button');
+    b.type='button'; b.className='hook'+(i===S.hook?' on':'');
+    b.innerHTML='<div class="cat">'+esc(h.cat)+'</div><div class="t">'+esc(plain(fill(h.t,v)))+'</div><div class="w">'+esc(h.w)+'</div>';
+    b.onclick=function(){S.hook=i;renderHooks();build();};
+    box.appendChild(b);
+  });
+}
+
+/* ---------------- UI: estrategias y tácticas ---------------- */
+function renderStrats(){
+  var box=$('strats'); box.innerHTML='';
+  STRATS.forEach(function(s){
+    var b=document.createElement('button');
+    b.type='button'; b.className='hook'+(s.id===S.strat?' on':'');
+    b.innerHTML='<div class="t">'+esc(s.name)+'</div><div class="w">'+esc(s.d)+'</div>';
+    b.onclick=function(){S.strat=s.id;renderStrats();build();};
+    box.appendChild(b);
+  });
+}
+function renderTactics(){
+  var box=$('tactics'); box.innerHTML='';
+  TACTICS.forEach(function(t){
+    var l=document.createElement('label'); l.className='tg';
+    l.innerHTML='<input type="checkbox"'+(S.tactics[t.id]?' checked':'')+'><span><b>'+esc(t.name)+'</b>'+esc(t.d)+'</span>';
+    l.querySelector('input').onchange=function(e){
+      S.tactics[t.id]=e.target.checked;
+      if(t.id==='loop'||t.id==='serie'||t.id==='keyword')build(); else refresh();
+    };
+    box.appendChild(l);
+  });
+}
+function renderCtas(){
+  var v=vars(), sel=$('cta'); sel.innerHTML='';
+  CTAS.forEach(function(c,i){var o=document.createElement('option');o.value=i;o.textContent=plain(fill(c,v));sel.appendChild(o);});
+  sel.value=S.cta;
+}
+
+/* ---------------- Generación del guion ---------------- */
+function build(){
+  var v=vars(), b=benefits(v), strat=STRATS.filter(function(s){return s.id===S.strat;})[0];
+  var hook=fill(HOOKS[S.hook].t,v);
+  var body=strat.gen(v,b).map(function(t){return fill(t,v);});
+  var target=targetDur();
+
+  // Ajusta el número de escenas a la duración objetivo (≈ 4 s por escena)
+  if(target<=12&&body.length>3)body=body.slice(0,3);
+  var need=Math.round((target-5.5)/4), extra=b.concat([v.dato,'*{producto}*','{zona} · *{precio}*'].map(function(t){return fill(t,v);})).filter(Boolean), k=0;
+  while(body.length<need)body.push(extra[k++%extra.length]);
+  var cta=fill(CTAS[S.cta],v);
+  if(S.tactics.keyword&&S.cta!==0&&v.palabra)cta+='\nComenta *'+v.palabra+'* 👇';
+  if(S.tactics.serie)cta='Sígueme para ver la *Parte 2*\n'+cta;
+  if(S.tactics.loop)body.push('Y por eso te digo…');
+
+  var hookDur=Math.max(1.8,Math.min(3,target*0.12));
+  var ctaDur=Math.max(2.5,Math.min(4.5,target*0.18));
+  var each=Math.max(1,(target-hookDur-ctaDur)/Math.max(1,body.length));
+
+  var scenes=[{role:'gancho',text:hook,dur:round1(hookDur)}];
+  body.forEach(function(t){scenes.push({role:'desarrollo',text:t,dur:round1(each)});});
+  scenes.push({role:'cta',text:cta,dur:round1(ctaDur)});
+  scenes.forEach(function(s,i){s.media=S.media.length?(i%S.media.length):-1;});
+  S.scenes=scenes;
+  renderScenes(); refresh(); seek(0);
+}
+function round1(x){return Math.round(x*10)/10;}
+function targetDur(){
+  var d=$('dur').value;
+  $('durCustomBox').style.display=d==='custom'?'block':'none';
+  return d==='custom'?Math.max(5,parseFloat($('durCustom').value)||60):+d;
+}
+
+/* ---------------- UI: escenas ---------------- */
+var ROLES={gancho:'Gancho',desarrollo:'Desarrollo',cta:'Llamada a la acción'};
+function renderScenes(){
+  var box=$('scenes'); box.innerHTML='';
+  S.scenes.forEach(function(s,i){
+    var d=document.createElement('div'); d.className='scene';
+    var opts='<option value="-1">Fondo de marca</option>'+S.media.map(function(m,j){return '<option value="'+j+'"'+(s.media===j?' selected':'')+'>'+(m.type==='video'?'Vídeo ':'Foto ')+(j+1)+'</option>';}).join('');
+    d.innerHTML=
+      '<div class="idx">'+(i+1)+'</div>'+
+      '<div><div class="role">'+ROLES[s.role]+'</div><textarea rows="2"></textarea></div>'+
+      '<div class="side">'+
+        '<label class="f" style="margin:0">Segundos</label><input type="number" min="0.8" step="0.1" value="'+s.dur+'">'+
+        '<select>'+opts+'</select>'+
+        '<div class="row"><button class="btn ghost sm" type="button" title="Subir">↑</button><button class="btn ghost sm" type="button" title="Bajar">↓</button><button class="btn ghost sm" type="button" title="Eliminar">✕</button></div>'+
+      '</div>';
+    if(s.media===-1)d.querySelector('select').value='-1';
+    var ta=d.querySelector('textarea'); ta.value=s.text;
+    ta.oninput=function(){s.text=ta.value;refresh();};
+    d.querySelector('input').oninput=function(e){var n=parseFloat(e.target.value);if(n>0){s.dur=n;refresh();}};
+    d.querySelector('select').onchange=function(e){s.media=+e.target.value;refresh();};
+    var bt=d.querySelectorAll('.row .btn');
+    bt[0].onclick=function(){if(i>0){S.scenes.splice(i-1,0,S.scenes.splice(i,1)[0]);renderScenes();refresh();}};
+    bt[1].onclick=function(){if(i<S.scenes.length-1){S.scenes.splice(i+1,0,S.scenes.splice(i,1)[0]);renderScenes();refresh();}};
+    bt[2].onclick=function(){if(S.scenes.length>1){S.scenes.splice(i,1);renderScenes();refresh();}};
+    box.appendChild(d);
+  });
+}
+$('addScene').onclick=function(){
+  var at=Math.max(0,S.scenes.length-1);
+  S.scenes.splice(at,0,{role:'desarrollo',text:'Nuevo texto',dur:2.5,media:S.media.length?at%S.media.length:-1});
+  renderScenes();refresh();
+};
+
+/* ---------------- Medios ---------------- */
+function addFiles(list){
+  Array.prototype.forEach.call(list,function(f){
+    var url=URL.createObjectURL(f);
+    if(f.type.indexOf('video')===0){
+      var vd=document.createElement('video');
+      vd.src=url; vd.muted=true; vd.playsInline=true; vd.loop=true; vd.preload='auto';
+      S.media.push({type:'video',el:vd,url:url});
+    }else if(f.type.indexOf('image')===0){
+      var im=new Image(); im.src=url; im.onload=draw;
+      S.media.push({type:'image',el:im,url:url});
+    }
+  });
+  S.scenes.forEach(function(s,i){if(S.media.length)s.media=i%S.media.length;});
+  renderMedia(); renderScenes(); refresh();
+}
+function renderMedia(){
+  var box=$('media'); box.innerHTML='';
+  S.media.forEach(function(m,i){
+    var d=document.createElement('div'); d.className='m';
+    d.innerHTML=(m.type==='video'?'<video muted src="'+m.url+'"></video>':'<img alt="" src="'+m.url+'">')+'<span class="i">'+(i+1)+'</span><button class="x" type="button" aria-label="Quitar">✕</button>';
+    d.querySelector('.x').onclick=function(){
+      S.media.splice(i,1);
+      S.scenes.forEach(function(s,k){s.media=S.media.length?k%S.media.length:-1;});
+      renderMedia();renderScenes();refresh();
+    };
+    box.appendChild(d);
+  });
+}
+var drop=$('drop'), files=$('files');
+drop.onclick=function(){files.click();};
+files.onchange=function(){addFiles(files.files);files.value='';};
+drop.ondragover=function(e){e.preventDefault();drop.classList.add('over');};
+drop.ondragleave=function(){drop.classList.remove('over');};
+drop.ondrop=function(e){e.preventDefault();drop.classList.remove('over');addFiles(e.dataTransfer.files);};
+
+$('music').onchange=function(e){
+  var f=e.target.files[0];
+  if(S.music){S.music.pause();}
+  if(!f){S.music=null;return;}
+  var a=new Audio(URL.createObjectURL(f)); a.loop=true;
+  S.music=a; S.musicSrc=null;
+};
+
+// Logo o foto opcional para la escena final
+$('logo').onchange=function(e){
+  var f=e.target.files[0];
+  if(!f){S.photo=null;refresh();return;}
+  var im=new Image(); im.onload=function(){S.photo=im;refresh();}; im.src=URL.createObjectURL(f);
+};
+
+/* ---------------- Render en canvas ---------------- */
+var W=1080,H=1920;
+function setSize(){
+  var f=FORMATOS.filter(function(x){return x.id===S.formato;})[0]||FORMATOS[0];
+  var q=(CALIDADES.filter(function(x){return x.id===S.calidad;})[0]||CALIDADES[0]).q;
+  W=cv.width=Math.round(f.w*q/2)*2; H=cv.height=Math.round(f.h*q/2)*2;
+  $('res').textContent=W+'×'+H; draw();
+}
+function total(){return S.scenes.reduce(function(a,s){return a+s.dur;},0);}
+function sceneAt(t){
+  var acc=0;
+  for(var i=0;i<S.scenes.length;i++){
+    if(t<acc+S.scenes[i].dur||i===S.scenes.length-1)return {i:i,local:t-acc,s:S.scenes[i]};
+    acc+=S.scenes[i].dur;
+  }
+  return null;
+}
+function ease(x){return 1-Math.pow(1-x,3);}
+function clamp(x){return Math.max(0,Math.min(1,x));}
+
+function drawCover(el,iw,ih,scale,panX,panY){
+  if(!iw||!ih)return;
+  var r=Math.max(W/iw,H/ih)*scale, dw=iw*r, dh=ih*r;
+  ctx.drawImage(el,(W-dw)/2+panX*(dw-W)/2,(H-dh)/2+panY*(dh-H)/2,dw,dh);
+}
+function brandBg(i,p){
+  var g=ctx.createLinearGradient(0,0,W*0.4,H);
+  var hue=[['#004225','#0b0b0b'],['#111111','#004225'],['#1c1c1c','#3a2f17']][i%3];
+  g.addColorStop(0,hue[0]); g.addColorStop(1,hue[1]);
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+  // círculos dorados suaves en movimiento
+  ctx.save(); ctx.globalAlpha=.10; ctx.fillStyle='#c9a45c';
+  ctx.beginPath(); ctx.arc(W*(0.85-0.1*p),H*0.22,W*0.42,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(W*(0.1+0.1*p),H*0.85,W*0.3,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+
+// Divide el texto en palabras marcando las resaltadas con *asteriscos*
+function tokens(text){
+  var out=[];
+  text.split('\n').forEach(function(line,li){
+    if(li>0)out.push({br:true});
+    line.split('*').forEach(function(seg,k){
+      seg.split(/\s+/).filter(Boolean).forEach(function(w){out.push({w:w,hl:k%2===1});});
+    });
+  });
+  return out;
+}
+function layout(text,size,maxW){
+  ctx.font='800 '+size+'px '+getComputedStyle(document.body).fontFamily;
+  var lines=[[]],lw=0,space=ctx.measureText(' ').width;
+  tokens(text).forEach(function(t){
+    if(t.br){lines.push([]);lw=0;return;}
+    var w=ctx.measureText(t.w).width;
+    if(lw>0&&lw+space+w>maxW){lines.push([]);lw=0;}
+    t.width=w; lines[lines.length-1].push(t); lw+=(lw>0?space:0)+w;
+  });
+  return {lines:lines.filter(function(l){return l.length;}),space:space};
+}
+function drawText(text,size,cy,alpha,yoff,style){
+  var maxW=W*0.84, L=layout(text,size,maxW);
+  while(L.lines.length>6&&size>30){size*=0.9;L=layout(text,size,maxW);}
+  var lh=size*1.18, h=L.lines.length*lh, y0=cy-h/2+yoff;
+  ctx.save(); ctx.globalAlpha=alpha; ctx.textBaseline='middle';
+  L.lines.forEach(function(line,li){
+    var lw=line.reduce(function(a,t){return a+t.width;},0)+L.space*(line.length-1);
+    var x=(W-lw)/2, y=y0+li*lh+lh/2;
+    if(style==='box'){
+      ctx.fillStyle='rgba(0,0,0,.55)';
+      roundRect(x-size*0.3,y-lh/2,lw+size*0.6,lh,size*0.18); ctx.fill();
+    }
+    line.forEach(function(t){
+      if(style!=='box'){
+        ctx.lineJoin='round'; ctx.lineWidth=size*0.16; ctx.strokeStyle='rgba(0,0,0,.85)';
+        ctx.strokeText(t.w,x,y);
+      }
+      ctx.fillStyle=t.hl?'#e6c27a':'#ffffff';
+      ctx.fillText(t.w,x,y);
+      x+=t.width+L.space;
+    });
+  });
+  ctx.restore();
+  return h;
+}
+function roundRect(x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+
+var lastScene=-1;
+function syncVideos(idx){
+  if(idx===lastScene)return;
+  lastScene=idx;
+  S.media.forEach(function(m){if(m.type==='video')m.el.pause();});
+  var s=S.scenes[idx]; if(!s)return;
+  var m=S.media[s.media];
+  if(m&&m.type==='video'){try{m.el.currentTime=0;}catch(e){} if(playing)m.el.play().catch(function(){});}
+}
+
+var curT=0;
+function draw(){
+  var T=total(); if(!S.scenes.length){ctx.fillStyle='#000';ctx.fillRect(0,0,W,H);return;}
+  var a=sceneAt(Math.min(curT,T-0.0001)), s=a.s, p=clamp(a.local/s.dur);
+  syncVideos(a.i);
+  var v=vars();
+
+  // Fondo: foto/vídeo con Ken Burns + "golpe" de zoom en el corte
+  var punch=S.tactics.cuts?0.14*(1-ease(clamp(a.local/0.35))):0;
+  var m=S.media[s.media];
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,W,H);
+  if(m&&m.type==='image'&&m.el.complete&&m.el.naturalWidth){
+    var zin=a.i%2===0, kb=zin?1+0.10*p:1.10-0.10*p;
+    drawCover(m.el,m.el.naturalWidth,m.el.naturalHeight,kb+punch,(a.i%3-1)*0.4*p,0);
+  }else if(m&&m.type==='video'&&m.el.readyState>=2){
+    drawCover(m.el,m.el.videoWidth,m.el.videoHeight,1+punch,0,0);
+  }else{
+    ctx.save(); ctx.translate(W/2,H/2); ctx.scale(1+punch,1+punch); ctx.translate(-W/2,-H/2);
+    brandBg(a.i,p); ctx.restore();
+  }
+
+  // Velo para legibilidad
+  var g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'rgba(0,0,0,.35)'); g.addColorStop(.45,'rgba(0,0,0,.10)'); g.addColorStop(1,'rgba(0,0,0,.65)');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+
+  // Destello blanco breve en el corte
+  if(S.tactics.cuts&&a.i>0&&a.local<0.12){ctx.fillStyle='rgba(255,255,255,'+(0.35*(1-a.local/0.12))+')';ctx.fillRect(0,0,W,H);}
+
+  var appear=ease(clamp(a.local/0.35)), yoff=(1-appear)*W*0.05;
+  var big=S.tactics.captions;
+  var style=big?'stroke':'box';
+
+  if(s.role==='gancho'){
+    // Gancho: grande y centrado, con ligera vibración inicial
+    var shake=a.local<0.3?Math.sin(a.local*80)*W*0.004:0;
+    ctx.save(); ctx.translate(shake,0);
+    drawText(s.text,W*(big?0.095:0.075),H*0.45,appear,yoff,style);
+    ctx.restore();
+  }else if(s.role==='cta'){
+    var cy=H*0.42;
+    if(S.photo){
+      var r=Math.min(W,H)*0.17, px=W/2, py=H*0.27;
+      ctx.save(); ctx.globalAlpha=appear;
+      ctx.beginPath(); ctx.arc(px,py,r+W*0.008,0,Math.PI*2); ctx.fillStyle='#c9a45c'; ctx.fill();
+      ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2); ctx.clip();
+      var ph=S.photo, sc=Math.max(2*r/ph.naturalWidth,2*r/ph.naturalHeight);
+      ctx.drawImage(ph,px-ph.naturalWidth*sc/2,py-r,ph.naturalWidth*sc,ph.naturalHeight*sc);
+      ctx.restore();
+      cy=H*0.5;
+    }
+    var th=drawText(s.text,W*(big?0.07:0.06),cy,appear,yoff,style);
+    ctx.save(); ctx.globalAlpha=appear; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.font='400 '+Math.round(W*0.055)+'px Georgia, serif'; ctx.fillStyle='#fff';
+    ctx.fillText(v.marca||'',W/2,cy+th/2+W*0.11);
+    ctx.font='600 '+Math.round(W*0.04)+'px '+getComputedStyle(document.body).fontFamily; ctx.fillStyle='#e6c27a';
+    ctx.fillText(v.contacto||'',W/2,cy+th/2+W*0.18);
+    // botón pulsante
+    var pulse=1+0.04*Math.sin(a.local*6), bw=W*0.5*pulse, bh=W*0.11*pulse, by=cy+th/2+W*0.31;
+    ctx.fillStyle='#c9a45c'; roundRect(W/2-bw/2,by-bh/2,bw,bh,bh/2); ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='800 '+Math.round(W*0.042*pulse)+'px '+getComputedStyle(document.body).fontFamily;
+    ctx.fillText(S.tactics.keyword&&v.palabra?'Comenta '+v.palabra:'Escríbeme',W/2,by+2);
+    ctx.restore();
+  }else{
+    drawText(s.text,W*(big?0.08:0.062),H*(big?0.62:0.72),appear,yoff,style);
+  }
+
+  // Barra de progreso
+  if(S.tactics.progress){
+    ctx.fillStyle='rgba(255,255,255,.25)'; ctx.fillRect(0,0,W,W*0.012);
+    ctx.fillStyle='#c9a45c'; ctx.fillRect(0,0,W*clamp(curT/T),W*0.012);
+  }
+  // Etiqueta serie
+  if(S.tactics.serie){
+    ctx.save(); ctx.font='800 '+Math.round(W*0.035)+'px '+getComputedStyle(document.body).fontFamily;
+    var lab='PARTE 1', lw=ctx.measureText(lab).width;
+    ctx.fillStyle='#c9a45c'; roundRect(W*0.05,W*0.05,lw+W*0.05,W*0.07,W*0.02); ctx.fill();
+    ctx.fillStyle='#111'; ctx.textBaseline='middle'; ctx.fillText(lab,W*0.075,W*0.085); ctx.restore();
+  }
+  // Marca de agua
+  if(s.role!=='cta'&&v.contacto){
+    ctx.save(); ctx.globalAlpha=.8; ctx.font='600 '+Math.round(W*0.032)+'px '+getComputedStyle(document.body).fontFamily;
+    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.fillText(v.contacto,W/2,H-W*0.09); ctx.restore();
+  }
+
+  $('tlbar').style.width=(100*clamp(curT/T))+'%';
+  $('tnow').textContent=fmt(curT);
+}
+function fmt(x){return x.toFixed(1).replace('.',',')+' s';}
+
+/* ---------------- Reproducción ---------------- */
+var playing=false,t0=0,raf=0,recorder=null;
+function loop(now){
+  curT=(now-t0)/1000;
+  var T=total();
+  if(curT>=T){
+    if(recorder){curT=T;draw();stopRec();return;}
+    curT=0; t0=now; lastScene=-1;
+    if(S.music){S.music.currentTime=0;}
+  }
+  draw();
+  raf=requestAnimationFrame(loop);
+}
+function play(){
+  if(playing)return;
+  playing=true; lastScene=-1; t0=performance.now()-curT*1000;
+  if(S.music){S.music.currentTime=curT%Math.max(1,S.music.duration||1e9);S.music.play().catch(function(){});}
+  $('play').textContent='❚❚ Pausa';
+  raf=requestAnimationFrame(loop);
+}
+function pause(){
+  playing=false; cancelAnimationFrame(raf);
+  if(S.music)S.music.pause();
+  S.media.forEach(function(m){if(m.type==='video')m.el.pause();});
+  $('play').textContent='▶ Reproducir';
+}
+function seek(t){curT=Math.max(0,Math.min(t,total()));lastScene=-1;if(playing)t0=performance.now()-curT*1000;draw();}
+$('play').onclick=function(){if(recorder)return;playing?pause():play();};
+$('timeline').onclick=function(e){var r=this.getBoundingClientRect();seek(total()*(e.clientX-r.left)/r.width);};
+
+/* ---------------- Exportación ---------------- */
+function pickMime(){
+  var c=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'];
+  for(var i=0;i<c.length;i++){if(window.MediaRecorder&&MediaRecorder.isTypeSupported(c[i]))return c[i];}
+  return '';
+}
+$('export').onclick=function(){
+  if(recorder)return;
+  if(!window.MediaRecorder||!cv.captureStream){alert('Tu navegador no permite exportar vídeo. Usa Chrome, Edge o Safari actualizado.');return;}
+  pause(); seek(0);
+  var stream=cv.captureStream(30);
+  if(S.music){
+    try{
+      S.actx=S.actx||new (window.AudioContext||window.webkitAudioContext)();
+      if(!S.musicSrc||S.musicSrc.mediaElement!==S.music){
+        S.musicSrc=S.actx.createMediaElementSource(S.music);
+        S.musicDest=S.actx.createMediaStreamDestination();
+        S.musicSrc.connect(S.musicDest); S.musicSrc.connect(S.actx.destination);
+      }
+      S.actx.resume();
+      S.musicDest.stream.getAudioTracks().forEach(function(tr){stream.addTrack(tr);});
+    }catch(e){console.warn('Sin audio en la exportación',e);}
+  }
+  var mime=pickMime(), chunks=[];
+  var br=(CALIDADES.filter(function(x){return x.id===S.calidad;})[0]||CALIDADES[0]).br;
+  try{recorder=new MediaRecorder(stream,mime?{mimeType:mime,videoBitsPerSecond:br}:undefined);}
+  catch(e){alert('No se pudo iniciar la grabación ('+e.message+'). Prueba con calidad Full HD o HD.');recorder=null;return;}
+  recorder.onerror=function(){alert('La grabación falló. Tu dispositivo quizá no admite esta calidad: prueba con Full HD o HD.');};
+  recorder.ondataavailable=function(e){if(e.data&&e.data.size)chunks.push(e.data);};
+  recorder.onstop=function(){
+    var type=recorder.mimeType||mime||'video/webm';
+    var blob=new Blob(chunks,{type:type}), ext=type.indexOf('mp4')>-1?'mp4':'webm';
+    var a=$('dlink'); if(a.href)URL.revokeObjectURL(a.href);
+    a.href=URL.createObjectURL(blob); a.download='video-'+S.nicho+'-'+W+'x'+H+'-'+Date.now()+'.'+ext;
+    a.textContent='⬇ Descargar vídeo ('+ext.toUpperCase()+', '+(blob.size/1048576).toFixed(1)+' MB)';
+    $('dl').classList.add('on'); $('rec').classList.remove('on');
+    $('export').disabled=false; $('play').disabled=false;
+    recorder=null; a.click();
+  };
+  $('dl').classList.remove('on'); $('rec').classList.add('on');
+  $('export').disabled=true; $('play').disabled=true;
+  recorder.start(250);
+  play();
+};
+function stopRec(){
+  playing=false; cancelAnimationFrame(raf);
+  if(S.music)S.music.pause();
+  S.media.forEach(function(m){if(m.type==='video')m.el.pause();});
+  $('play').textContent='▶ Reproducir';
+  setTimeout(function(){if(recorder&&recorder.state!=='inactive')recorder.stop();},200);
+}
+
+/* ---------------- Puntuación viral ---------------- */
+function score(){
+  var T=total(), h=S.scenes[0], last=S.scenes[S.scenes.length-1];
+  var hw=h?plain(h.text).split(/\s+/).filter(Boolean).length:0;
+  var maxWords=Math.max.apply(null,S.scenes.map(function(s){return plain(s.text).split(/\s+/).length;}));
+  var checks=[
+    {ok:h&&h.role==='gancho'&&h.dur<=3,  pts:20, t:'Gancho en los primeros 3 segundos'},
+    {ok:hw>0&&hw<=12,                    pts:15, t:'Gancho corto (máx. 12 palabras) — ahora '+hw},
+    {ok:T>=7&&T<=35,                     pts:15, t:'Duración ideal para viralizar: 7–35 s — ahora '+fmt(T)},
+    {ok:last&&last.role==='cta',         pts:15, t:'Termina con una llamada a la acción'},
+    {ok:S.media.length>0,                pts:10, t:'Usa fotos o vídeos reales de tu producto o negocio'},
+    {ok:maxWords<=16,                    pts:5,  t:'Textos cortos en cada escena (máx. 16 palabras)'},
+    {ok:S.tactics.captions,              pts:5,  t:'Subtítulos grandes (vídeo sin sonido)'},
+    {ok:S.tactics.progress||S.tactics.loop, pts:5, t:'Táctica de retención (barra o bucle)'},
+    {ok:S.tactics.keyword||S.tactics.serie, pts:5, t:'Disparador de interacción (comentarios o serie)'},
+    {ok:S.scenes.every(function(s){return s.dur<=5;}), pts:5, t:'Ritmo ágil: ninguna escena supera 5 s'}
+  ];
+  var sc=0; $('checks').innerHTML='';
+  checks.forEach(function(c){
+    if(c.ok)sc+=c.pts;
+    var li=document.createElement('li');
+    li.innerHTML='<span class="'+(c.ok?'ok':'ko')+'">'+(c.ok?'✓':'✕')+'</span><span>'+esc(c.t)+'</span>';
+    $('checks').appendChild(li);
+  });
+  $('score').textContent=sc;
+}
+
+/* ---------------- Texto de publicación ---------------- */
+function slug(s){return s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-Z0-9]/g,'');}
+function caption(){
+  var v=vars(), b=benefits(v), h=S.scenes[0]?plain(S.scenes[0].text):'';
+  var zona=slug(v.zona||'');
+  var tags=nicho().tags.slice();
+  var objTags={vender:['oferta','calidad'],captar:['consejos','clientes'],autoridad:['tips','aprende'],marca:['marcapersonal','emprendedora'],oferta:['promocion','descuento']}[S.objetivo]||[];
+  tags=tags.concat(objTags);
+  if(zona&&zona.length<=18&&!/online|toda|todas|envio|tu/i.test(v.zona))tags.unshift(zona.toLowerCase());
+  tags.push('reels','viral');
+  var lines=[h,''];
+  if(S.objetivo==='vender'||S.objetivo==='oferta'){
+    lines.push('📍 '+(v.producto||'')+(v.zona?' · '+v.zona:'')+(v.precio?' · '+v.precio:''));
+    b.forEach(function(x){lines.push('✔️ '+plain(x));});
+  }else{
+    if(v.dato)lines.push('📊 '+v.dato);
+    if(v.publico)lines.push('Para '+v.publico+': '+(S.objetivo==='captar'?'te ayudo a conseguir resultados sin complicaciones.':'te cuento lo que de verdad funciona.'));
+  }
+  lines.push('');
+  if(S.tactics.keyword&&v.palabra)lines.push('💬 Comenta "'+v.palabra+'" y te escribo por privado.');
+  if(S.tactics.serie)lines.push('👉 Sígueme para no perderte la parte 2.');
+  lines.push('📌 Guárdalo para tenerlo a mano.');
+  if(v.contacto)lines.push('📩 '+v.contacto);
+  lines.push('');
+  lines.push(tags.filter(function(t,i,a){return t&&a.indexOf(t)===i;}).slice(0,10).map(function(t){return '#'+t;}).join(' '));
+  $('caption').textContent=lines.join('\n');
+}
+$('copyCap').onclick=function(){
+  var txt=$('caption').textContent, btn=this;
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){btn.textContent='¡Copiado!';setTimeout(function(){btn.textContent='Copiar texto';},1500);}).catch(function(){
+    var r=document.createRange();r.selectNodeContents($('caption'));var s=getSelection();s.removeAllRanges();s.addRange(r);
+  });
+};
+
+/* ---------------- Eventos generales ---------------- */
+function refresh(){
+  $('ttot').textContent=fmt(total());
+  if(curT>total())curT=0;
+  score(); caption(); draw();
+  store('state',{nicho:S.nicho,calidad:S.calidad,custom:$('durCustom').value,objetivo:S.objetivo,formato:S.formato,hook:S.hook,strat:S.strat,tactics:S.tactics,cta:S.cta,dur:$('dur').value});
+}
+document.querySelectorAll('[data-v]').forEach(function(el){
+  var saved=load('v_'+el.dataset.v); if(saved!==null)el.value=saved;
+  el.addEventListener('input',function(){store('v_'+el.dataset.v,el.value);renderHooks();renderCtas();caption();});
+});
+$('cta').onchange=function(){S.cta=+this.value;build();};
+$('dur').onchange=build;
+$('durCustom').onchange=build;
+$('auto').onclick=function(){autoStrat();$('randHook').onclick();$('cv').scrollIntoView({behavior:'smooth',block:'center'});play();};
+$('build').onclick=build;
+$('randHook').onclick=function(){
+  var pool=HOOKS.map(function(h,i){return i;}).filter(function(i){return HOOKS[i].obj.indexOf(S.objetivo)>-1&&i!==S.hook;});
+  S.hook=pool[Math.floor(Math.random()*pool.length)];
+  renderHooks(); build();
+};
+
+/* ---------------- Inicio ---------------- */
+var st=load('state');
+buildHooks(NICHOS[0]);
+if(st){
+  ['nicho','calidad','objetivo','formato','hook','strat','cta'].forEach(function(k){if(st[k]!==undefined)S[k]=st[k];});
+  if(st.tactics)Object.keys(st.tactics).forEach(function(k){S.tactics[k]=st.tactics[k];});
+  if(st.dur)$('dur').value=st.dur;
+  if(st.custom)$('durCustom').value=st.custom;
+  buildHooks(nicho());
+  if(!HOOKS[S.hook])S.hook=0;
+  if(!OBJETIVOS.some(function(o){return o.id===S.objetivo;}))S.objetivo='vender';
+}else{
+  autoStrat();
+}
+renderNichos(); renderObjetivos(); renderFormatos(); renderCalidades(); renderHooks(); renderStrats(); renderTactics(); renderCtas();
+setSize(); build();
+})();
+</script>
+</body>
+</html>
