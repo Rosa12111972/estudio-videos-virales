@@ -151,8 +151,8 @@ aside{position:sticky;top:16px;}
 <div>
 
   <div class="quick">
-    <p><b>¿Primera vez?</b>Elige tu nicho, sube unas fotos y pulsa el botón: la app elige el gancho y la estrategia por ti.</p>
-    <button class="btn gold" id="auto" type="button">⚡ Crear vídeo automático</button>
+    <p><b>Vídeo listo para enviar en 1 clic</b>Elige tu nicho y pulsa el botón: la app elige gancho, estrategia y música, monta el vídeo y te lo descarga. Si quieres personalizarlo, todo está debajo.</p>
+    <button class="btn gold" id="auto" type="button">⚡ Crear y descargar mi vídeo</button>
   </div>
 
   <!-- 1. Objetivo y datos -->
@@ -280,9 +280,14 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
     <div style="height:14px"></div>
     <div class="grid2">
       <div>
-        <label class="f" for="music">Música (opcional)</label>
+        <label class="f" for="genMusic">🎵 Música creada por la app (gratis, sin derechos de autor)</label>
+        <select id="genMusic"></select>
+        <label class="f" for="musicVol" style="margin-top:8px">Volumen de la música</label>
+        <input type="range" id="musicVol" min="0" max="100" value="55" style="width:100%">
+        <div class="idea" id="musicTip" style="margin-top:8px"></div>
+        <label class="f" for="music" style="margin-top:10px">O sube tu propia canción</label>
         <input type="file" id="music" accept="audio/*">
-        <p class="hint">Usa música con licencia o añade el audio en tendencia desde la propia app al publicar.</p>
+        <p class="hint">Si subes una canción, se usa en lugar de la música creada. Usa solo música con licencia.</p>
       </div>
       <div>
         <label class="f" for="logo">Tu logo o foto para la escena final (opcional)</label>
@@ -310,7 +315,7 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
     <input type="file" id="presFile" accept="video/*">
     <div class="idea ai" style="margin-top:14px">
       <div class="lab">🤖 Crear persona con IA (Gemini)</div>
-      <p class="hint" style="margin:4px 0 10px">Gemini (Veo) crea un vídeo de hasta 8 s de una persona diciendo tu frase, con voz. Se coloca al principio del vídeo, en el gancho. <b>Cada vídeo cuesta dinero en tu cuenta de Google</b>: revisa los precios en <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a>.</p>
+      <p class="hint" style="margin:4px 0 10px"><b>Gratis (sin tarjeta, con límite diario):</b> la clave, la foto de la persona y la voz en off. <b>De pago:</b> el vídeo de la persona (Veo), que solo funciona si activas la facturación en Google. Si no activas la facturación, Google no te puede cobrar nada.</p>
       <div class="grid2">
         <div><label class="f" for="gKey">Tu clave de Gemini (API key)</label><input type="password" id="gKey" autocomplete="off" placeholder="Pégala aquí, no en ningún chat">
           <p class="hint">Consíguela en <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Solo se envía a Google.</p>
@@ -327,10 +332,21 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
       <textarea id="gFrase" rows="2"></textarea>
       <div class="row-actions">
         <button class="btn ghost sm" id="gUseHook" type="button">Usar el gancho del guion</button>
-        <button class="btn" id="gVideo" type="button">🎬 Crear vídeo de la persona</button>
-        <button class="btn ghost" id="gImage" type="button">🖼 Crear foto de la persona (más barato)</button>
+        <button class="btn ghost" id="gVideo" type="button">🎬 Crear vídeo de la persona (de pago)</button>
+        <button class="btn" id="gImage" type="button">🖼 Crear foto de la persona (gratis)</button>
       </div>
       <div class="hint" id="gStatus" aria-live="polite" style="margin-top:8px"></div>
+    </div>
+    <div class="idea ai" style="margin-top:14px">
+      <div class="lab">🗣 Voz en off con IA (Gemini)</div>
+      <p class="hint" style="margin:4px 0 10px"><b>Gratis con límite diario.</b> Una voz lee el texto de cada escena con el tono elegido (cercano o profesional). Si ya hay una persona hablando, la voz empieza cuando termina su vídeo. Usa la misma clave de Gemini de arriba.</p>
+      <div class="grid2">
+        <div><label class="f" for="vGender">Voz</label><select id="vGender">
+          <option value="auto">Automática según el contexto</option><option value="m">Masculina</option><option value="f">Femenina</option></select></div>
+        <div style="align-self:end"><button class="btn" id="vMake" type="button">🗣 Crear voz en off</button>
+          <button class="btn ghost sm" id="vDel" type="button" hidden>Quitar voz</button></div>
+      </div>
+      <div class="hint" id="vStatus" aria-live="polite" style="margin-top:8px"></div>
     </div>
     <div class="idea" style="margin-top:14px">
       <div class="lab">Persona creada con IA en otra herramienta</div>
@@ -636,7 +652,7 @@ function renderNichos(){
   });
   if(!box.children.length)box.innerHTML='<p class="hint">No está en la lista: escríbelo abajo y pulsa «Usar mi nicho».</p>';
 }
-function pickNicho(id){S.nicho=id;S.tono=nicho().tono||S.tono;$('tono').value=S.tono;applyNicho();buildHooks(nicho());S.hookCat='Recomendados';autoStrat();renderNichos();renderHooks();renderCtas();build();}
+function pickNicho(id){setTimeout(renderMusic,0);S.nicho=id;S.tono=nicho().tono||S.tono;$('tono').value=S.tono;applyNicho();buildHooks(nicho());S.hookCat='Recomendados';autoStrat();renderNichos();renderHooks();renderCtas();build();}
 $('nichoBuscar').oninput=renderNichos;
 $('nichoUsar').onclick=function(){
   var name=$('nichoPropio').value.trim(); if(!name)return;
@@ -739,6 +755,7 @@ function build(){
   });
   scenes.push({role:'cta',text:cta,dur:round1(ctaDur)});
   scenes.forEach(function(s,i){s.media=S.media.length?(i%S.media.length):-1;});
+  if(S.voice){voiceStop();S.voice=null;$('vDel').hidden=true;$('vStatus').textContent='El guion ha cambiado: vuelve a crear la voz en off.';}
   S.scenes=scenes;
   renderScenes(); refresh(); seek(0);
   if($('gFrase')&&!$('gFrase').value)$('gFrase').value=hookPhrase();
@@ -895,18 +912,79 @@ $('camRec').onclick=function(){
   })();
 };
 // Guion hablado: lo que dice la persona en cada escena (también durante las animaciones)
-function spokenScript(){
+function spokenScript(){return S.scenes.map(spokenLine).join('\n\n');}
+function spokenLine(s){
   var v=vars();
-  return S.scenes.map(function(s){
+  return (function(s){
     var t=plain(s.text);
     if(s.kind==='buscar')t='Mira, busco '+t+' en '+(v.marca||'la app')+'.';
     else if(s.kind==='vs'){var M=metrics(v),a=0,b=0;M.forEach(function(m){if(m.win===1)a++;if(m.win===2)b++;});
       t=t+' Ronda a ronda: '+M.map(function(m){return m.name;}).join(', ')+'. '+(a===b?'Empate.':'Gana '+(a>b?v.tA:v.tB)+'.');}
     else if(s.kind==='semaforo')t=t+' '+(v.tSemMot||'')+'.';
     else if(s.kind==='contador')t=t+' Hoy serían '+(v.tFin||'')+'.';
-    return t.replace(/\s*\n\s*/g,' ').replace(/[👇👀🔥🚀📩🔗💸✨😍😁🎧⏳💐]/gu,'').trim();
-  }).join('\n\n');
+    return t.replace(/\s*\n\s*/g,' ').replace(/[👇👀🔥🚀📩🔗💸✨😍😁🎧⏳💐⚖️✅⚠️🏆]/gu,'').trim();
+  })(s);
 }
+
+/* ---------------- Voz en off (Gemini TTS) ---------------- */
+var VOICES={cercano:{m:'Puck',f:'Leda'},pro:{m:'Charon',f:'Kore'}};
+function autoGender(){
+  var d=($('gPersona').value||'').toLowerCase();
+  if(/\b(chica|mujer|señora|joven mujer|ella)\b/.test(d))return 'f';
+  if(/\b(chico|hombre|señor|joven hombre|él)\b/.test(d))return 'm';
+  return ['belleza','moda','yoga','flores','nutri','psico','eventos','joyas'].indexOf(nicho().id)>-1?'f':'m';
+}
+function voiceName(){var g=$('vGender').value;if(g==='auto')g=autoGender();return {g:g,name:VOICES[J()?'cercano':'pro'][g]};}
+function pcmToBuffer(A,b64,rate){
+  var bin=atob(b64), n=bin.length>>1, buf=A.createBuffer(1,n,rate), d=buf.getChannelData(0);
+  for(var i=0;i<n;i++){var lo=bin.charCodeAt(2*i),hi=bin.charCodeAt(2*i+1),v=(hi<<8)|lo;if(v>=32768)v-=65536;d[i]=v/32768;}
+  return buf;
+}
+function vStatus(t){$('vStatus').textContent=t;}
+$('vMake').onclick=function(){
+  var key=gKey(), btn=this; if(!key){vStatus('Pega primero tu clave de Gemini (en el bloque de arriba).');return;}
+  var A=audioGraph(); if(!A){vStatus('Tu navegador no permite audio aquí.');return;}
+  var pres=S.presenter&&S.presenter.el.duration||0, vn=voiceName(), style=J()?'con tono joven, cercano y con energía, como un creador de TikTok':'con tono profesional, claro y de confianza';
+  var jobs=[], t=0;
+  S.scenes.forEach(function(s,i){var line=spokenLine(s);if(t+0.2>=pres&&line)jobs.push({i:i,text:line});t+=s.dur;});
+  if(!jobs.length){vStatus('No hay escenas para narrar después del vídeo de la persona.');return;}
+  btn.disabled=true; var clips=[], k=0;
+  (function next(){
+    if(k>=jobs.length){
+      S.voice={clips:clips,voice:vn}; $('vDel').hidden=false;
+      // Si una frase dura más que su escena, la escena se alarga para que no se corte
+      clips.forEach(function(c){var sc=S.scenes[c.i];if(sc&&c.buf.duration+0.35>sc.dur)sc.dur=round1(c.buf.duration+0.35);});
+      renderScenes(); refresh(); seek(0); btn.disabled=false;
+      vStatus('✅ Voz '+(vn.g==='m'?'masculina':'femenina')+' añadida a '+clips.length+' escenas. Dale a Reproducir.');
+      return;
+    }
+    var j=jobs[k]; vStatus('Creando la voz… escena '+(k+1)+' de '+jobs.length);
+    fetch(GAPI+'models/gemini-2.5-flash-preview-tts:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
+      body:JSON.stringify({contents:[{parts:[{text:'Lee en español de España, '+style+': '+j.text}]}],
+        generationConfig:{responseModalities:['AUDIO'],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:vn.name}}}}})})
+    .then(function(r){return r.ok?r.json():gFail(r);})
+    .then(function(res){
+      var part=((res.candidates||[])[0]||{}).content; part=part&&part.parts&&part.parts.filter(function(p){return p.inlineData;})[0];
+      if(!part)throw new Error('Gemini no devolvió audio.');
+      var rate=+((part.inlineData.mimeType||'').match(/rate=(\d+)/)||[0,24000])[1];
+      clips.push({i:j.i,buf:pcmToBuffer(A,part.inlineData.data,rate)}); k++; next();
+    })
+    .catch(function(e){vStatus('❌ '+e.message);btn.disabled=false;});
+  })();
+};
+$('vDel').onclick=function(){voiceStop();S.voice=null;this.hidden=true;vStatus('Voz quitada.');refresh();};
+// Reproduce las frases en su momento, desde la posición actual
+function voiceStart(){
+  if(!S.voice||!S.actx)return; var A=S.actx; S.vSrc=[];
+  S.vGain=A.createGain(); S.vGain.gain.value=1; S.vGain.connect(S.mix);
+  S.voice.clips.forEach(function(c){
+    var st=sceneStart(c.i), off=curT-st; if(off>=c.buf.duration)return;
+    var src=A.createBufferSource(); src.buffer=c.buf; src.connect(S.vGain);
+    if(off<0)src.start(A.currentTime-off); else src.start(A.currentTime,off);
+    S.vSrc.push(src);
+  });
+}
+function voiceStop(){(S.vSrc||[]).forEach(function(x){try{x.stop();}catch(e){}});S.vSrc=[];if(S.vGain){S.vGain.disconnect();S.vGain=null;}}
 $('copyScript').onclick=function(){
   var btn=this, txt=spokenScript();
   (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){btn.textContent='¡Guion copiado!';setTimeout(function(){btn.textContent='📋 Copiar guion para el avatar de IA';},1800);})
@@ -940,14 +1018,14 @@ function gFail(r){
   return r.json().catch(function(){return {};}).then(function(j){
     var m=(j.error&&j.error.message)||('Error '+r.status);
     if(r.status===400&&/API key/i.test(m))m='La clave no es válida. Revísala en aistudio.google.com/apikey.';
-    else if(r.status===403)m='Tu clave no tiene permiso para este modelo (puede que necesites activar la facturación). '+m;
-    else if(r.status===429)m='Has llegado al límite de uso de tu cuenta. Espera un poco o revisa tu plan. '+m;
+    else if(r.status===403||(r.status===400&&/billing|paid|free tier/i.test(m)))m='Esta función no entra en el plan gratis de Google (necesita activar la facturación). No se te ha cobrado nada.';
+    else if(r.status===429)m='Has llegado al límite gratis de hoy. Vuelve a intentarlo mañana. No se te ha cobrado nada.';
     throw new Error(m);
   });
 }
 $('gVideo').onclick=function(){
   var key=gKey(), btn=this; if(!key){gStatus('Pega primero tu clave de Gemini.');return;}
-  if(!confirm('Vas a crear un vídeo con Veo. Se cobrará en tu cuenta de Google. ¿Continuar?'))return;
+  if(!confirm('El vídeo de la persona (Veo) es de pago: solo funciona si tienes la facturación activada en Google, y entonces se cobra. Si no la tienes, saldrá un aviso y no se cobra nada. ¿Continuar?'))return;
   btn.disabled=true; gStatus('Enviando a Gemini…');
   var model=$('gModel').value, t0=Date.now();
   fetch(GAPI+'models/'+model+':predictLongRunning',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
@@ -1055,6 +1133,80 @@ function sfxEvents(){
     t+=s.dur;
   });
   return ev;
+}
+
+/* ---------------- Música generada (sintetizador en el navegador) ---------------- */
+var CH={m:[0,3,7],M:[0,4,7],maj7:[0,4,7,11],m7:[0,3,7,10]};
+var STYLES={
+  trap:{name:'Trap / phonk suave',bpm:140,kick:[0,7,10],snare:[8],hat:'trap',bass:'808',pad:true,prog:[[57,'m'],[53,'M'],[48,'M'],[55,'M']],
+    why:'Energía y actitud. Es lo que más escucha el público de 18 a 25 años en TikTok y Reels.',search:'phonk, trap beat, "money" trend'},
+  lofi:{name:'Lo-fi relajado',bpm:82,kick:[0,10],snare:[4,12],hat:'soft',bass:'pluck',pad:true,prog:[[53,'maj7'],[52,'m7'],[50,'m7'],[48,'maj7']],
+    why:'Calma y cercanía. Ideal para explicar cosas, tutoriales y contenido que se guarda.',search:'lofi beat, chill, study music'},
+  house:{name:'House / electrónica',bpm:122,kick:[0,4,8,12],snare:[4,12],hat:'open',bass:'off',stab:true,prog:[[57,'m'],[55,'M'],[53,'M'],[52,'m']],
+    why:'Ritmo constante que empuja a seguir mirando. Muy bueno para moda, belleza y ocio.',search:'house, tech house, sped up'},
+  epica:{name:'Épica / cinemática',bpm:90,kick:[0,3,8,11],snare:[12],hat:'none',bass:'808',pad:true,arp:true,prog:[[50,'m'],[46,'M'],[53,'M'],[48,'M']],
+    why:'Sensación de grandeza. Perfecta para antes/después, historias y lanzamientos.',search:'epic cinematic, trailer music'},
+  pop:{name:'Pop alegre',bpm:112,kick:[0,8,10],snare:[4,12],hat:'8',bass:'pluck',pad:true,prog:[[48,'M'],[55,'M'],[57,'m'],[53,'M']],
+    why:'Buen rollo y positividad. Funciona con productos, viajes, mascotas y comida.',search:'happy pop, feel good, upbeat'},
+  corp:{name:'Corporativo suave',bpm:100,kick:[0,8],snare:[12],hat:'soft',bass:'pluck',arp:true,prog:[[48,'M'],[55,'M'],[57,'m'],[53,'M']],
+    why:'Profesional y de confianza, sin distraer. Para servicios, clínicas y asesorías.',search:'corporate, inspiring, motivational'}
+};
+var NICHE_MUSIC={labolsabro:'trap',finanzas:'trap',creador:'trap',tattoo:'trap',fitness:'trap',gaming:'house',moda:'house',belleza:'house',
+  peluqueria:'house',ocio:'house',tech:'house',rest:'lofi',cafe:'lofi',vino:'lofi',edu:'lofi',psico:'lofi',yoga:'lofi',hotel:'lofi',hogar:'lofi',joyas:'lofi',
+  inmo:'epica',motor:'epica',eventos:'epica',ong:'epica',foto:'epica',deporte:'epica',libros:'epica',construccion:'epica',taller:'epica',
+  viajes:'pop',ecom:'pop',mascotas:'pop',nutri:'pop',idiomas:'pop',flores:'pop',limpieza:'pop',musica:'pop',
+  negocio:'corp',salud:'corp',abogados:'corp',dental:'corp',seguros:'corp',otro:'pop',custom:'pop'};
+function recStyle(){return NICHE_MUSIC[nicho().id]||'pop';}
+function renderMusic(){
+  var sel=$('genMusic'), cur=S.genMusic||'auto', r=recStyle(); sel.innerHTML='';
+  [['auto','⭐ Recomendada: '+STYLES[r].name]].concat(Object.keys(STYLES).map(function(k){return [k,STYLES[k].name];})).concat([['none','Sin música']])
+    .forEach(function(o){var e=document.createElement('option');e.value=o[0];e.textContent=o[1];sel.appendChild(e);});
+  sel.value=cur;
+  var st=STYLES[r];
+  $('musicTip').innerHTML='<div class="lab">🎵 Música recomendada para tu nicho</div><div class="txt"></div>';
+  $('musicTip').querySelector('.txt').textContent=st.name+' · '+st.bpm+' BPM. '+st.why+
+    '\nAl publicar, puedes añadir además un audio en tendencia a volumen bajo desde Instagram o TikTok. Búscalo como: '+st.search+'.';
+}
+function curStyle(){var g=S.genMusic||'auto';return g==='none'?null:STYLES[g==='auto'?recStyle():g];}
+$('genMusic').onchange=function(){S.genMusic=this.value;store('genMusic',S.genMusic);if(playing){musicStop();musicStart();}};
+$('musicVol').oninput=function(){if(S.gm)S.gm.gain.value=musicLevel();if(S.music&&S.music._gain)S.music._gain.gain.value=musicLevel()*1.6;};
+function musicLevel(){return (+$('musicVol').value/100)*(S.presenter||S.voice?0.3:0.8);}
+var noiseBuf=null;
+function noise(A){if(!noiseBuf){var n=A.sampleRate,b=A.createBuffer(1,n,n),d=b.getChannelData(0);for(var i=0;i<n;i++)d[i]=Math.random()*2-1;noiseBuf=b;}return noiseBuf;}
+function mf(m){return 440*Math.pow(2,(m-69)/12);}
+function vEnv(g,t,peak,att,dec){g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(peak,t+att);g.gain.exponentialRampToValueAtTime(0.0001,t+att+dec);}
+function osc(A,type,f,t,dur,peak,att,out,filt){
+  var o=A.createOscillator(),g=A.createGain();o.type=type;o.frequency.setValueAtTime(f,t);
+  vEnv(g,t,peak,att||0.005,dur); if(filt){var lp=A.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(filt,t);lp.frequency.exponentialRampToValueAtTime(Math.max(200,filt/4),t+dur);o.connect(lp);lp.connect(g);}else o.connect(g);
+  g.connect(out);o.start(t);o.stop(t+(att||0.005)+dur+0.05);return o;
+}
+function hit(A,t,hp,peak,dur,out){var s=A.createBufferSource(),f=A.createBiquadFilter(),g=A.createGain();s.buffer=noise(A);f.type='highpass';f.frequency.value=hp;
+  vEnv(g,t,peak,0.002,dur);s.connect(f);f.connect(g);g.connect(out);s.start(t,Math.random()*0.5);s.stop(t+dur+0.05);}
+function playStep(st,step,t,A,out){
+  var s16=step%16, bar=Math.floor(step/16)%st.prog.length, ch=st.prog[bar], root=ch[0], notes=CH[ch[1]].map(function(x){return root+x;}), q=60/st.bpm/4;
+  if(st.kick.indexOf(s16)>-1){var k=A.createOscillator(),kg=A.createGain();k.frequency.setValueAtTime(160,t);k.frequency.exponentialRampToValueAtTime(42,t+0.12);
+    vEnv(kg,t,0.9,0.003,st.bass==='808'?0.35:0.28);k.connect(kg);kg.connect(out);k.start(t);k.stop(t+0.5);
+    if(st.bass==='808')osc(A,'sine',mf(root-24),t,q*6,0.55,0.01,out);}
+  if(st.snare.indexOf(s16)>-1){hit(A,t,1500,0.35,0.17,out);osc(A,'triangle',190,t,0.09,0.18,0.002,out);}
+  if(st.hat==='trap'){if(s16%2===0||(bar%2===1&&s16>=12))hit(A,t,8000,0.09,0.035,out);}
+  else if(st.hat==='soft'){if(s16%2===0)hit(A,t+(s16%4===2?q*0.25:0),8000,0.05,0.04,out);}
+  else if(st.hat==='8'){if(s16%2===0)hit(A,t,8000,0.07,0.04,out);}
+  else if(st.hat==='open'){if(s16%4===2)hit(A,t,7000,0.09,0.2,out);}
+  if(st.bass==='pluck'&&(s16===0||s16===6||s16===8||s16===14))osc(A,'sawtooth',mf(root-12),t,0.25,0.12,0.005,out,900);
+  if(st.bass==='off'&&s16%4===2)osc(A,'sawtooth',mf(root-12),t,0.18,0.14,0.005,out,800);
+  if(st.stab&&(s16===0||s16===3||s16===6))notes.forEach(function(n){osc(A,'square',mf(n),t,0.12,0.03,0.005,out,2500);});
+  if(st.arp&&s16%2===0)osc(A,'triangle',mf(notes[(s16/2)%notes.length]+12),t,0.22,0.06,0.005,out,3000);
+  if(st.pad&&s16===0)notes.forEach(function(n){osc(A,'triangle',mf(n),t,q*15,0.035,0.25,out,1800);});
+}
+function musicStart(){
+  if(S.music||!S.actx)return; var st=curStyle(); if(!st)return;
+  var A=S.actx; S.gm=A.createGain(); S.gm.gain.value=musicLevel(); S.gm.connect(S.mix);
+  var gm=S.gm, step=0, next=A.currentTime+0.06, q=60/st.bpm/4;
+  S.gTimer=setInterval(function(){while(next<A.currentTime+0.15){playStep(st,step,next,A,gm);next+=q;step++;}},25);
+}
+function musicStop(){
+  clearInterval(S.gTimer); S.gTimer=null;
+  if(S.gm){var g=S.gm,A=S.actx;g.gain.setTargetAtTime(0.0001,A.currentTime,0.05);setTimeout(function(){g.disconnect();},400);S.gm=null;}
 }
 
 /* ---------------- Render en canvas ---------------- */
@@ -1445,7 +1597,7 @@ function loop(now){
   var T=total();
   if(curT>=T){
     if(recorder){curT=T;draw();stopRec();return;}
-    curT=0; t0=now; lastScene=-1; prevT=0;
+    curT=0; t0=now; lastScene=-1; prevT=0; voiceStop(); voiceStart();
     if(S.music){S.music.currentTime=0;}
   }
   var ev=sfxEvents(); for(var i=0;i<ev.length;i++){if(ev[i].t>prevT&&ev[i].t<=curT)sfx(ev[i].type);}
@@ -1457,14 +1609,15 @@ function loop(now){
 function play(){
   if(playing)return;
   audioGraph(); if(S.actx)S.actx.resume();
-  if(S.music&&S.music._gain)S.music._gain.gain.value=S.presenter?0.25:1;
+  if(S.music&&S.music._gain)S.music._gain.gain.value=musicLevel()*1.6;
+  musicStop(); musicStart(); voiceStop(); voiceStart();
   playing=true; lastScene=-1; t0=performance.now()-curT*1000; prevT=curT;
   if(S.music){S.music.currentTime=curT%Math.max(1,S.music.duration||1e9);S.music.play().catch(function(){});}
   $('play').textContent='❚❚ Pausa';
   raf=requestAnimationFrame(loop);
 }
 function pause(){
-  playing=false; cancelAnimationFrame(raf);
+  playing=false; cancelAnimationFrame(raf); musicStop(); voiceStop();
   if(S.music)S.music.pause();
   if(S.presenter)S.presenter.el.pause();
   S.media.forEach(function(m){if(m.type==='video')m.el.pause();});
@@ -1528,7 +1681,7 @@ $('export').onclick=function(){
   play();
 };
 function stopRec(){
-  playing=false; cancelAnimationFrame(raf);
+  playing=false; cancelAnimationFrame(raf); musicStop(); voiceStop();
   if(S.music)S.music.pause();
   if(S.presenter)S.presenter.el.pause();
   S.media.forEach(function(m){if(m.type==='video')m.el.pause();});
@@ -1553,6 +1706,7 @@ function score(){
     {ok:S.tactics.keyword||S.tactics.serie, pts:5, t:'Disparador de interacción (comentarios o serie)'},
     {ok:S.scenes.every(function(s){return s.dur<=5;}), pts:5, t:'Ritmo ágil: ninguna escena supera 5 s'}
   ];
+  checks.push({ok:!!(S.music||curStyle()),pts:0,t:'Lleva música (más energía y retención)'});
   checks.push({ok:!!S.presenter,pts:0,t:'Sale una persona hablando (más confianza y retención)'});
   if(T>40)checks.push({ok:S.scenes.some(function(s){return s.role==='regancho';}),pts:0,t:'Re-ganchos cada ≈25 s en vídeos largos'});
   if(S.scenes.some(function(s){return s.kind&&s.kind!=='buscar';})){
@@ -1658,7 +1812,7 @@ $('tono').onchange=function(){S.tono=this.value;renderCtas();build();};
 document.querySelectorAll('[data-v^="t"]').forEach(function(el){el.addEventListener('change',build);el.addEventListener('input',function(){draw();});});
 $('dur').onchange=build;
 $('durCustom').onchange=build;
-$('auto').onclick=function(){autoStrat();$('randHook').onclick();$('cv').scrollIntoView({behavior:'smooth',block:'center'});play();};
+$('auto').onclick=function(){if(recorder)return;autoStrat();$('randHook').onclick();$('cv').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){$('export').onclick();},300);};
 $('build').onclick=build;
 $('randHook').onclick=function(){
   var pool=HOOKS.map(function(h,i){return i;}).filter(function(i){return HOOKS[i].obj.indexOf(S.objetivo)>-1&&i!==S.hook;});
@@ -1682,6 +1836,7 @@ if(st){
   autoStrat();
 }
 $('tono').value=S.tono;
+S.genMusic=load('genMusic')||'auto'; renderMusic();
 renderNichos(); renderObjetivos(); renderFormatos(); renderCalidades(); renderHooks(); renderStrats(); renderTactics(); renderCtas();
 setSize(); build();
 })();
