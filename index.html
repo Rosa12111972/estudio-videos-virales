@@ -158,6 +158,12 @@ aside{position:sticky;top:16px;}
     <button class="btn gold" id="auto" type="button">⚡ Crear y descargar mi vídeo</button>
   </div>
 
+  <section class="card">
+    <h2><span class="n">⭐</span>Ejemplos con datos reales</h2>
+    <p class="sub">Pulsa uno y se monta el vídeo con datos reales de 2025 y su fuente. Luego dale a «Exportar vídeo», o cámbialo a tu gusto. Las cifras están redondeadas.</p>
+    <div class="ngrid" id="ejemplos" style="max-height:none"></div>
+  </section>
+
   <!-- 1. Objetivo y datos -->
   <section class="card">
     <h2><span class="n">1</span>Objetivo y datos del vídeo</h2>
@@ -235,7 +241,10 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
         <div><label class="f" for="t-semEmp">Semáforo · empresa o producto</label><input type="text" id="t-semEmp" data-v="tSemEmp" value="Apple"></div>
         <div><label class="f" for="t-semColor">Semáforo · veredicto</label>
           <select id="t-semColor" data-v="tSemColor"><option value="verde">🟢 Barata</option><option value="amarillo" selected>🟡 Precio justo</option><option value="rojo">🔴 Cara</option></select></div>
+        <div><label class="f" for="t-semPreg">Semáforo · pregunta</label><input type="text" id="t-semPreg" data-v="tSemPreg" value="está cara o barata"></div>
+        <div><label class="f" for="t-semLab">Semáforo · texto del veredicto (opcional)</label><input type="text" id="t-semLab" data-v="tSemLab" value="" placeholder="Ej.: BENEFICIO RÉCORD"></div>
         <div style="grid-column:1/-1"><label class="f" for="t-semMot">Semáforo · motivo</label><input type="text" id="t-semMot" data-v="tSemMot" value="Cotiza cerca de su valor medio histórico"></div>
+        <div style="grid-column:1/-1"><label class="f" for="t-fuente">Fuente de los datos (sale en el vídeo)</label><input type="text" id="t-fuente" data-v="tFuente" value="" placeholder="Ej.: Informes anuales 2025"></div>
         <div><label class="f" for="t-emp">Máquina del tiempo · en qué</label><input type="text" id="t-emp" data-v="tEmp" value="el S&amp;P 500"></div>
         <div><label class="f" for="t-anios">Años</label><input type="text" id="t-anios" data-v="tAnios" value="10"></div>
         <div><label class="f" for="t-ini">Cantidad inicial</label><input type="text" id="t-ini" data-v="tIni" value="1.000 €"></div>
@@ -541,7 +550,7 @@ var STRATS = [
   {id:'batalla', name:'⚔️ Batalla VS (estilo videojuego)', d:'Dos opciones se enfrentan por rondas con barras de vida. Engancha hasta el final para ver quién gana.',
    gen:function(v){return [{kind:'buscar',text:'{tA} vs {tB}',dur:2.2},{kind:'vs',text:'¿*{tA}* o *{tB}*?',dur:metrics(v).length*1.8+2.8},(J()?'¿Tú cuál eliges, bro? *Comenta* 👇':'¿Tú cuál eliges? *Comenta* 👇')];}},
   {id:'semaforo', name:'🚦 Semáforo: ¿cara o barata?', d:'Un semáforo que se enciende con el veredicto. Suspense de 2 s y respuesta clara.',
-   gen:function(v){return [{kind:'buscar',text:'{tSemEmp}',dur:2.2},{kind:'semaforo',text:'¿*{tSemEmp}* está cara o barata?',dur:5},(J()?'Míralo tú, literal en *2 minutos*':'Analízalo tú en *2 minutos*')];}},
+   gen:function(v){return [{kind:'buscar',text:'{tSemEmp}',dur:2.2},{kind:'semaforo',text:'¿*{tSemEmp}* {tSemPreg}?',dur:5},(J()?'Míralo tú, literal en *2 minutos*':'Analízalo tú en *2 minutos*')];}},
   {id:'tiempo', name:'⏳ Máquina del tiempo', d:'Un contador que sube año a año. Muy compartido y muy guardado.',
    gen:function(v){return [{kind:'contador',text:'Si hubieras invertido *{tIni}* en {tEmp} hace {tAnios} años…',dur:6},(J()?'El truco: *empezar ya*, aunque sea con poco':'El secreto: *empezar pronto*'),(J()?'¿Y si empiezas *hoy*, bro? 🚀':'¿Y si empiezas *hoy*?')];}},
   {id:'aida', name:'AIDA', d:'Atención → Interés → Deseo → Acción. El clásico que nunca falla.',
@@ -1253,6 +1262,13 @@ function fighter(x,y,r,name,color,hp,shake){
   ctx.fillStyle='#fff'; ctx.font=FONT(700,W*0.028); ctx.fillText('HP '+Math.round(hp),x,by+bh+W*0.035);
   ctx.restore();
 }
+function drawFuente(v){
+  if(!v.tFuente)return;
+  ctx.save(); ctx.globalAlpha=.7; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='#fff';
+  var fs=W*0.024; ctx.font=FONT(500,fs); var t='Fuente: '+v.tFuente;
+  while(ctx.measureText(t).width>W*0.9&&fs>W*0.015){fs*=0.92;ctx.font=FONT(500,fs);}
+  ctx.fillText(t,W/2,H-W*0.16); ctx.restore();
+}
 function drawVS(s,local,v,appear,style){
   var M=metrics(v), n=Math.max(1,M.length), intro=0.9, rd=(s.dur-intro-1.4)/n, th=TH();
   drawText(s.text,W*0.075,H*0.13,appear,0,style);
@@ -1313,7 +1329,9 @@ function drawSemaforo(s,local,v,appear,style){
   else{
     var e=ease(clamp((local-2)/0.35));
     ctx.save(); ctx.translate(W/2,ly); ctx.scale(0.7+0.3*e,0.7+0.3*e); ctx.globalAlpha=e;
-    ctx.fillStyle=cols[verdict]; ctx.font=FONT(900,W*0.085); ctx.fillText(labels[verdict],0,0); ctx.restore();
+    var lab=(v.tSemLab||'').trim()||labels[verdict], fs=W*0.085; ctx.font=FONT(900,fs);
+    while(ctx.measureText(lab).width>W*0.9&&fs>W*0.04){fs*=0.92;ctx.font=FONT(900,fs);}
+    ctx.fillStyle=cols[verdict]; ctx.fillText(lab,0,0); ctx.restore();
     ctx.globalAlpha=e; drawText(v.tSemMot||'',W*0.045,ly+W*0.15,e,0,'box');
   }
   ctx.restore();
@@ -1394,6 +1412,7 @@ function draw(){
   var style=big?'stroke':'box';
 
   if(s.kind){
+    if(s.kind!=='buscar')drawFuente(v);
     if(s.kind==='vs')drawVS(s,a.local,v,appear,style);
     else if(s.kind==='semaforo')drawSemaforo(s,a.local,v,appear,style);
     else if(s.kind==='contador')drawContador(s,a.local,v,appear,style);
@@ -1636,6 +1655,56 @@ $('copyCap').onclick=function(){
   });
 };
 
+/* ---------------- Ejemplos con datos reales ---------------- */
+var EJEMPLOS=[
+  {t:'⚔️ Apple vs Microsoft',strat:'batalla',hook:'¿*Apple* o *Microsoft*? La respuesta te va a sorprender',
+   d:{tA:'Apple',tB:'Microsoft',tMet:'Ventas | 416.200 M$ | 281.700 M$ | mayor\nCrecimiento de ventas | 6,4% | 15% | mayor\nMargen de beneficio | 26,9% | 36,1% | mayor',tFuente:'Informes anuales de Apple y Microsoft, año fiscal 2025'}},
+  {t:'⚔️ Nvidia vs AMD',strat:'batalla',hook:'*Nvidia* contra *AMD*: la batalla de los chips',
+   d:{tA:'Nvidia',tB:'AMD',tMet:'Ventas | 215.900 M$ | 34.600 M$ | mayor\nCrecimiento de ventas | 65% | 34% | mayor\nMargen de beneficio | 55,6% | 12,4% | mayor',tFuente:'Informes anuales: Nvidia (año fiscal 2026, hasta enero de 2026) y AMD (2025)'}},
+  {t:'⚔️ Coca-Cola vs PepsiCo',strat:'batalla',hook:'¿*Coca-Cola* o *Pepsi*? Esto no va de sabor, bro',
+   d:{tA:'Coca-Cola',tB:'PepsiCo',tMet:'Ventas | 47.900 M$ | 93.900 M$ | mayor\nCrecimiento de ventas | 2% | 2% | mayor\nBeneficio por acción | +23% | -14% | mayor',tFuente:'Resultados anuales 2025 de Coca-Cola y PepsiCo'}},
+  {t:'⚔️ Inditex vs H&M',strat:'batalla',hook:'*Zara* contra *H&M*: ¿quién gana de verdad?',
+   d:{tA:'Inditex',tB:'H&M',tMet:'Crecimiento de ventas (moneda local) | 7% | 2% | mayor\nMargen de beneficio | 15,6% | 5,3% | mayor\nCrecimiento del beneficio | 6% | 4,3% | mayor',tFuente:'Resultados 2025: Inditex (feb 2025-ene 2026) y H&M (dic 2024-nov 2025)'}},
+  {t:'⚔️ Santander vs BBVA',strat:'batalla',hook:'*Santander* o *BBVA*: el duelo de los bancos',
+   d:{tA:'Santander',tB:'BBVA',tMet:'Beneficio | 14.101 M€ | 10.511 M€ | mayor\nCrecimiento del beneficio | 12% | 4,5% | mayor\nRentabilidad (RoTE) | 16,3% | 19% | mayor',tFuente:'Resultados anuales 2025 de Banco Santander y BBVA'}},
+  {t:'⚔️ Tesla vs BYD',strat:'batalla',hook:'*Tesla* contra *BYD*: ¿quién manda en los eléctricos?',
+   d:{tA:'Tesla',tB:'BYD',tMet:'Ventas | 94.800 M$ | 116.000 M$ | mayor\nCrecimiento de ventas | -3% | 3,5% | mayor\nVariación del beneficio | -46% | -19% | mayor',tFuente:'Resultados anuales 2025 de Tesla y BYD (BYD pasado a dólares, aprox.)'}},
+  {t:'⏳ 1.000 $ en el S&P 500 hace 10 años',strat:'tiempo',hook:'¿Cuánto tendrías hoy si hubieras empezado *hace 10 años*?',
+   d:{tEmp:'el S&P 500',tIni:'1.000 $',tFin:'3.983 $',tAnios:'10',tFuente:'S&P 500 con dividendos, 2016-2025, en dólares (YCharts)'}},
+  {t:'⏳ 1.000 € en el MSCI World hace 10 años',strat:'tiempo',hook:'El índice *más aburrido* del mundo… y mira esto',
+   d:{tEmp:'el MSCI World',tIni:'1.000 €',tFin:'2.917 €',tAnios:'10',tFuente:'MSCI World en euros, rentabilidad neta 2016-2025 (fichas de MSCI)'}},
+  {t:'⏳ 1.000 $ en Nvidia hace 10 años',strat:'tiempo',hook:'Lo que pasó con *1.000 $ en Nvidia*, literal',
+   d:{tEmp:'Nvidia',tIni:'1.000 $',tFin:'191.110 $',tAnios:'10',tFuente:'Benzinga, de abril de 2015 a abril de 2025'}},
+  {t:'🚦 ¿Santander está en forma?',strat:'semaforo',hook:'El banco que *más gana* de España…',
+   d:{tSemEmp:'Santander',tSemPreg:'está en forma',tSemColor:'verde',tSemLab:'BENEFICIO RÉCORD',tSemMot:'Ganó 14.101 M€ en 2025, un 12% más',tFuente:'Resultados anuales 2025 de Banco Santander'}},
+  {t:'🚦 ¿Tesla está en forma?',strat:'semaforo',hook:'A *Tesla* le pasa algo, bro',
+   d:{tSemEmp:'Tesla',tSemPreg:'está en forma',tSemColor:'rojo',tSemLab:'BENEFICIO A LA BAJA',tSemMot:'Su beneficio cayó un 46% en 2025',tFuente:'Resultados anuales 2025 de Tesla'}},
+  {t:'🚦 ¿Coca-Cola está en forma?',strat:'semaforo',hook:'*Coca-Cola* vende en todo el mundo, pero…',
+   d:{tSemEmp:'Coca-Cola',tSemPreg:'está en forma',tSemColor:'amarillo',tSemLab:'CRECE DESPACIO',tSemMot:'Sus ventas subieron solo un 2% en 2025',tFuente:'Resultados anuales 2025 de Coca-Cola'}},
+  {t:'🚦 ¿Nvidia está en forma?',strat:'semaforo',hook:'Lo de *Nvidia* no es normal',
+   d:{tSemEmp:'Nvidia',tSemPreg:'está en forma',tSemColor:'verde',tSemLab:'VENTAS +65%',tSemMot:'Facturó 215.900 M$ en su año fiscal 2026',tFuente:'Informe anual de Nvidia, año fiscal 2026'}},
+  {t:'🚦 ¿BYD está en forma?',strat:'semaforo',hook:'*BYD* vende más que nunca… pero ojo',
+   d:{tSemEmp:'BYD',tSemPreg:'está en forma',tSemColor:'amarillo',tSemLab:'VENDE MÁS, GANA MENOS',tSemMot:'Ventas +3,5%, pero beneficio -19% en 2025',tFuente:'Resultados anuales 2025 de BYD'}}
+];
+function setField(k,val){var el=document.querySelector('[data-v="'+k+'"]');if(el){el.value=val;store('v_'+k,val);}}
+function renderEjemplos(){
+  var box=$('ejemplos'); box.innerHTML='';
+  EJEMPLOS.forEach(function(ex){
+    var b=document.createElement('button'); b.type='button'; b.className='nbtn'; b.textContent=ex.t;
+    b.onclick=function(){
+      if(recorder)return;
+      if(S.nicho!=='labolsabro'&&S.nicho!=='finanzas')pickNicho('labolsabro');
+      setField('tFuente',''); setField('tSemLab','');
+      Object.keys(ex.d).forEach(function(k){setField(k,ex.d[k]);});
+      S.strat=ex.strat; renderStrats(); build();
+      if(S.scenes[0])S.scenes[0].text=ex.hook;
+      renderScenes(); refresh(); seek(0);
+      $('cv').scrollIntoView({behavior:'smooth',block:'center'}); play();
+    };
+    box.appendChild(b);
+  });
+}
+
 /* ---------------- Textos virales ---------------- */
 function genIdeas(){
   var v=vars(), b=benefits(v), box=$('ideas'); box.innerHTML='';
@@ -1718,7 +1787,7 @@ if(st){
 }
 $('tono').value=S.tono;
 S.genMusic=load('genMusic')||'auto'; renderMusic();
-renderNichos(); renderObjetivos(); renderFormatos(); renderCalidades(); renderHooks(); renderStrats(); renderTactics(); renderCtas();
+renderEjemplos(); renderNichos(); renderObjetivos(); renderFormatos(); renderCalidades(); renderHooks(); renderStrats(); renderTactics(); renderCtas();
 setSize(); build();
 })();
 </script>
