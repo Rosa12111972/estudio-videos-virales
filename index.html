@@ -160,7 +160,7 @@ aside{position:sticky;top:16px;}
 
   <section class="card">
     <h2><span class="n">⭐</span>Ejemplos con datos reales</h2>
-    <p class="sub">Pulsa uno y se monta el vídeo con datos reales y su fuente. Son los resultados de <b>2025, el último año completo</b> (publicados a principios de 2026); los de todo 2026 saldrán a principios de 2027. Luego dale a «Exportar vídeo», o cámbialo a tu gusto. Las cifras están redondeadas.</p>
+    <p class="sub">Pulsa uno y se monta el vídeo con datos reales y su fuente. Los normales usan <b>2025, el último año completo</b>; los marcados con 🆕 usan los <b>datos más recientes de 2026</b> (semestre, trimestre o año fiscal, según se indica en el vídeo). Luego dale a «Exportar vídeo», o cámbialo a tu gusto. Las cifras están redondeadas.</p>
     <div class="ngrid" id="ejemplos" style="max-height:none"></div>
   </section>
 
@@ -1684,7 +1684,20 @@ var EJEMPLOS=[
   {t:'🚦 ¿Nvidia está en forma?',strat:'semaforo',hook:'Lo de *Nvidia* no es normal',
    d:{tSemEmp:'Nvidia',tSemPreg:'está en forma',tSemColor:'verde',tSemLab:'VENTAS +65%',tSemMot:'Facturó 215.900 M$ en su año fiscal 2026',tFuente:'Informe anual de Nvidia, año fiscal 2026'}},
   {t:'🚦 ¿BYD está en forma?',strat:'semaforo',hook:'*BYD* vende más que nunca… pero ojo',
-   d:{tSemEmp:'BYD',tSemPreg:'está en forma',tSemColor:'amarillo',tSemLab:'VENDE MÁS, GANA MENOS',tSemMot:'Ventas +3,5%, pero beneficio -19% en 2025',tFuente:'Resultados anuales 2025 de BYD'}}
+   d:{tSemEmp:'BYD',tSemPreg:'está en forma',tSemColor:'amarillo',tSemLab:'VENDE MÁS, GANA MENOS',tSemMot:'Ventas +3,5%, pero beneficio -19% en 2025',tFuente:'Resultados anuales 2025 de BYD'}},
+  // Datos de 2026 (primer semestre o año fiscal 2026)
+  {t:'🆕 2026 · Santander vs BBVA',strat:'batalla',hook:'*Santander* contra *BBVA* en 2026: ¿quién va ganando?',
+   d:{tA:'Santander',tB:'BBVA',tMet:'Beneficio | 7.328 M€ | 6.051 M€ | mayor\nCrecimiento del beneficio | 15% | 11,1% | mayor\nCrecimiento de ingresos | 6% | 17,3% | mayor',tFuente:'Resultados del 1.er semestre de 2026 (enero-junio). Santander: beneficio ordinario'}},
+  {t:'🆕 2026 · Microsoft 2025 vs 2026',strat:'batalla',hook:'*Microsoft* en 2025 contra *Microsoft* en 2026',
+   d:{tA:'2025',tB:'2026',tMet:'Ventas | 281.700 M$ | 331.800 M$ | mayor\nBeneficio | 101.800 M$ | 133.700 M$ | mayor\nCrecimiento de ventas | 15% | 18% | mayor',tFuente:'Informes anuales de Microsoft, años fiscales 2025 y 2026 (hasta junio de 2026)'}},
+  {t:'🆕 2026 · ¿Microsoft está en forma?',strat:'semaforo',hook:'*Microsoft* no para de crecer, bro',
+   d:{tSemEmp:'Microsoft',tSemPreg:'está en forma',tSemColor:'verde',tSemLab:'BENEFICIO +31%',tSemMot:'Facturó 331.800 M$ en su año fiscal 2026 (+18%)',tFuente:'Informe anual de Microsoft, año fiscal 2026 (julio 2025-junio 2026)'}},
+  {t:'🆕 2026 · ¿Inditex está en forma?',strat:'semaforo',hook:'*Zara* sigue rompiendo récords',
+   d:{tSemEmp:'Inditex',tSemPreg:'está en forma',tSemColor:'verde',tSemLab:'BENEFICIO RÉCORD',tSemMot:'Ganó 2.980 M€ de febrero a julio de 2026 (+6,8%)',tFuente:'Resultados del 1.er semestre de 2026 de Inditex'}},
+  {t:'🆕 2026 · ¿Tesla está en forma?',strat:'semaforo',hook:'*Tesla* vuelve a vender, pero ojo',
+   d:{tSemEmp:'Tesla',tSemPreg:'está en forma',tSemColor:'amarillo',tSemLab:'VUELVE A CRECER',tSemMot:'Ventas +26% en el 2.º trimestre de 2026, beneficio -5%',tFuente:'Resultados del 2.º trimestre de 2026 de Tesla'}},
+  {t:'🆕 2026 · ¿Nvidia está en forma?',strat:'semaforo',hook:'*Nvidia* lo ha vuelto a hacer, literal',
+   d:{tSemEmp:'Nvidia',tSemPreg:'está en forma',tSemColor:'verde',tSemLab:'VENTAS +106%',tSemMot:'96.200 M$ en un solo trimestre (mayo-julio 2026)',tFuente:'Resultados del 2.º trimestre del año fiscal 2027 de Nvidia'}}
 ];
 function setField(k,val){var el=document.querySelector('[data-v="'+k+'"]');if(el){el.value=val;store('v_'+k,val);}}
 function renderEjemplos(){
