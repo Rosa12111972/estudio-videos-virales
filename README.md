@@ -3,6 +3,7 @@
 App gratuita para crear vídeos, imágenes y textos virales para Reels, TikTok y YouTube Shorts, para cualquier nicho. Viene preparada para **laBolsabro** (educación financiera).
 
 - **Más de 40 nichos** con buscador, y la opción de escribir el tuyo propio.
+- **Todo gratis:** sin claves ni cuentas de pago. Voz grabada con teleprompter o subida desde CapCut.
 - **Gancho en los 3 primeros segundos** y re-ganchos cada 25 s en vídeos largos.
 - **Plantillas animadas sin grabarte:** Batalla VS estilo videojuego, Semáforo (¿cara o barata?) y Máquina del tiempo, con fondo de velas de bolsa.
 - Estructuras de guion: AIDA, problema-solución, top 3, antes/después, oferta limitada…

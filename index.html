@@ -326,50 +326,13 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
       <div class="prompt-inline" id="micPrompt" hidden><div class="now" id="mNow"></div><div class="next" id="mNext"></div></div>
       <label class="f" for="voiceFile" style="margin-top:10px">O sube una voz (audio)</label>
       <input type="file" id="voiceFile" accept="audio/*,video/*">
+      <div class="row-actions"><button class="btn ghost sm" id="vDel" type="button" hidden>Quitar voz</button></div>
       <div class="hint" id="micStatus" aria-live="polite" style="margin-top:8px"></div>
     </div>
-    <details class="tpl" style="margin-top:14px">
-    <summary>💳 Opciones con Gemini (de pago en España y el resto de Europa)</summary>
-    <div class="idea ai" style="margin-top:14px">
-      <div class="lab">🤖 Crear persona con IA (Gemini)</div>
-      <p class="hint" style="margin:4px 0 10px">Según las condiciones de Google, en España y el resto de Europa la API de Gemini solo se puede usar de pago. Si no quieres pagar, no uses este bloque: todo lo demás de la app es gratis. Si no activas la facturación, Google no te puede cobrar nada.</p>
-      <div class="grid2">
-        <div><label class="f" for="gKey">Tu clave de Gemini (API key)</label><input type="password" id="gKey" autocomplete="off" placeholder="Pégala aquí, no en ningún chat">
-          <p class="hint">Consíguela en <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Solo se envía a Google.</p>
-          <label class="hint" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="gRemember"> Recordarla en este navegador</label></div>
-        <div><label class="f" for="gModel">Calidad</label><select id="gModel">
-          <option value="veo-3.1-fast-generate-preview">Rápido y más barato (Veo 3.1 Fast)</option>
-          <option value="veo-3.1-generate-preview">Máxima calidad (Veo 3.1)</option></select></div>
-      </div>
-      <label class="f" for="gPersona" style="margin-top:10px">¿Cómo es la persona?</label>
-      <textarea id="gPersona" rows="2">Chico joven de unos 22 años, pelo corto oscuro, sudadera negra, muy expresivo, gesticula con las manos</textarea>
-      <label class="f" for="gFondo" style="margin-top:10px">Fondo</label>
-      <input type="text" id="gFondo" value="Pantallas con gráficos de bolsa en verde detrás, luz de estudio">
-      <label class="f" for="gFrase" style="margin-top:10px">Lo que dice (máx. ~20 palabras, unos 8 s)</label>
-      <textarea id="gFrase" rows="2"></textarea>
-      <div class="row-actions">
-        <button class="btn ghost sm" id="gUseHook" type="button">Usar el gancho del guion</button>
-        <button class="btn ghost" id="gVideo" type="button">🎬 Crear vídeo de la persona (de pago)</button>
-        <button class="btn ghost" id="gImage" type="button">🖼 Crear foto de la persona</button>
-      </div>
-      <div class="hint" id="gStatus" aria-live="polite" style="margin-top:8px"></div>
-    </div>
-    <div class="idea ai" style="margin-top:14px">
-      <div class="lab">🗣 Voz en off con IA (Gemini)</div>
-      <p class="hint" style="margin:4px 0 10px">Una voz lee el texto de cada escena con el tono elegido (cercano o profesional). Si ya hay una persona hablando, la voz empieza cuando termina su vídeo. Usa la misma clave de Gemini de arriba.</p>
-      <div class="grid2">
-        <div><label class="f" for="vGender">Voz</label><select id="vGender">
-          <option value="auto">Automática según el contexto</option><option value="m">Masculina</option><option value="f">Femenina</option></select></div>
-        <div style="align-self:end"><button class="btn" id="vMake" type="button">🗣 Crear voz en off</button>
-          <button class="btn ghost sm" id="vDel" type="button" hidden>Quitar voz</button></div>
-      </div>
-      <div class="hint" id="vStatus" aria-live="polite" style="margin-top:8px"></div>
-    </div>
-    </details>
     <div class="idea" style="margin-top:14px">
-      <div class="lab">Persona creada con IA en otra herramienta</div>
-      <div class="txt" style="font-size:13.5px">1. Copia el guion con el botón de abajo. 2. Pégalo en una herramienta de avatares con IA (por ejemplo, <a href="https://www.capcut.com/" target="_blank" rel="noopener">CapCut</a> o <a href="https://www.heygen.com/" target="_blank" rel="noopener">HeyGen</a>; suelen tener una versión gratis con límites). 3. Elige una persona joven, formato vertical, y descarga el vídeo. 4. Súbelo aquí arriba y pulsa «Ajustar el guion a la duración de mi vídeo».</div>
-      <div class="row-actions"><button class="btn sm" id="copyScript" type="button">📋 Copiar guion para el avatar de IA</button></div>
+      <div class="lab">🧑 Persona o voz con IA gratis (CapCut)</div>
+      <div class="txt" style="font-size:13.5px">1. Copia el guion con el botón de abajo. 2. Abre <a href="https://www.capcut.com/" target="_blank" rel="noopener">CapCut</a> (app o web, gratis con límites) y usa «Avatares» para una persona que habla, o «Texto a voz» para solo la voz (hay voces de chico y de chica). 3. Descarga el resultado en formato vertical. 4. Súbelo aquí: el vídeo en «Sube un vídeo de una persona hablando» o el audio en «Sube una voz».</div>
+      <div class="row-actions"><a class="btn sm" id="openCapcut" href="https://www.capcut.com/" target="_blank" rel="noopener">📋 Copiar guion y abrir CapCut</a><button class="btn ghost sm" id="copyScript" type="button">📋 Solo copiar guion</button></div>
     </div>
     <p class="hint">También puedes usar vídeos gratis de personas de <a href="https://www.pexels.com/es-es/buscar/videos/persona%20hablando/" target="_blank" rel="noopener">Pexels</a> o <a href="https://mixkit.co/free-stock-video/people/" target="_blank" rel="noopener">Mixkit</a>.</p>
     <div class="row-actions" id="presBar" hidden>
@@ -773,10 +736,8 @@ function build(){
   });
   scenes.push({role:'cta',text:cta,dur:round1(ctaDur)});
   scenes.forEach(function(s,i){s.media=S.media.length?(i%S.media.length):-1;});
-  if(S.voice&&S.voice.voice.g!=='own'){voiceStop();S.voice=null;$('vDel').hidden=true;$('vStatus').textContent='El guion ha cambiado: vuelve a crear la voz en off.';}
   S.scenes=scenes;
   renderScenes(); refresh(); seek(0);
-  if($('gFrase')&&!$('gFrase').value)$('gFrase').value=hookPhrase();
 }
 function round1(x){return Math.round(x*10)/10;}
 var REHOOKS_JOVEN=['Espera, que *ahora viene lo bueno* 👀','No te vayas, bro, *que esto importa*','Y aquí viene *el truco*, bro','Atento a *lo siguiente* 👇','Literal, *casi nadie* sabe esto…','Y lo más sorprendente…'];
@@ -944,52 +905,6 @@ function spokenLine(s){
   })(s);
 }
 
-/* ---------------- Voz en off (Gemini TTS) ---------------- */
-var VOICES={cercano:{m:'Puck',f:'Leda'},pro:{m:'Charon',f:'Kore'}};
-function autoGender(){
-  var d=($('gPersona').value||'').toLowerCase();
-  if(/\b(chica|mujer|señora|joven mujer|ella)\b/.test(d))return 'f';
-  if(/\b(chico|hombre|señor|joven hombre|él)\b/.test(d))return 'm';
-  return ['belleza','moda','yoga','flores','nutri','psico','eventos','joyas'].indexOf(nicho().id)>-1?'f':'m';
-}
-function voiceName(){var g=$('vGender').value;if(g==='auto')g=autoGender();return {g:g,name:VOICES[J()?'cercano':'pro'][g]};}
-function pcmToBuffer(A,b64,rate){
-  var bin=atob(b64), n=bin.length>>1, buf=A.createBuffer(1,n,rate), d=buf.getChannelData(0);
-  for(var i=0;i<n;i++){var lo=bin.charCodeAt(2*i),hi=bin.charCodeAt(2*i+1),v=(hi<<8)|lo;if(v>=32768)v-=65536;d[i]=v/32768;}
-  return buf;
-}
-function vStatus(t){$('vStatus').textContent=t;}
-$('vMake').onclick=function(){
-  var key=gKey(), btn=this; if(!key){vStatus('Pega primero tu clave de Gemini (en el bloque de arriba).');return;}
-  var A=audioGraph(); if(!A){vStatus('Tu navegador no permite audio aquí.');return;}
-  var pres=S.presenter&&S.presenter.el.duration||0, vn=voiceName(), style=J()?'con tono joven, cercano y con energía, como un creador de TikTok':'con tono profesional, claro y de confianza';
-  var jobs=[], t=0;
-  S.scenes.forEach(function(s,i){var line=spokenLine(s);if(t+0.2>=pres&&line)jobs.push({i:i,text:line});t+=s.dur;});
-  if(!jobs.length){vStatus('No hay escenas para narrar después del vídeo de la persona.');return;}
-  btn.disabled=true; var clips=[], k=0;
-  (function next(){
-    if(k>=jobs.length){
-      S.voice={clips:clips,voice:vn}; $('vDel').hidden=false;
-      // Si una frase dura más que su escena, la escena se alarga para que no se corte
-      clips.forEach(function(c){var sc=S.scenes[c.i];if(sc&&c.buf.duration+0.35>sc.dur)sc.dur=round1(c.buf.duration+0.35);});
-      renderScenes(); refresh(); seek(0); btn.disabled=false;
-      vStatus('✅ Voz '+(vn.g==='m'?'masculina':'femenina')+' añadida a '+clips.length+' escenas. Dale a Reproducir.');
-      return;
-    }
-    var j=jobs[k]; vStatus('Creando la voz… escena '+(k+1)+' de '+jobs.length);
-    fetch(GAPI+'models/gemini-2.5-flash-preview-tts:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
-      body:JSON.stringify({contents:[{parts:[{text:'Lee en español de España, '+style+': '+j.text}]}],
-        generationConfig:{responseModalities:['AUDIO'],speechConfig:{voiceConfig:{prebuiltVoiceConfig:{voiceName:vn.name}}}}})})
-    .then(function(r){return r.ok?r.json():gFail(r);})
-    .then(function(res){
-      var part=((res.candidates||[])[0]||{}).content; part=part&&part.parts&&part.parts.filter(function(p){return p.inlineData;})[0];
-      if(!part)throw new Error('Gemini no devolvió audio.');
-      var rate=+((part.inlineData.mimeType||'').match(/rate=(\d+)/)||[0,24000])[1];
-      clips.push({i:j.i,buf:pcmToBuffer(A,part.inlineData.data,rate)}); k++; next();
-    })
-    .catch(function(e){vStatus('❌ '+e.message);btn.disabled=false;});
-  })();
-};
 // Voz gratis: micrófono con teleprompter o archivo de audio
 function setVoiceBlob(blob,label){
   var A=audioGraph(); if(!A){$('micStatus').textContent='Tu navegador no permite audio aquí.';return;}
@@ -1024,7 +939,7 @@ $('micRec').onclick=function(){
   }).catch(function(){$('micStatus').textContent='No se pudo abrir el micrófono. Revisa los permisos del navegador.';});
 };
 $('micStop').onclick=function(){if(mic.rec&&mic.rec.state!=='inactive')mic.rec.stop();};
-$('vDel').onclick=function(){voiceStop();S.voice=null;this.hidden=true;vStatus('Voz quitada.');refresh();};
+$('vDel').onclick=function(){voiceStop();S.voice=null;this.hidden=true;$('micStatus').textContent='Voz quitada.';refresh();};
 // Reproduce las frases en su momento, desde la posición actual
 function voiceStart(){
   if(!S.voice||!S.actx)return; var A=S.actx; S.vSrc=[];
@@ -1037,101 +952,13 @@ function voiceStart(){
   });
 }
 function voiceStop(){(S.vSrc||[]).forEach(function(x){try{x.stop();}catch(e){}});S.vSrc=[];if(S.vGain){S.vGain.disconnect();S.vGain=null;}}
+$('openCapcut').onclick=function(){var txt=spokenScript();if(navigator.clipboard)navigator.clipboard.writeText(txt).catch(function(){});this.textContent='✅ Guion copiado: pégalo en CapCut';};
 $('copyScript').onclick=function(){
   var btn=this, txt=spokenScript();
-  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){btn.textContent='¡Guion copiado!';setTimeout(function(){btn.textContent='📋 Copiar guion para el avatar de IA';},1800);})
+  (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(function(){btn.textContent='¡Guion copiado!';setTimeout(function(){btn.textContent='📋 Solo copiar guion';},1800);})
   .catch(function(){prompt('Copia el guion:',txt);});
 };
 $('camStop').onclick=function(){if(cam.rec&&cam.rec.state!=='inactive')cam.rec.stop();};
-
-/* ---------------- Persona con IA (Gemini API) ---------------- */
-var GAPI='https://generativelanguage.googleapis.com/v1beta/';
-try{var _k=localStorage.getItem('vpromo_gkey');if(_k){$('gKey').value=_k;$('gRemember').checked=true;}}catch(e){}
-function gKey(){
-  var k=$('gKey').value.trim();
-  try{if($('gRemember').checked)localStorage.setItem('vpromo_gkey',k);else localStorage.removeItem('vpromo_gkey');}catch(e){}
-  return k;
-}
-function gStatus(t){$('gStatus').textContent=t;}
-function hookPhrase(){
-  var words=S.scenes.slice(0,3).filter(function(s){return !s.kind;}).map(function(s){return plain(s.text);}).join(' ').split(/\s+/);
-  return words.slice(0,20).join(' ').replace(/[👇👀🔥🚀📩🔗💸]/gu,'').trim();
-}
-$('gUseHook').onclick=function(){$('gFrase').value=hookPhrase();};
-function gPrompt(kind){
-  var frase=$('gFrase').value.trim()||hookPhrase();
-  var base='Vertical 9:16 '+(kind==='video'?'video':'photo')+', realistic selfie-style talking head for TikTok/Reels. '+
-    'Person: '+$('gPersona').value.trim()+'. Background: '+$('gFondo').value.trim()+'. Looking directly at the camera, natural skin, sharp focus, cinematic lighting. No text, no subtitles, no logos on screen.';
-  if(kind==='video')base+=' The person speaks in Spanish from Spain, young and friendly tone, energetic, and says exactly: "'+frase+'"';
-  else base+=' Mouth slightly open as if talking, energetic expression.';
-  return base;
-}
-function gFail(r){
-  return r.json().catch(function(){return {};}).then(function(j){
-    var m=(j.error&&j.error.message)||('Error '+r.status);
-    if(r.status===400&&/API key/i.test(m))m='La clave no es válida. Revísala en aistudio.google.com/apikey.';
-    else if(r.status===403||(r.status===400&&/billing|paid|free tier/i.test(m)))m='Esta función no entra en el plan gratis de Google (necesita activar la facturación). No se te ha cobrado nada.';
-    else if(r.status===429)m='Has llegado al límite gratis de hoy. Vuelve a intentarlo mañana. No se te ha cobrado nada.';
-    throw new Error(m);
-  });
-}
-$('gVideo').onclick=function(){
-  var key=gKey(), btn=this; if(!key){gStatus('Pega primero tu clave de Gemini.');return;}
-  if(!confirm('El vídeo de la persona (Veo) es de pago: solo funciona si tienes la facturación activada en Google, y entonces se cobra. Si no la tienes, saldrá un aviso y no se cobra nada. ¿Continuar?'))return;
-  btn.disabled=true; gStatus('Enviando a Gemini…');
-  var model=$('gModel').value, t0=Date.now();
-  fetch(GAPI+'models/'+model+':predictLongRunning',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},
-    body:JSON.stringify({instances:[{prompt:gPrompt('video')}],parameters:{aspectRatio:'9:16'}})})
-  .then(function(r){return r.ok?r.json():gFail(r);})
-  .then(function(op){
-    return new Promise(function(res,rej){
-      (function poll(){
-        var secs=Math.round((Date.now()-t0)/1000);
-        gStatus('Gemini está creando a la persona… '+secs+' s (suele tardar entre 1 y 4 minutos)');
-        if(secs>600){rej(new Error('Ha tardado demasiado. Inténtalo de nuevo.'));return;}
-        fetch(GAPI+op.name,{headers:{'x-goog-api-key':key}}).then(function(r){return r.ok?r.json():gFail(r);}).then(function(o){
-          if(!o.done){setTimeout(poll,10000);return;}
-          if(o.error){rej(new Error(o.error.message));return;}
-          var g=o.response&&o.response.generateVideoResponse, smp=g&&g.generatedSamples&&g.generatedSamples[0];
-          if(!smp){rej(new Error((g&&g.raiFilteredReasons&&g.raiFilteredReasons.join(' '))||'Gemini no devolvió vídeo. Cambia la descripción e inténtalo otra vez.'));return;}
-          res(smp.video.uri);
-        }).catch(rej);
-      })();
-    });
-  })
-  .then(function(uri){
-    gStatus('Descargando el vídeo…');
-    var url=uri+(uri.indexOf('?')>-1?'&':'?')+'key='+encodeURIComponent(key);
-    return fetch(url).then(function(r){if(!r.ok)throw new Error('download');return r.blob();})
-      .then(function(b){setPresenter(URL.createObjectURL(b));gStatus('✅ ¡Persona creada y añadida al vídeo! Dale a Reproducir.');})
-      .catch(function(){
-        gStatus('');
-        var a=document.createElement('a'); a.href=url; a.target='_blank'; a.rel='noopener'; a.textContent='⬇ Descarga aquí el vídeo de la persona';
-        $('gStatus').append('✅ Vídeo creado. Tu navegador no deja añadirlo solo: ',a,' y súbelo en «O sube un vídeo de una persona hablando».');
-      });
-  })
-  .catch(function(e){gStatus('❌ '+e.message);})
-  .then(function(){btn.disabled=false;});
-};
-$('gImage').onclick=function(){
-  var key=gKey(), btn=this; if(!key){gStatus('Pega primero tu clave de Gemini.');return;}
-  btn.disabled=true; gStatus('Creando la foto…');
-  var body=function(cfg){return JSON.stringify({contents:[{parts:[{text:gPrompt('image')}]}],generationConfig:cfg});};
-  var call=function(cfg){return fetch(GAPI+'models/gemini-2.5-flash-image:generateContent',{method:'POST',headers:{'Content-Type':'application/json','x-goog-api-key':key},body:body(cfg)});};
-  call({responseModalities:['IMAGE'],imageConfig:{aspectRatio:'9:16'}})
-  .then(function(r){return r.status===400?call({responseModalities:['IMAGE']}):r;})
-  .then(function(r){return r.ok?r.json():gFail(r);})
-  .then(function(j){
-    var parts=(j.candidates&&j.candidates[0]&&j.candidates[0].content&&j.candidates[0].content.parts)||[];
-    var img=parts.filter(function(p){return p.inlineData;})[0];
-    if(!img)throw new Error('Gemini no devolvió imagen. Cambia la descripción e inténtalo otra vez.');
-    var bin=atob(img.inlineData.data), arr=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);
-    var f=new File([arr],'persona-ia.png',{type:img.inlineData.mimeType||'image/png'});
-    addFiles([f]); gStatus('✅ Foto creada y añadida a tus fotos (paso 4). Se usa como fondo de las escenas.');
-  })
-  .catch(function(e){gStatus('❌ '+e.message);})
-  .then(function(){btn.disabled=false;});
-};
 
 /* ---------------- Audio: mezcla, música, voz y efectos ---------------- */
 function audioGraph(){
@@ -1873,6 +1700,8 @@ $('randHook').onclick=function(){
 };
 
 /* ---------------- Inicio ---------------- */
+// Borra la clave de Gemini que pudiera quedar guardada de versiones anteriores
+try{localStorage.removeItem('vpromo_gkey');}catch(e){}
 var st=load('state');
 buildHooks(nicho());
 if(st){
