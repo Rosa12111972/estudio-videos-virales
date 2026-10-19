@@ -51,6 +51,18 @@ textarea{resize:vertical;min-height:62px;}
 input:focus,select:focus,textarea:focus{outline:2px solid var(--ev-accent);outline-offset:-1px;}
 .hint{font-size:12px;color:var(--ev-gray);margin-top:3px;}
 .chips{display:flex;flex-wrap:wrap;gap:8px;}
+details.tpl{margin-top:14px;border:1px solid var(--ev-border);border-radius:9px;padding:12px 14px;}
+details.tpl summary{cursor:pointer;font-weight:600;color:var(--ev-black);font-size:14px;}
+.idea{border:1px solid var(--ev-border);border-radius:9px;padding:12px;margin-top:10px;font-size:13.5px;}
+.idea .lab{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;color:var(--ev-accent);margin-top:6px;}
+.idea .txt{white-space:pre-wrap;color:var(--ev-black);}
+.stage .btn.ghost{background:#1f1f1f;color:#fff;border-color:#333;}
+.ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px;max-height:300px;overflow:auto;padding:2px;margin-top:10px;}
+.nbtn{border:1px solid var(--ev-border);background:#fff;border-radius:9px;padding:9px 11px;font-size:13.5px;cursor:pointer;text-align:left;}
+.nbtn:hover{border-color:var(--ev-accent);}
+.nbtn.on{background:var(--ev-accent);border-color:var(--ev-accent);color:#fff;}
+.nrow{display:flex;gap:8px;margin-top:10px;}
+.nrow input{flex:1;min-width:0;}
 .chip{border:1px solid var(--ev-border);background:#fff;border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer;}
 .chip.on{background:var(--ev-accent);border-color:var(--ev-accent);color:#fff;}
 .btn{border:0;border-radius:8px;padding:10px 16px;font-weight:600;font-size:14px;cursor:pointer;background:var(--ev-accent);color:#fff;display:inline-flex;align-items:center;gap:8px;justify-content:center;}
@@ -123,7 +135,7 @@ aside{position:sticky;top:16px;}
   <div class="in">
     <div>
       <h1>Estudio de <span>Vídeos Virales</span></h1>
-      <p>Gancho + estrategia + tus fotos = vídeo listo para publicar, para cualquier negocio</p>
+      <p>Para cualquier nicho: restaurantes, tiendas, clínicas, coaches, artistas, inmobiliarias… y el tuyo</p>
     </div>
     <p>Gratis · sin registro · hasta 4K · móvil y ordenador · tus archivos no salen de tu dispositivo</p>
   </div>
@@ -142,8 +154,14 @@ aside{position:sticky;top:16px;}
     <h2><span class="n">1</span>Objetivo y datos del vídeo</h2>
     <p class="sub">Elige tu nicho y qué quieres conseguir. Los datos se rellenan con un ejemplo de tu sector: cámbialos por los tuyos.</p>
 
-    <label class="f" for="nicho">Nicho o sector</label>
-    <select id="nicho" style="margin-bottom:14px"></select>
+    <label class="f" for="nichoBuscar">Tu nicho o sector</label>
+    <input type="text" id="nichoBuscar" placeholder="Busca tu sector: dentista, moda, bar, coach…">
+    <div class="ngrid" id="nichos"></div>
+    <div class="nrow">
+      <input type="text" id="nichoPropio" placeholder="¿No está el tuyo? Escríbelo (ej.: escuela de surf)" aria-label="Escribe tu propio nicho">
+      <button class="btn sm" id="nichoUsar" type="button">Usar mi nicho</button>
+    </div>
+    <div style="height:14px"></div>
 
     <label class="f">Objetivo</label>
     <div class="chips" id="objetivos"></div>
@@ -159,27 +177,27 @@ aside{position:sticky;top:16px;}
 
     <div style="height:16px"></div>
     <div class="grid2">
-      <div><label class="f" for="v-zona">Ciudad / zona</label><input type="text" id="v-zona" data-v="zona" value="Marbella"></div>
-      <div><label class="f" for="v-producto">Producto o servicio</label><input type="text" id="v-producto" data-v="producto" value="villa con vistas al mar"></div>
-      <div><label class="f" for="v-precio">Precio</label><input type="text" id="v-precio" data-v="precio" value="1.250.000 €"></div>
-      <div><label class="f" for="v-dato">Dato llamativo</label><input type="text" id="v-dato" data-v="dato" value="Los precios han subido un 12% este año"></div>
-      <div><label class="f" for="v-publico">Público</label><input type="text" id="v-publico" data-v="publico" value="familias que buscan su casa ideal"></div>
+      <div><label class="f" for="v-zona">Ciudad / zona</label><input type="text" id="v-zona" data-v="zona" value="tu ciudad"></div>
+      <div><label class="f" for="v-producto">Producto o servicio</label><input type="text" id="v-producto" data-v="producto" value="tu producto o servicio"></div>
+      <div><label class="f" for="v-precio">Precio</label><input type="text" id="v-precio" data-v="precio" value="tu precio"></div>
+      <div><label class="f" for="v-dato">Dato llamativo</label><input type="text" id="v-dato" data-v="dato" value="Tu dato más llamativo"></div>
+      <div><label class="f" for="v-publico">Público</label><input type="text" id="v-publico" data-v="publico" value="tu cliente ideal"></div>
       <div><label class="f" for="v-marca">Tu nombre / marca</label><input type="text" id="v-marca" data-v="marca" value="Tu marca"></div>
       <div><label class="f" for="v-contacto">Contacto o @usuario</label><input type="text" id="v-contacto" data-v="contacto" value="@tuusuario"></div>
       <div><label class="f" for="v-palabra">Palabra clave para comentarios</label><input type="text" id="v-palabra" data-v="palabra" value="INFO"></div>
     </div>
     <div style="height:12px"></div>
     <label class="f" for="v-beneficios">3 puntos fuertes (uno por línea)</label>
-    <textarea id="v-beneficios" data-v="beneficios" rows="3">Piscina infinita frente al mar
-4 dormitorios con baño en suite
-A 5 minutos de la playa y de Puerto Banús</textarea>
+    <textarea id="v-beneficios" data-v="beneficios" rows="3">Beneficio 1
+Beneficio 2
+Beneficio 3</textarea>
     <p class="hint">Consejo: usa *asteriscos* en cualquier texto para resaltar palabras en dorado dentro del vídeo.</p>
   </section>
 
   <!-- 2. Gancho -->
   <section class="card">
     <h2><span class="n">2</span>Elige el gancho (los 2 primeros segundos)</h2>
-    <p class="sub">El 70 % de la gente decide en 1-2 segundos si sigue mirando. El gancho es la primera escena del vídeo.</p>
+    <p class="sub"><b>Regla de los 3 segundos:</b> en los 3 primeros segundos la gente decide si se queda. El gancho es la primera escena y nunca dura más de 3 s. En vídeos largos se añaden re-ganchos cada 25 s para que no se vayan.</p>
     <div class="chips" id="hookCats" style="margin-bottom:12px"></div>
     <div class="hooks" id="hooks"></div>
     <div class="row-actions">
@@ -193,6 +211,28 @@ A 5 minutos de la playa y de Puerto Banús</textarea>
     <p class="sub">La estructura decide si la gente se queda hasta el final (retención) y si actúa (comentar, guardar, escribir).</p>
     <div class="strats" id="strats"></div>
     <div class="toggles" id="tactics"></div>
+    <details class="tpl" id="tplBox">
+      <summary>Datos de las plantillas animadas: Batalla VS, Semáforo y Máquina del tiempo</summary>
+      <p class="hint" style="margin:8px 0 12px">⚠️ Vienen con datos de ejemplo. Antes de publicar, pon siempre datos reales y actuales.</p>
+      <div class="grid2">
+        <div><label class="f" for="t-a">Batalla · opción A</label><input type="text" id="t-a" data-v="tA" value="Apple"></div>
+        <div><label class="f" for="t-b">Batalla · opción B</label><input type="text" id="t-b" data-v="tB" value="Microsoft"></div>
+      </div>
+      <label class="f" for="t-met" style="margin-top:10px">Rondas de la batalla (una por línea: dato | valor A | valor B | gana el mayor o el menor)</label>
+      <textarea id="t-met" data-v="tMet" rows="3">PER | 29 | 34 | menor
+Crecimiento de ventas | 5% | 15% | mayor
+Margen de beneficio | 24% | 36% | mayor</textarea>
+      <div class="grid2" style="margin-top:10px">
+        <div><label class="f" for="t-semEmp">Semáforo · empresa o producto</label><input type="text" id="t-semEmp" data-v="tSemEmp" value="Apple"></div>
+        <div><label class="f" for="t-semColor">Semáforo · veredicto</label>
+          <select id="t-semColor" data-v="tSemColor"><option value="verde">🟢 Barata</option><option value="amarillo" selected>🟡 Precio justo</option><option value="rojo">🔴 Cara</option></select></div>
+        <div style="grid-column:1/-1"><label class="f" for="t-semMot">Semáforo · motivo</label><input type="text" id="t-semMot" data-v="tSemMot" value="Cotiza cerca de su valor medio histórico"></div>
+        <div><label class="f" for="t-emp">Máquina del tiempo · en qué</label><input type="text" id="t-emp" data-v="tEmp" value="el S&amp;P 500"></div>
+        <div><label class="f" for="t-anios">Años</label><input type="text" id="t-anios" data-v="tAnios" value="10"></div>
+        <div><label class="f" for="t-ini">Cantidad inicial</label><input type="text" id="t-ini" data-v="tIni" value="1.000 €"></div>
+        <div><label class="f" for="t-fin">Valor final</label><input type="text" id="t-fin" data-v="tFin" value="2.500 €"></div>
+      </div>
+    </details>
     <div style="height:14px"></div>
     <div class="grid2">
       <div>
@@ -205,6 +245,7 @@ A 5 minutos de la playa y de Puerto Banús</textarea>
           <option value="10">10 s · máxima retención</option>
           <option value="20" selected>20 s · equilibrio</option>
           <option value="30">30 s · más información</option>
+          <option value="180">3 min · con re-ganchos cada 25 s</option>
           <option value="custom">Ilimitada · elige los segundos</option>
         </select>
         <div id="durCustomBox" style="display:none;margin-top:8px">
@@ -264,8 +305,14 @@ A 5 minutos de la playa y de Puerto Banús</textarea>
       <li><b>Mejores horas:</b> a la hora de comer y por la noche (13:00–14:30 y 20:30–22:30), de martes a jueves; revisa las estadísticas de tu cuenta para afinar.</li>
       <li><b>Portada:</b> elige como portada el fotograma del gancho para que el perfil sea coherente.</li>
       <li><b>Audio en tendencia:</b> añádelo en Instagram/TikTok a volumen bajo; multiplica el alcance.</li>
+      <li><b>Carrusel:</b> con «Carrusel de imágenes» conviertes el mismo guion en un post de fotos para Instagram o LinkedIn.</li>
       <li><b>Reutiliza:</b> publica el mismo vídeo en Reels, TikTok y Shorts con un día de diferencia.</li>
     </ul>
+    <div style="height:18px"></div>
+    <h3 style="font-family:var(--font-serif);font-weight:400;color:var(--ev-black);font-size:17px">Textos virales para tus próximos posts</h3>
+    <p class="sub" style="margin:4px 0 0">6 ideas con gancho de 3 segundos, texto y llamada a la acción. Pulsa «Usar como gancho» para llevar una al vídeo.</p>
+    <div class="row-actions"><button class="btn sm" id="genIdeas" type="button">✨ Generar 6 textos virales</button></div>
+    <div id="ideas"></div>
   </section>
 </div>
 
@@ -277,6 +324,10 @@ A 5 minutos de la playa y de Puerto Banús</textarea>
     <div class="ctrl">
       <button class="btn gold" id="play" type="button">▶ Reproducir</button>
       <button class="btn" id="export" type="button">⬇ Exportar vídeo</button>
+    </div>
+    <div class="ctrl">
+      <button class="btn ghost" id="png" type="button">🖼 Portada (imagen)</button>
+      <button class="btn ghost" id="carrusel" type="button">🗂 Carrusel de imágenes</button>
     </div>
     <div class="rec" id="rec"><i></i>Grabando… mantén esta pestaña visible hasta que termine.</div>
     <div class="dl" id="dl"><a class="btn gold" id="dlink" download>Descargar vídeo</a></div>
@@ -317,6 +368,12 @@ var CALIDADES = [
 
 // Datos de ejemplo, hashtags y ganchos propios de cada nicho
 var NICHOS = [
+  {id:'labolsabro', label:'🪰 laBolsabro · aprender a invertir', producto:'laBolsabro', zona:'labolsabro.com', precio:'gratis', dato:'Analiza una empresa en 2 minutos', publico:'jóvenes de 18 a 25 años', palabra:'BOLSA', marca:'laBolsabro', contacto:'labolsabro.com',
+   ben:['Aprende a invertir sin arriesgar dinero real','El semáforo te dice si una empresa está cara o barata','Retos diarios con DuoInvest'],
+   tags:['labolsabro','educacionfinanciera','invertir','bolsa','ahorro','finanzaspersonales'],
+   hooks:['Tu dinero *se aburre*. Haz algo.','¿*Apple* o *Microsoft*? Te lo enseño en 10 segundos','¿Tienes 20 años y *0 € invertidos*? Mira esto','Cómo saber si una empresa está *cara o barata* en 2 minutos','Lo que el banco *no te enseña* sobre tu dinero','El error nº 1 de los jóvenes *con su dinero*'],
+   disclaimer:'Educación financiera, no asesoramiento. Invertir conlleva riesgo.',
+   theme:{bg:'candles',acc:'#22c55e',hl:'#facc15',ink:'#0a0a0a'}},
   {id:'inmo', label:'🏡 Inmobiliaria', producto:'villa con vistas al mar', zona:'Marbella', precio:'1.250.000 €', dato:'Los precios han subido un 12% este año', publico:'familias que buscan casa', palabra:'INFO', ben:['Piscina infinita frente al mar','4 dormitorios con baño en suite','A 5 minutos de la playa'], tags:['inmobiliaria','casasenventa','realestate','luxuryhomes'], hooks:['POV: abres la puerta de tu *nueva casa* en {zona}','No pongas tu casa en venta *sin ver esto*']},
   {id:'rest', label:'🍽️ Restaurante y comida', producto:'menú degustación', zona:'Madrid', precio:'45 €', dato:'El 80% de nuestros clientes repite', publico:'amantes de la buena comida', palabra:'MESA', ben:['Producto de temporada','Cocina abierta al público','Terraza con vistas'], tags:['restaurante','foodie','gastronomia','comida'], hooks:['Este plato se agota *cada noche* en {zona}','Probé el {producto} más comentado de {zona}…']},
   {id:'moda', label:'👗 Moda', producto:'nueva colección de verano', zona:'Barcelona', precio:'desde 29 €', dato:'Solo 50 unidades por modelo', publico:'personas que quieren vestir diferente', palabra:'LOOK', ben:['Tejidos sostenibles','Diseño propio','Envío en 24 h'], tags:['moda','outfit','tendencias','fashion'], hooks:['3 looks con *una sola prenda*','El error de estilo que *todos* cometemos']},
@@ -333,8 +390,31 @@ var NICHOS = [
   {id:'mascotas', label:'🐶 Mascotas', producto:'peluquería canina', zona:'Bilbao', precio:'desde 25 €', dato:'Tu mascota merece lo mejor', publico:'dueños de perros y gatos', palabra:'GUAU', ben:['Productos naturales','Trato cariñoso','Recogida a domicilio'], tags:['mascotas','perros','gatos','petlovers'], hooks:['Su cara al *verse después* 😍','Lo que tu perro *intenta decirte*']},
   {id:'hogar', label:'🛠️ Hogar y reformas', producto:'reforma de cocina', zona:'Zaragoza', precio:'desde 4.900 €', dato:'Reformada en solo 10 días', publico:'propietarios que quieren renovar', palabra:'REFORMA', ben:['Diseño 3D gratis','Materiales de calidad','Garantía de 5 años'], tags:['reformas','decoracion','hogar','interiorismo'], hooks:['De cocina vieja a *esto* en 10 días','Ideas para que tu casa parezca *más grande*']},
   {id:'musica', label:'🎵 Música y artistas', producto:'nuevo single', zona:'todas las plataformas', precio:'gratis', dato:'Ya disponible en todas las plataformas', publico:'amantes de la música', palabra:'PLAY', ben:['Escúchalo ya','Videoclip oficial','Concierto en directo'], tags:['musica','nuevamusica','artista','musicanueva'], hooks:['Escribí esta canción *a las 3 de la mañana*…','Dale al play *si te atreves* 🎧']},
-  {id:'finanzas', label:'💰 Finanzas personales', producto:'asesoría financiera', zona:'online', precio:'primera sesión gratis', dato:'El 60% no ahorra ni el 10% de lo que gana', publico:'personas que quieren ahorrar e invertir', palabra:'DINERO', ben:['Plan de ahorro personalizado','Sin comisiones ocultas','Asesor independiente'], tags:['finanzas','ahorro','inversion','educacionfinanciera'], hooks:['La regla que uso para *ahorrar cada mes*','Si ganas menos de 2.000 €, *mira esto*']},
+  {id:'finanzas', label:'💰 Finanzas personales', producto:'asesoría financiera', zona:'online', precio:'primera sesión gratis', dato:'El 60% no ahorra ni el 10% de lo que gana', publico:'personas que quieren ahorrar e invertir', palabra:'DINERO', ben:['Plan de ahorro personalizado','Sin comisiones ocultas','Asesor independiente'], tags:['finanzas','ahorro','inversion','educacionfinanciera'], disclaimer:'Educación financiera, no asesoramiento. Invertir conlleva riesgo.', hooks:['La regla que uso para *ahorrar cada mes*','Si ganas menos de 2.000 €, *mira esto*']},
   {id:'ong', label:'🤝 ONG y causas sociales', producto:'campaña solidaria', zona:'toda España', precio:'desde 5 €', dato:'Cada euro llega a quien lo necesita', publico:'personas comprometidas', palabra:'AYUDO', ben:['100% transparente','Proyectos reales','Impacto medible'], tags:['solidaridad','ong','ayuda','impactosocial'], hooks:['Con *5 €* puedes cambiar esto','Esta historia *te va a tocar*']},
+  {id:'peluqueria', label:'💇 Peluquería y barbería', producto:'corte y peinado', zona:'Granada', precio:'desde 15 €', dato:'Cita en menos de 24 h', publico:'personas que quieren un cambio de look', palabra:'CITA', ben:['Estilistas expertos','Productos profesionales','Asesoría de imagen gratis'], tags:['peluqueria','barberia','cortedepelo','cambiodelook'], hooks:['El cambio de look que *nadie esperaba*','Dile a tu peluquero *esto* antes de cortar']},
+  {id:'cafe', label:'☕ Cafetería y panadería', producto:'desayuno completo', zona:'Salamanca', precio:'4,50 €', dato:'Pan recién hecho cada mañana', publico:'amantes del buen café', palabra:'CAFE', ben:['Café de especialidad','Bollería artesana','Ambiente acogedor'], tags:['cafeteria','cafe','panaderia','desayuno'], hooks:['Así se hace el *croissant perfecto*','El café que *todo el barrio* recomienda']},
+  {id:'vino', label:'🍷 Vinos y gourmet', producto:'vino de bodega propia', zona:'La Rioja', precio:'14,90 €', dato:'Medalla de oro este año', publico:'amantes del vino', palabra:'VINO', ben:['Producción limitada','Envío en 48 h','Cata guiada'], tags:['vino','gourmet','bodega','enoturismo'], hooks:['Así nace *una botella* de nuestro vino','El maridaje que *nadie te ha contado*']},
+  {id:'abogados', label:'⚖️ Abogados y asesorías', producto:'primera consulta legal', zona:'Madrid', precio:'gratis', dato:'El 70% firma contratos sin leerlos', publico:'personas con dudas legales', palabra:'LEGAL', ben:['Respuesta en 24 h','Abogados colegiados','Precios cerrados'], tags:['abogados','derecho','asesoria','legal'], hooks:['Nunca firmes esto *sin leer la letra pequeña*','3 derechos que *no sabías* que tienes']},
+  {id:'dental', label:'🦷 Dentistas', producto:'limpieza dental', zona:'Murcia', precio:'29 €', dato:'1 de cada 2 adultos tiene caries sin saberlo', publico:'familias que cuidan su sonrisa', palabra:'SONRISA', ben:['Sin dolor','Financiación sin intereses','Tecnología de última generación'], tags:['dentista','clinicadental','sonrisa','saluddental'], hooks:['El error que *estropea tus dientes* cada día','Su sonrisa *antes y después* 😁']},
+  {id:'psico', label:'🧠 Psicología y bienestar', producto:'sesión de terapia online', zona:'online', precio:'45 €', dato:'1 de cada 4 personas sufre ansiedad', publico:'personas que quieren sentirse mejor', palabra:'HABLAMOS', ben:['Primera sesión de valoración','Confidencial','Horarios flexibles'], tags:['psicologia','saludmental','bienestar','ansiedad'], hooks:['Si te pasa esto, *no estás solo*','3 señales de que necesitas *parar*']},
+  {id:'nutri', label:'🥗 Nutrición', producto:'plan de alimentación personalizado', zona:'online', precio:'39 €', dato:'El 80% de las dietas fracasa por ser genéricas', publico:'personas que quieren comer mejor', palabra:'MENU', ben:['Menús semanales','Sin pasar hambre','Seguimiento con nutricionista'], tags:['nutricion','comidasana','dieta','healthy'], hooks:['Lo que como en un día *para tener energía*','Deja de comer esto *en el desayuno*']},
+  {id:'yoga', label:'🧘 Yoga y pilates', producto:'clase de prueba', zona:'Málaga', precio:'gratis', dato:'10 minutos al día reducen el estrés', publico:'personas que buscan equilibrio', palabra:'YOGA', ben:['Grupos reducidos','Todos los niveles','Horarios de mañana y tarde'], tags:['yoga','pilates','bienestar','meditacion'], hooks:['Haz esto *antes de dormir* y verás','La postura que *alivia tu espalda*']},
+  {id:'idiomas', label:'🌍 Idiomas y academias', producto:'curso de inglés', zona:'online', precio:'59 €/mes', dato:'Habla con fluidez en 6 meses', publico:'personas que quieren aprender idiomas', palabra:'INGLES', ben:['Profesores nativos','Clases en directo','Certificado oficial'], tags:['idiomas','ingles','aprenderingles','academia'], hooks:['3 frases que *los nativos* sí usan','El error que delata que *no eres nativo*']},
+  {id:'foto', label:'📸 Fotografía y vídeo', producto:'sesión de fotos', zona:'Valencia', precio:'desde 120 €', dato:'Tus fotos listas en 48 h', publico:'parejas, familias y marcas', palabra:'FOTO', ben:['Edición profesional','Localizaciones únicas','Entrega digital'], tags:['fotografia','fotografo','sesiondefotos','photography'], hooks:['Así hago una foto *con el móvil* que parece profesional','*Antes y después* de la edición']},
+  {id:'joyas', label:'💎 Joyería y accesorios', producto:'anillo de plata artesanal', zona:'envío a toda España', precio:'49 €', dato:'Pieza única hecha a mano', publico:'personas que buscan un regalo especial', palabra:'JOYA', ben:['Hecho a mano','Grabado personalizado','Caja de regalo incluida'], tags:['joyeria','joyas','hechoamano','regalos'], hooks:['La joya que *nadie más* tendrá','El regalo que *siempre acierta*']},
+  {id:'flores', label:'💐 Floristería', producto:'ramo de flores frescas', zona:'Sevilla', precio:'desde 25 €', dato:'Entrega el mismo día', publico:'personas que quieren sorprender', palabra:'FLORES', ben:['Flores de temporada','Envío en 3 horas','Tarjeta personalizada'], tags:['floristeria','flores','ramos','regalos'], hooks:['Su reacción al *recibir esto* 💐','Cómo hacer que tus flores *duren el doble*']},
+  {id:'tattoo', label:'🖋️ Tatuajes y piercing', producto:'tatuaje personalizado', zona:'Barcelona', precio:'desde 60 €', dato:'Diseño único para ti', publico:'personas que quieren tatuarse', palabra:'TATTOO', ben:['Material esterilizado','Artistas premiados','Diseño incluido'], tags:['tatuajes','tattoo','tattooartist','ink'], hooks:['El tatuaje que *cuenta una historia*','Lo que nadie te dice *antes de tatuarte*']},
+  {id:'limpieza', label:'🧽 Limpieza y servicios', producto:'limpieza profesional del hogar', zona:'Alicante', precio:'desde 15 €/hora', dato:'Tu casa impecable en 3 horas', publico:'familias sin tiempo', palabra:'LIMPIO', ben:['Personal de confianza','Productos ecológicos','Sin permanencia'], tags:['limpieza','hogar','limpiezadelhogar','orden'], hooks:['*Antes y después* de esta cocina','El truco de limpieza que *nadie conoce*']},
+  {id:'taller', label:'🔧 Taller mecánico', producto:'revisión completa del coche', zona:'Valladolid', precio:'desde 59 €', dato:'Evita averías caras con una revisión a tiempo', publico:'conductores', palabra:'REVISION', ben:['Presupuesto sin compromiso','Garantía de 1 año','Coche de sustitución'], tags:['tallermecanico','mecanica','coches','mantenimiento'], hooks:['Este ruido en tu coche *no es normal*','Lo que tu mecánico *no te cuenta*']},
+  {id:'construccion', label:'🏗️ Construcción y arquitectura', producto:'casa llave en mano', zona:'Madrid', precio:'desde 1.200 €/m²', dato:'Proyecto entregado en 9 meses', publico:'familias que quieren construir su casa', palabra:'PROYECTO', ben:['Arquitecto incluido','Precio cerrado','Eficiencia energética A'], tags:['construccion','arquitectura','obra','casasmodernas'], hooks:['De solar vacío a *esto* en 9 meses','3 errores al construir *tu casa*']},
+  {id:'hotel', label:'🏨 Hoteles y alojamientos', producto:'habitación con vistas', zona:'Tenerife', precio:'desde 89 €/noche', dato:'Valorado con 9,4 por nuestros huéspedes', publico:'viajeros que buscan descansar', palabra:'RESERVA', ben:['Desayuno incluido','Piscina y spa','Cancelación gratuita'], tags:['hotel','escapada','vacaciones','travel'], hooks:['Despertar *aquí* no tiene precio','La habitación que *se reserva antes*']},
+  {id:'ocio', label:'🎉 Bares, ocio y fiestas', producto:'noche de fiesta', zona:'Ibiza', precio:'entrada 15 €', dato:'Aforo limitado este sábado', publico:'gente con ganas de fiesta', palabra:'FIESTA', ben:['DJ en directo','Cócteles de autor','Reservados VIP'], tags:['fiesta','ocio','nightlife','planes'], hooks:['Así fue *el sábado* 🔥','El plan que *no te puedes perder* este finde']},
+  {id:'deporte', label:'⚽ Clubes deportivos', producto:'inscripción en el club', zona:'Getafe', precio:'30 €/mes', dato:'Más de 200 deportistas ya entrenan con nosotros', publico:'familias y deportistas', palabra:'EQUIPO', ben:['Entrenadores titulados','Todas las edades','Instalaciones propias'], tags:['deporte','futbol','club','entrenamiento'], hooks:['El gol que *nadie se esperaba*','Así entrena *un campeón*']},
+  {id:'creador', label:'🎬 Influencers y creadores', producto:'mi canal', zona:'todas las redes', precio:'gratis', dato:'De 0 a 10.000 seguidores en 3 meses', publico:'personas que quieren crecer en redes', palabra:'CRECER', ben:['Contenido cada día','Consejos reales','Comunidad activa'], tags:['creadordecontenido','influencer','redessociales','crecerenredes'], hooks:['Así conseguí mis primeros *10.000 seguidores*','El error que *frena tu crecimiento*']},
+  {id:'gaming', label:'🎮 Gaming y streamers', producto:'directo de esta noche', zona:'Twitch', precio:'gratis', dato:'El juego del que todo el mundo habla', publico:'gamers', palabra:'GG', ben:['Directos diarios','Sorteos semanales','Comunidad sin toxicidad'], tags:['gaming','gamer','videojuegos','twitch'], hooks:['La jugada que *nadie se esperaba*','El truco que *los pros* no cuentan']},
+  {id:'libros', label:'📚 Autores y libros', producto:'mi nueva novela', zona:'Amazon y librerías', precio:'17,90 €', dato:'Más de 500 lectores ya la recomiendan', publico:'amantes de la lectura', palabra:'LIBRO', ben:['Primer capítulo gratis','Edición firmada','Versión ebook'], tags:['libros','lectura','booktok','novela'], hooks:['El libro que *no podrás soltar*','Si te gustó *esa serie*, lee esto']},
+  {id:'seguros', label:'🛡️ Seguros', producto:'seguro de hogar', zona:'toda España', precio:'desde 9 €/mes', dato:'La mitad de las casas no tiene un buen seguro', publico:'familias y propietarios', palabra:'SEGURO', ben:['Asistencia 24 h','Sin letra pequeña','Contratación en 5 minutos'], tags:['seguros','seguro','hogar','tranquilidad'], hooks:['Lo que tu seguro *no cubre* (y deberías saber)','¿Te ha pasado esto? *Mira si estás cubierto*']},
   {id:'otro', label:'✨ Otro / general', producto:'tu producto o servicio', zona:'tu ciudad', precio:'tu precio', dato:'Tu dato más llamativo', publico:'tu cliente ideal', palabra:'INFO', ben:['Beneficio 1','Beneficio 2','Beneficio 3'], tags:['emprendedores','negocio','marketingdigital'], hooks:[]}
 ];
 
@@ -384,6 +464,12 @@ var CTAS = [
 
 // Cada estrategia genera escenas (sin contar el gancho ni la CTA)
 var STRATS = [
+  {id:'batalla', name:'⚔️ Batalla VS (estilo videojuego)', d:'Dos opciones se enfrentan por rondas con barras de vida. Engancha hasta el final para ver quién gana.',
+   gen:function(v){return [{kind:'buscar',text:'{tA} vs {tB}',dur:2.2},{kind:'vs',text:'¿*{tA}* o *{tB}*?',dur:metrics(v).length*1.8+2.8},'¿Tú cuál eliges? *Comenta* 👇'];}},
+  {id:'semaforo', name:'🚦 Semáforo: ¿cara o barata?', d:'Un semáforo que se enciende con el veredicto. Suspense de 2 s y respuesta clara.',
+   gen:function(v){return [{kind:'buscar',text:'{tSemEmp}',dur:2.2},{kind:'semaforo',text:'¿*{tSemEmp}* está cara o barata?',dur:5},'Analízalo tú en *2 minutos*'];}},
+  {id:'tiempo', name:'⏳ Máquina del tiempo', d:'Un contador que sube año a año. Muy compartido y muy guardado.',
+   gen:function(v){return [{kind:'contador',text:'Si hubieras invertido *{tIni}* en {tEmp} hace {tAnios} años…',dur:6},'El secreto: *empezar pronto*','¿Y si empiezas *hoy*?'];}},
   {id:'aida', name:'AIDA', d:'Atención → Interés → Deseo → Acción. El clásico que nunca falla.',
    gen:function(v,b){return ['*{producto}*\n{zona}', b[0]||'Calidad que se nota', 'Imagínate disfrutándolo…', '*{precio}*'];}},
   {id:'pas', name:'Problema · Agitación · Solución', d:'Ideal para conseguir clientes y vender servicios.',
@@ -413,7 +499,7 @@ var TACTICS = [
 
 /* ---------------- Estado ---------------- */
 var S = {
-  nicho:'inmo', calidad:'4k', objetivo:'vender', formato:'9:16', hook:0, hookCat:'Todos', strat:'aida',
+  nicho:'labolsabro', nichoPropio:'', calidad:'4k', objetivo:'vender', formato:'9:16', hook:0, hookCat:'Todos', strat:'aida',
   tactics:{}, cta:0, scenes:[], media:[], photo:null, music:null
 };
 TACTICS.forEach(function(t){S.tactics[t.id]=t.on;});
@@ -447,23 +533,49 @@ function chips(el, items, cur, onPick){
 function renderObjetivos(){chips($('objetivos'),OBJETIVOS,S.objetivo,function(id){S.objetivo=id;autoStrat();renderObjetivos();renderHooks();build();});}
 function renderFormatos(){chips($('formatos'),FORMATOS,S.formato,function(id){S.formato=id;setSize();renderFormatos();refresh();});}
 function renderCalidades(){chips($('calidades'),CALIDADES,S.calidad,function(id){S.calidad=id;setSize();renderCalidades();refresh();});}
-function nicho(){return NICHOS.filter(function(n){return n.id===S.nicho;})[0]||NICHOS[0];}
-function renderNichos(){
-  var sel=$('nicho'); sel.innerHTML='';
-  NICHOS.forEach(function(n){var o=document.createElement('option');o.value=n.id;o.textContent=n.label;sel.appendChild(o);});
-  sel.value=S.nicho;
+function customNicho(name){
+  var t=slug(name).toLowerCase();
+  return {id:'custom', label:'✏️ '+name, producto:name, zona:'tu ciudad', precio:'tu precio', dato:'Tu dato más llamativo', publico:'personas interesadas en '+name, palabra:'INFO',
+    ben:['Beneficio 1','Beneficio 2','Beneficio 3'], tags:[t,'emprendedores','negocio'],
+    hooks:['Si te interesa *'+name+'*, mira esto','Lo que nadie te cuenta sobre *'+name+'*','El error nº 1 en *'+name+'*']};
 }
+function nicho(){
+  if(S.nicho==='custom'&&S.nichoPropio)return customNicho(S.nichoPropio);
+  return NICHOS.filter(function(n){return n.id===S.nicho;})[0]||NICHOS[NICHOS.length-1];
+}
+function renderNichos(){
+  var q=slug($('nichoBuscar').value).toLowerCase(), box=$('nichos'); box.innerHTML='';
+  var list=NICHOS.slice();
+  if(S.nichoPropio)list.unshift(customNicho(S.nichoPropio));
+  list.forEach(function(n){
+    if(q&&slug(n.label+' '+n.producto+' '+n.tags.join(' ')).toLowerCase().indexOf(q)<0)return;
+    var b=document.createElement('button');
+    b.type='button'; b.className='nbtn'+(n.id===S.nicho?' on':''); b.textContent=n.label;
+    b.setAttribute('aria-pressed',n.id===S.nicho);
+    b.onclick=function(){pickNicho(n.id);};
+    box.appendChild(b);
+  });
+  if(!box.children.length)box.innerHTML='<p class="hint">No está en la lista: escríbelo abajo y pulsa «Usar mi nicho».</p>';
+}
+function pickNicho(id){S.nicho=id;applyNicho();buildHooks(nicho());S.hookCat='Recomendados';autoStrat();renderNichos();renderHooks();renderCtas();build();}
+$('nichoBuscar').oninput=renderNichos;
+$('nichoUsar').onclick=function(){
+  var name=$('nichoPropio').value.trim(); if(!name)return;
+  S.nichoPropio=name; $('nichoBuscar').value=''; pickNicho('custom');
+};
+$('nichoPropio').onkeydown=function(e){if(e.key==='Enter')$('nichoUsar').onclick();};
 // Rellena los campos con el ejemplo del nicho (sin tocar marca ni contacto)
 function applyNicho(){
   var n=nicho();
   ['producto','zona','precio','dato','publico','palabra'].forEach(function(k){var el=document.querySelector('[data-v="'+k+'"]');el.value=n[k];store('v_'+k,el.value);});
   var b=document.querySelector('[data-v="beneficios"]'); b.value=n.ben.join('\n'); store('v_beneficios',b.value);
+  ['marca','contacto'].forEach(function(k){if(n[k]){var el=document.querySelector('[data-v="'+k+'"]');el.value=n[k];store('v_'+k,el.value);}});
 }
-$('nicho').onchange=function(){S.nicho=this.value;applyNicho();buildHooks(nicho());S.hookCat='Recomendados';autoStrat();renderHooks();renderCtas();build();};
 
 function autoStrat(){
   S.strat={vender:'aida',captar:'pas',autoridad:'mito',marca:'historia',oferta:'oferta'}[S.objetivo]||'aida';
   S.cta={vender:0,captar:2,autoridad:4,marca:4,oferta:5}[S.objetivo]||0;
+  if(nicho().id==='labolsabro'){S.strat='batalla';S.cta=0;}
   $('cta').value=S.cta;
   // primer gancho recomendado para el objetivo
   for(var i=0;i<HOOKS.length;i++){if(HOOKS[i].obj.indexOf(S.objetivo)>-1){S.hook=i;break;}}
@@ -495,7 +607,7 @@ function renderStrats(){
     var b=document.createElement('button');
     b.type='button'; b.className='hook'+(s.id===S.strat?' on':'');
     b.innerHTML='<div class="t">'+esc(s.name)+'</div><div class="w">'+esc(s.d)+'</div>';
-    b.onclick=function(){S.strat=s.id;renderStrats();build();};
+    b.onclick=function(){S.strat=s.id;renderStrats();build();if(['batalla','semaforo','tiempo'].indexOf(s.id)>-1)$('tplBox').open=true;};
     box.appendChild(b);
   });
 }
@@ -521,30 +633,46 @@ function renderCtas(){
 function build(){
   var v=vars(), b=benefits(v), strat=STRATS.filter(function(s){return s.id===S.strat;})[0];
   var hook=fill(HOOKS[S.hook].t,v);
-  var body=strat.gen(v,b).map(function(t){return fill(t,v);});
+  var body=strat.gen(v,b).map(function(x){return typeof x==='string'?{text:fill(x,v)}:{kind:x.kind,text:fill(x.text,v),dur:x.dur};});
   var target=targetDur();
 
-  // Ajusta el número de escenas a la duración objetivo (≈ 4 s por escena)
-  if(target<=12&&body.length>3)body=body.slice(0,3);
-  var need=Math.round((target-5.5)/4), extra=b.concat([v.dato,'*{producto}*','{zona} · *{precio}*'].map(function(t){return fill(t,v);})).filter(Boolean), k=0;
-  while(body.length<need)body.push(extra[k++%extra.length]);
+  // Ajusta el número de escenas a la duración objetivo (≈ 4 s por escena de texto)
+  if(target<=12){var free0=0;body=body.filter(function(x){return x.dur||++free0<=3;});}
+  var fixed=body.reduce(function(a,x){return a+(x.dur||0);},0);
+  var free=body.filter(function(x){return !x.dur;}).length;
+  var need=Math.round((target-5.5-fixed)/4), extra=b.concat([v.dato,'*{producto}*','{zona} · *{precio}*'].map(function(t){return fill(t,v);})).filter(Boolean), k=0;
+  while(free<need){body.push({text:extra[k++%extra.length]});free++;}
   var cta=fill(CTAS[S.cta],v);
   if(S.tactics.keyword&&S.cta!==0&&v.palabra)cta+='\nComenta *'+v.palabra+'* 👇';
   if(S.tactics.serie)cta='Sígueme para ver la *Parte 2*\n'+cta;
-  if(S.tactics.loop)body.push('Y por eso te digo…');
+  if(S.tactics.loop){body.push({text:'Y por eso te digo…'});free++;}
 
   var hookDur=Math.max(1.8,Math.min(3,target*0.12));
   var ctaDur=Math.max(2.5,Math.min(4.5,target*0.18));
-  var each=Math.max(1,(target-hookDur-ctaDur)/Math.max(1,body.length));
+  var each=Math.max(1,(target-hookDur-ctaDur-fixed)/Math.max(1,free));
 
-  var scenes=[{role:'gancho',text:hook,dur:round1(hookDur)}];
-  body.forEach(function(t){scenes.push({role:'desarrollo',text:t,dur:round1(each)});});
+  // Re-ganchos cada ≈25 s en vídeos largos para no perder a la audiencia
+  var scenes=[{role:'gancho',text:hook,dur:round1(hookDur)}], acc=hookDur, last=0, rk=0;
+  body.forEach(function(x){
+    if(target>40&&acc-last>=25){var rd=2;scenes.push({role:'regancho',text:REHOOKS[rk++%REHOOKS.length],dur:rd});acc+=rd;last=acc;}
+    var d=x.dur||each;
+    scenes.push({role:'desarrollo',kind:x.kind,text:x.text,dur:round1(d)}); acc+=d;
+  });
   scenes.push({role:'cta',text:cta,dur:round1(ctaDur)});
   scenes.forEach(function(s,i){s.media=S.media.length?(i%S.media.length):-1;});
   S.scenes=scenes;
   renderScenes(); refresh(); seek(0);
 }
 function round1(x){return Math.round(x*10)/10;}
+var REHOOKS=['Pero espera, *lo mejor* viene ahora 👀','Quédate, porque *esto lo cambia todo*','Y aquí viene *el truco*','Atento a lo siguiente 👇','Casi nadie sabe *esto*…','Y lo más sorprendente…'];
+// Rondas de la batalla: "dato | valor A | valor B | mayor/menor"
+function num(x){var m=String(x).replace(/\./g,'').replace(',','.').match(/-?\d+(\.\d+)?/);return m?parseFloat(m[0]):0;}
+function metrics(v){
+  return (v.tMet||'').split('\n').map(function(l){var p=l.split('|').map(function(x){return x.trim();});
+    if(p.length<3||!p[0])return null;
+    var a=num(p[1]),b=num(p[2]),hi=!/men/i.test(p[3]||'mayor');
+    return {name:p[0],va:p[1],vb:p[2],win:a===b?0:((a>b)===hi?1:2)};}).filter(Boolean).slice(0,5);
+}
 function targetDur(){
   var d=$('dur').value;
   $('durCustomBox').style.display=d==='custom'?'block':'none';
@@ -552,7 +680,8 @@ function targetDur(){
 }
 
 /* ---------------- UI: escenas ---------------- */
-var ROLES={gancho:'Gancho',desarrollo:'Desarrollo',cta:'Llamada a la acción'};
+var ROLES={gancho:'Gancho (≤ 3 s)',regancho:'Re-gancho',desarrollo:'Desarrollo',cta:'Llamada a la acción'};
+var KINDS={vs:'Plantilla · Batalla VS',semaforo:'Plantilla · Semáforo',contador:'Plantilla · Máquina del tiempo',buscar:'Plantilla · Búsqueda'};
 function renderScenes(){
   var box=$('scenes'); box.innerHTML='';
   S.scenes.forEach(function(s,i){
@@ -560,7 +689,7 @@ function renderScenes(){
     var opts='<option value="-1">Fondo de marca</option>'+S.media.map(function(m,j){return '<option value="'+j+'"'+(s.media===j?' selected':'')+'>'+(m.type==='video'?'Vídeo ':'Foto ')+(j+1)+'</option>';}).join('');
     d.innerHTML=
       '<div class="idx">'+(i+1)+'</div>'+
-      '<div><div class="role">'+ROLES[s.role]+'</div><textarea rows="2"></textarea></div>'+
+      '<div><div class="role">'+(s.kind?KINDS[s.kind]:ROLES[s.role])+'</div><textarea rows="2"></textarea></div>'+
       '<div class="side">'+
         '<label class="f" style="margin:0">Segundos</label><input type="number" min="0.8" step="0.1" value="'+s.dur+'">'+
         '<select>'+opts+'</select>'+
@@ -660,13 +789,42 @@ function drawCover(el,iw,ih,scale,panX,panY){
   var r=Math.max(W/iw,H/ih)*scale, dw=iw*r, dh=ih*r;
   ctx.drawImage(el,(W-dw)/2+panX*(dw-W)/2,(H-dh)/2+panY*(dh-H)/2,dw,dh);
 }
+var DEF_THEME={bg:'brand',acc:'#c9a45c',hl:'#e6c27a',ink:'#111111'};
+function TH(){return nicho().theme||DEF_THEME;}
+var FONT=function(w,px){return w+' '+Math.round(px)+'px '+getComputedStyle(document.body).fontFamily;};
+// Fondo de velas de bolsa en movimiento (serie pseudoaleatoria fija)
+var CANDLES=(function(){var a=[],v=100,seed=7;function r(){seed=(seed*16807)%2147483647;return seed/2147483647;}
+  for(var i=0;i<4000;i++){var o=v,c=o+(r()-0.47)*6,h=Math.max(o,c)+r()*3,l=Math.min(o,c)-r()*3;a.push([o,h,l,c]);v=c;}return a;})();
+function candlesBg(){
+  ctx.fillStyle='#050906'; ctx.fillRect(0,0,W,H);
+  var th=TH(); ctx.save(); ctx.strokeStyle=th.acc; ctx.globalAlpha=.10; ctx.lineWidth=Math.max(1,W/540);
+  var gs=W/9, off=(curT*W*0.03)%gs;
+  for(var x=-off;x<W;x+=gs){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(var y=0;y<H;y+=gs){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.restore();
+  var cw=W/26, start=Math.floor(curT*2.5), frac=(curT*2.5)%1, n=30, lo=1e9, hi=-1e9, i, c;
+  for(i=0;i<n;i++){c=CANDLES[(start+i)%CANDLES.length];lo=Math.min(lo,c[2]);hi=Math.max(hi,c[1]);}
+  var Y=function(v){return H*0.82-(v-lo)/(hi-lo||1)*H*0.55;};
+  ctx.save(); ctx.globalAlpha=.55;
+  for(i=0;i<n;i++){
+    c=CANDLES[(start+i)%CANDLES.length]; var x=(i-frac)*cw, up=c[3]>=c[0];
+    ctx.fillStyle=ctx.strokeStyle=up?th.acc:'#f87171'; ctx.lineWidth=Math.max(1,cw*0.08);
+    ctx.beginPath(); ctx.moveTo(x+cw/2,Y(c[1])); ctx.lineTo(x+cw/2,Y(c[2])); ctx.stroke();
+    var y1=Y(Math.max(c[0],c[3])), y2=Y(Math.min(c[0],c[3]));
+    ctx.fillRect(x+cw*0.18,y1,cw*0.64,Math.max(2,y2-y1));
+  }
+  ctx.restore();
+  var g=ctx.createRadialGradient(W/2,H*0.45,0,W/2,H*0.45,H*0.7); g.addColorStop(0,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.75)');
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
 function brandBg(i,p){
+  if(TH().bg==='candles'){candlesBg();return;}
   var g=ctx.createLinearGradient(0,0,W*0.4,H);
   var hue=[['#004225','#0b0b0b'],['#111111','#004225'],['#1c1c1c','#3a2f17']][i%3];
   g.addColorStop(0,hue[0]); g.addColorStop(1,hue[1]);
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
   // círculos dorados suaves en movimiento
-  ctx.save(); ctx.globalAlpha=.10; ctx.fillStyle='#c9a45c';
+  ctx.save(); ctx.globalAlpha=.10; ctx.fillStyle=TH().acc;
   ctx.beginPath(); ctx.arc(W*(0.85-0.1*p),H*0.22,W*0.42,0,Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(W*(0.1+0.1*p),H*0.85,W*0.3,0,Math.PI*2); ctx.fill();
   ctx.restore();
@@ -677,8 +835,11 @@ function tokens(text){
   var out=[];
   text.split('\n').forEach(function(line,li){
     if(li>0)out.push({br:true});
-    line.split('*').forEach(function(seg,k){
-      seg.split(/\s+/).filter(Boolean).forEach(function(w){out.push({w:w,hl:k%2===1});});
+    var segs=line.split('*');
+    segs.forEach(function(seg,k){
+      // Pegado al segmento anterior si no hay espacio entre ellos ("¿*Apple*?")
+      var glue=k>0&&!/\s$/.test(segs[k-1])&&!/^\s/.test(seg);
+      seg.split(/\s+/).filter(Boolean).forEach(function(w,j){out.push({w:w,hl:k%2===1,glue:glue&&j===0});});
     });
   });
   return out;
@@ -688,9 +849,9 @@ function layout(text,size,maxW){
   var lines=[[]],lw=0,space=ctx.measureText(' ').width;
   tokens(text).forEach(function(t){
     if(t.br){lines.push([]);lw=0;return;}
-    var w=ctx.measureText(t.w).width;
-    if(lw>0&&lw+space+w>maxW){lines.push([]);lw=0;}
-    t.width=w; lines[lines.length-1].push(t); lw+=(lw>0?space:0)+w;
+    var w=ctx.measureText(t.w).width, sp=t.glue?0:space;
+    if(lw>0&&!t.glue&&lw+sp+w>maxW){lines.push([]);lw=0;}
+    t.width=w; t.sp=lw>0?sp:0; lines[lines.length-1].push(t); lw+=t.sp+w;
   });
   return {lines:lines.filter(function(l){return l.length;}),space:space};
 }
@@ -698,22 +859,24 @@ function drawText(text,size,cy,alpha,yoff,style){
   var maxW=W*0.84, L=layout(text,size,maxW);
   while(L.lines.length>6&&size>30){size*=0.9;L=layout(text,size,maxW);}
   var lh=size*1.18, h=L.lines.length*lh, y0=cy-h/2+yoff;
-  ctx.save(); ctx.globalAlpha=alpha; ctx.textBaseline='middle';
+  ctx.save(); ctx.globalAlpha=alpha; ctx.textBaseline='middle'; ctx.textAlign='left';
   L.lines.forEach(function(line,li){
-    var lw=line.reduce(function(a,t){return a+t.width;},0)+L.space*(line.length-1);
+    line[0].sp=0;
+    var lw=line.reduce(function(a,t){return a+t.width+t.sp;},0);
     var x=(W-lw)/2, y=y0+li*lh+lh/2;
     if(style==='box'){
       ctx.fillStyle='rgba(0,0,0,.55)';
       roundRect(x-size*0.3,y-lh/2,lw+size*0.6,lh,size*0.18); ctx.fill();
     }
     line.forEach(function(t){
+      x+=t.sp;
       if(style!=='box'){
         ctx.lineJoin='round'; ctx.lineWidth=size*0.16; ctx.strokeStyle='rgba(0,0,0,.85)';
         ctx.strokeText(t.w,x,y);
       }
-      ctx.fillStyle=t.hl?'#e6c27a':'#ffffff';
+      ctx.fillStyle=t.hl?TH().hl:'#ffffff';
       ctx.fillText(t.w,x,y);
-      x+=t.width+L.space;
+      x+=t.width;
     });
   });
   ctx.restore();
@@ -722,6 +885,130 @@ function drawText(text,size,cy,alpha,yoff,style){
 function roundRect(x,y,w,h,r){
   ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
   ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+
+/* ---------------- Plantillas animadas ---------------- */
+function drawSearch(text,local,v){
+  var bw=W*0.8, bh=W*0.13, x=(W-bw)/2, y=H*0.44-bh/2, th=TH();
+  ctx.save();
+  ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle=th.hl; ctx.font=FONT(800,W*0.07);
+  ctx.fillText(v.marca||'',W/2,y-W*0.12);
+  ctx.fillStyle='rgba(255,255,255,.10)'; roundRect(x,y,bw,bh,bh/2); ctx.fill();
+  ctx.strokeStyle=th.acc; ctx.lineWidth=W*0.006; roundRect(x,y,bw,bh,bh/2); ctx.stroke();
+  // lupa
+  var lx=x+bh*0.55, ly=y+bh/2; ctx.lineWidth=W*0.007; ctx.strokeStyle='#fff';
+  ctx.beginPath(); ctx.arc(lx,ly-bh*0.04,bh*0.17,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(lx+bh*0.12,ly+bh*0.09); ctx.lineTo(lx+bh*0.24,ly+bh*0.21); ctx.stroke();
+  var shown=plain(text).slice(0,Math.floor(Math.max(0,local-0.25)*14));
+  ctx.textAlign='left'; ctx.fillStyle='#fff'; ctx.font=FONT(600,W*0.055);
+  ctx.fillText(shown,x+bh*1.0,y+bh/2);
+  if(Math.floor(local*2.5)%2===0){var cx=x+bh*1.0+ctx.measureText(shown).width+W*0.008;ctx.fillRect(cx,y+bh*0.25,W*0.006,bh*0.5);}
+  if(shown.length>=plain(text).length){
+    var dots='.'.repeat(1+Math.floor(local*3)%3);
+    ctx.textAlign='center'; ctx.fillStyle=th.acc; ctx.font=FONT(700,W*0.045);
+    ctx.fillText('Analizando'+dots,W/2,y+bh+W*0.1);
+  }
+  ctx.restore();
+}
+function fighter(x,y,r,name,color,hp,shake){
+  ctx.save(); ctx.translate(shake,0);
+  ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#0a0a0a'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.font=FONT(800,r*0.8);
+  ctx.fillText(plain(name).slice(0,2).toUpperCase(),x,y+r*0.04);
+  ctx.fillStyle='#fff'; ctx.font=FONT(800,W*0.045); ctx.fillText(plain(name),x,y+r+W*0.06);
+  var bw=W*0.36, bh=W*0.03, bx=x-bw/2, by=y+r+W*0.11;
+  ctx.fillStyle='rgba(255,255,255,.15)'; roundRect(bx,by,bw,bh,bh/2); ctx.fill();
+  ctx.fillStyle=hp>50?'#22c55e':hp>25?'#facc15':'#f87171';
+  if(hp>0){roundRect(bx,by,bw*hp/100,bh,bh/2); ctx.fill();}
+  ctx.fillStyle='#fff'; ctx.font=FONT(700,W*0.028); ctx.fillText('HP '+Math.round(hp),x,by+bh+W*0.035);
+  ctx.restore();
+}
+function drawVS(s,local,v,appear,style){
+  var M=metrics(v), n=Math.max(1,M.length), intro=0.9, rd=(s.dur-intro-1.4)/n, th=TH();
+  drawText(s.text,W*0.075,H*0.13,appear,0,style);
+  var round=Math.floor((local-intro)/rd), hpA=100, hpB=100, winsA=0, winsB=0, hit=0, hitSide=0;
+  M.forEach(function(m,i){
+    var t=clamp((local-intro-i*rd)/(rd*0.5)); if(t<=0)return;
+    var dmg=Math.round(90/n)*ease(t);
+    if(m.win===1){hpB-=dmg;winsA+=t>=1?1:0;} else if(m.win===2){hpA-=dmg;winsB+=t>=1?1:0;}
+    if(t<1){hit=Math.sin(local*90)*W*0.012*(1-t);hitSide=m.win;}
+  });
+  var cy=H*0.3, r=Math.min(W*0.13,H*0.07);
+  fighter(W*0.26,cy,r,v.tA||'A',th.acc,hpA,hitSide===2?hit:0);
+  fighter(W*0.74,cy,r,v.tB||'B','#a78bfa',hpB,hitSide===1?hit:0);
+  ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+  var pul=1+0.08*Math.sin(local*8); ctx.font=FONT(900,W*0.09*pul); ctx.fillStyle=th.hl;
+  ctx.lineWidth=W*0.012; ctx.strokeStyle='#000'; ctx.strokeText('VS',W/2,cy); ctx.fillText('VS',W/2,cy);
+  // Rondas
+  var top=H*0.52, rowH=Math.min(W*0.13,H*0.065);
+  M.forEach(function(m,i){
+    var t=clamp((local-intro-i*rd)/0.3); if(t<=0)return;
+    var y=top+i*rowH;
+    ctx.globalAlpha=t;
+    ctx.fillStyle='rgba(255,255,255,.08)'; roundRect(W*0.06,y-rowH*0.42,W*0.88,rowH*0.84,rowH*0.2); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,.7)'; ctx.font=FONT(600,W*0.03); ctx.fillText('RONDA '+(i+1)+' · '+m.name.toUpperCase(),W/2,y-rowH*0.18);
+    ctx.font=FONT(800,W*0.045);
+    ctx.fillStyle=m.win===1?th.acc:'#fff'; ctx.fillText((m.win===1?'✓ ':'')+m.va,W*0.25,y+rowH*0.14);
+    ctx.fillStyle=m.win===2?'#a78bfa':'#fff'; ctx.fillText((m.win===2?'✓ ':'')+m.vb,W*0.75,y+rowH*0.14);
+  });
+  ctx.globalAlpha=1;
+  if(local>s.dur-1.4){
+    var e=ease(clamp((local-(s.dur-1.4))/0.4)), win=winsA===winsB?'¡EMPATE!':'🏆 GANA '+plain(winsA>winsB?v.tA:v.tB).toUpperCase();
+    ctx.save(); ctx.translate(W/2,H*0.86); ctx.scale(0.6+0.4*e,0.6+0.4*e); ctx.globalAlpha=e;
+    ctx.font=FONT(900,W*0.07); var ww=ctx.measureText(win).width+W*0.1;
+    ctx.fillStyle=th.hl; roundRect(-ww/2,-W*0.065,ww,W*0.13,W*0.04); ctx.fill();
+    ctx.fillStyle='#0a0a0a'; ctx.fillText(win,0,W*0.005); ctx.restore();
+  }
+  ctx.restore();
+}
+function drawSemaforo(s,local,v,appear,style){
+  drawText(s.text,W*0.07,H*0.13,appear,0,style);
+  var cols={rojo:'#ef4444',amarillo:'#facc15',verde:'#22c55e'}, order=['rojo','amarillo','verde'];
+  var labels={verde:'BARATA ✅',amarillo:'PRECIO JUSTO ⚖️',rojo:'CARA ⚠️'};
+  var verdict=cols[v.tSemColor]?v.tSemColor:'amarillo', deciding=local<2;
+  var on=deciding?order[Math.floor(local*7)%3]:verdict;
+  var bw=Math.min(W*0.3,H*0.17), r=bw*0.36, bx=W/2-bw/2, by=H*0.25, bh=r*2*3+bw*0.5;
+  ctx.save();
+  ctx.fillStyle='#161616'; roundRect(bx,by,bw,bh,bw*0.25); ctx.fill();
+  ctx.strokeStyle='#333'; ctx.lineWidth=W*0.006; roundRect(bx,by,bw,bh,bw*0.25); ctx.stroke();
+  order.forEach(function(k,i){
+    var cx=W/2, cy=by+bw*0.25+r+i*r*2+i*0.0, lit=k===on;
+    if(lit){ctx.shadowColor=cols[k];ctx.shadowBlur=W*0.08;}
+    ctx.fillStyle=lit?cols[k]:'rgba(255,255,255,.08)';
+    ctx.beginPath(); ctx.arc(cx,cy,r*0.82,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+  });
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  var ly=by+bh+W*0.12;
+  if(deciding){ctx.fillStyle='#fff';ctx.font=FONT(700,W*0.05);ctx.fillText('Analizando'+'.'.repeat(1+Math.floor(local*3)%3),W/2,ly);}
+  else{
+    var e=ease(clamp((local-2)/0.35));
+    ctx.save(); ctx.translate(W/2,ly); ctx.scale(0.7+0.3*e,0.7+0.3*e); ctx.globalAlpha=e;
+    ctx.fillStyle=cols[verdict]; ctx.font=FONT(900,W*0.085); ctx.fillText(labels[verdict],0,0); ctx.restore();
+    ctx.globalAlpha=e; drawText(v.tSemMot||'',W*0.045,ly+W*0.15,e,0,'box');
+  }
+  ctx.restore();
+}
+function drawContador(s,local,v,appear,style){
+  drawText(s.text,W*0.062,H*0.14,appear,0,style);
+  var th=TH(), ini=num(v.tIni), fin=num(v.tFin), yrs=Math.max(1,Math.round(num(v.tAnios))||10);
+  var t=ease(clamp((local-0.8)/(s.dur-2))), val=ini+(fin-ini)*t;
+  // gráfico que se dibuja
+  var x0=W*0.1, x1=W*0.9, y0=H*0.62, y1=H*0.3, pts=40;
+  ctx.save(); ctx.beginPath();
+  for(var i=0;i<=pts*t;i++){var f=i/pts, wob=Math.sin(i*1.7)*0.04+Math.sin(i*0.6)*0.03;
+    var x=x0+(x1-x0)*f, y=y0-(y0-y1)*Math.min(1,Math.max(0,f*f*0.7+f*0.3+wob*f));
+    i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+  ctx.strokeStyle=th.acc; ctx.lineWidth=W*0.012; ctx.lineJoin='round'; ctx.shadowColor=th.acc; ctx.shadowBlur=W*0.03; ctx.stroke();
+  ctx.restore();
+  ctx.save(); ctx.textAlign='center'; ctx.textBaseline='middle';
+  var suf=(String(v.tFin).match(/[^\d.,\s-][^\d]*$/)||[''])[0].trim();
+  ctx.font=FONT(900,W*0.13); ctx.fillStyle=th.hl; ctx.lineWidth=W*0.012; ctx.strokeStyle='#000';
+  var txt=String(Math.round(val)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+(suf?' '+suf:'');
+  ctx.strokeText(txt,W/2,H*0.72); ctx.fillText(txt,W/2,H*0.72);
+  ctx.font=FONT(700,W*0.045); ctx.fillStyle='#fff'; ctx.fillText('Año '+Math.round(yrs*t)+' de '+yrs,W/2,H*0.79);
+  ctx.font=FONT(500,W*0.026); ctx.globalAlpha=.75;
+  ctx.fillText('Rentabilidades pasadas no garantizan rentabilidades futuras',W/2,H*0.84);
+  ctx.restore();
 }
 
 var lastScene=-1;
@@ -767,7 +1054,12 @@ function draw(){
   var big=S.tactics.captions;
   var style=big?'stroke':'box';
 
-  if(s.role==='gancho'){
+  if(s.kind){
+    if(s.kind==='vs')drawVS(s,a.local,v,appear,style);
+    else if(s.kind==='semaforo')drawSemaforo(s,a.local,v,appear,style);
+    else if(s.kind==='contador')drawContador(s,a.local,v,appear,style);
+    else drawSearch(s.text,a.local,v);
+  }else if(s.role==='gancho'||s.role==='regancho'){
     // Gancho: grande y centrado, con ligera vibración inicial
     var shake=a.local<0.3?Math.sin(a.local*80)*W*0.004:0;
     ctx.save(); ctx.translate(shake,0);
@@ -778,7 +1070,7 @@ function draw(){
     if(S.photo){
       var r=Math.min(W,H)*0.17, px=W/2, py=H*0.27;
       ctx.save(); ctx.globalAlpha=appear;
-      ctx.beginPath(); ctx.arc(px,py,r+W*0.008,0,Math.PI*2); ctx.fillStyle='#c9a45c'; ctx.fill();
+      ctx.beginPath(); ctx.arc(px,py,r+W*0.008,0,Math.PI*2); ctx.fillStyle=TH().acc; ctx.fill();
       ctx.beginPath(); ctx.arc(px,py,r,0,Math.PI*2); ctx.clip();
       var ph=S.photo, sc=Math.max(2*r/ph.naturalWidth,2*r/ph.naturalHeight);
       ctx.drawImage(ph,px-ph.naturalWidth*sc/2,py-r,ph.naturalWidth*sc,ph.naturalHeight*sc);
@@ -789,12 +1081,12 @@ function draw(){
     ctx.save(); ctx.globalAlpha=appear; ctx.textAlign='center'; ctx.textBaseline='middle';
     ctx.font='400 '+Math.round(W*0.055)+'px Georgia, serif'; ctx.fillStyle='#fff';
     ctx.fillText(v.marca||'',W/2,cy+th/2+W*0.11);
-    ctx.font='600 '+Math.round(W*0.04)+'px '+getComputedStyle(document.body).fontFamily; ctx.fillStyle='#e6c27a';
+    ctx.font='600 '+Math.round(W*0.04)+'px '+getComputedStyle(document.body).fontFamily; ctx.fillStyle=TH().hl;
     ctx.fillText(v.contacto||'',W/2,cy+th/2+W*0.18);
     // botón pulsante
     var pulse=1+0.04*Math.sin(a.local*6), bw=W*0.5*pulse, bh=W*0.11*pulse, by=cy+th/2+W*0.31;
-    ctx.fillStyle='#c9a45c'; roundRect(W/2-bw/2,by-bh/2,bw,bh,bh/2); ctx.fill();
-    ctx.fillStyle='#111'; ctx.font='800 '+Math.round(W*0.042*pulse)+'px '+getComputedStyle(document.body).fontFamily;
+    ctx.fillStyle=TH().acc; roundRect(W/2-bw/2,by-bh/2,bw,bh,bh/2); ctx.fill();
+    ctx.fillStyle=TH().ink; ctx.font='800 '+Math.round(W*0.042*pulse)+'px '+getComputedStyle(document.body).fontFamily;
     ctx.fillText(S.tactics.keyword&&v.palabra?'Comenta '+v.palabra:'Escríbeme',W/2,by+2);
     ctx.restore();
   }else{
@@ -804,19 +1096,24 @@ function draw(){
   // Barra de progreso
   if(S.tactics.progress){
     ctx.fillStyle='rgba(255,255,255,.25)'; ctx.fillRect(0,0,W,W*0.012);
-    ctx.fillStyle='#c9a45c'; ctx.fillRect(0,0,W*clamp(curT/T),W*0.012);
+    ctx.fillStyle=TH().acc; ctx.fillRect(0,0,W*clamp(curT/T),W*0.012);
   }
   // Etiqueta serie
   if(S.tactics.serie){
     ctx.save(); ctx.font='800 '+Math.round(W*0.035)+'px '+getComputedStyle(document.body).fontFamily;
     var lab='PARTE 1', lw=ctx.measureText(lab).width;
-    ctx.fillStyle='#c9a45c'; roundRect(W*0.05,W*0.05,lw+W*0.05,W*0.07,W*0.02); ctx.fill();
-    ctx.fillStyle='#111'; ctx.textBaseline='middle'; ctx.fillText(lab,W*0.075,W*0.085); ctx.restore();
+    ctx.fillStyle=TH().acc; roundRect(W*0.05,W*0.05,lw+W*0.05,W*0.07,W*0.02); ctx.fill();
+    ctx.fillStyle=TH().ink; ctx.textBaseline='middle'; ctx.fillText(lab,W*0.075,W*0.085); ctx.restore();
   }
   // Marca de agua
+  var disc=nicho().disclaimer;
   if(s.role!=='cta'&&v.contacto){
     ctx.save(); ctx.globalAlpha=.8; ctx.font='600 '+Math.round(W*0.032)+'px '+getComputedStyle(document.body).fontFamily;
-    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.fillText(v.contacto,W/2,H-W*0.09); ctx.restore();
+    ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.fillText(v.contacto,W/2,H-W*(disc?0.11:0.09)); ctx.restore();
+  }
+  if(disc){
+    ctx.save(); ctx.globalAlpha=.75; ctx.font=FONT(500,W*0.024); ctx.fillStyle='#fff'; ctx.textAlign='center';
+    ctx.fillText(disc,W/2,H-W*0.05); ctx.restore();
   }
 
   $('tlbar').style.width=(100*clamp(curT/T))+'%';
@@ -853,6 +1150,22 @@ function pause(){
 function seek(t){curT=Math.max(0,Math.min(t,total()));lastScene=-1;if(playing)t0=performance.now()-curT*1000;draw();}
 $('play').onclick=function(){if(recorder)return;playing?pause():play();};
 $('timeline').onclick=function(e){var r=this.getBoundingClientRect();seek(total()*(e.clientX-r.left)/r.width);};
+
+/* ---------------- Imágenes ---------------- */
+function savePNG(name,done){
+  cv.toBlob(function(b){
+    var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; document.body.appendChild(a); a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();if(done)done();},300);
+  },'image/png');
+}
+function sceneStart(i){var t=0;for(var k=0;k<i;k++)t+=S.scenes[k].dur;return t;}
+function shotTime(i){var sc=S.scenes[i];return sceneStart(i)+(sc.kind?sc.dur-0.15:Math.min(1.2,sc.dur*0.7));}
+$('png').onclick=function(){if(recorder)return;pause();seek(shotTime(0));savePNG('portada-'+S.nicho+'.png');};
+$('carrusel').onclick=function(){
+  if(recorder)return; pause(); var i=0;
+  (function next(){if(i>=S.scenes.length){seek(0);return;}
+    seek(shotTime(i)); savePNG('carrusel-'+S.nicho+'-'+(i+1)+'.png',function(){i++;setTimeout(next,250);});})();
+};
 
 /* ---------------- Exportación ---------------- */
 function pickMime(){
@@ -923,6 +1236,10 @@ function score(){
     {ok:S.tactics.keyword||S.tactics.serie, pts:5, t:'Disparador de interacción (comentarios o serie)'},
     {ok:S.scenes.every(function(s){return s.dur<=5;}), pts:5, t:'Ritmo ágil: ninguna escena supera 5 s'}
   ];
+  if(T>40)checks.push({ok:S.scenes.some(function(s){return s.role==='regancho';}),pts:0,t:'Re-ganchos cada ≈25 s en vídeos largos'});
+  if(S.scenes.some(function(s){return s.kind&&s.kind!=='buscar';})){
+    var v0=vars(); checks.push({ok:!(v0.tA==='Apple'&&v0.tB==='Microsoft'&&/^PER \| 29/.test(v0.tMet||'')&&v0.tIni==='1.000 €'&&v0.tFin==='2.500 €'),pts:0,t:'Datos de las plantillas cambiados por datos reales'});
+  }
   var sc=0; $('checks').innerHTML='';
   checks.forEach(function(c){
     if(c.ok)sc+=c.pts;
@@ -941,7 +1258,7 @@ function caption(){
   var tags=nicho().tags.slice();
   var objTags={vender:['oferta','calidad'],captar:['consejos','clientes'],autoridad:['tips','aprende'],marca:['marcapersonal','emprendedora'],oferta:['promocion','descuento']}[S.objetivo]||[];
   tags=tags.concat(objTags);
-  if(zona&&zona.length<=18&&!/online|toda|todas|envio|tu/i.test(v.zona))tags.unshift(zona.toLowerCase());
+  if(zona&&zona.length<=18&&!/online|toda|todas|envio|tu|\./i.test(v.zona))tags.unshift(zona.toLowerCase());
   tags.push('reels','viral');
   var lines=[h,''];
   if(S.objetivo==='vender'||S.objetivo==='oferta'){
@@ -956,6 +1273,7 @@ function caption(){
   if(S.tactics.serie)lines.push('👉 Sígueme para no perderte la parte 2.');
   lines.push('📌 Guárdalo para tenerlo a mano.');
   if(v.contacto)lines.push('📩 '+v.contacto);
+  if(nicho().disclaimer)lines.push('⚠️ '+nicho().disclaimer);
   lines.push('');
   lines.push(tags.filter(function(t,i,a){return t&&a.indexOf(t)===i;}).slice(0,10).map(function(t){return '#'+t;}).join(' '));
   $('caption').textContent=lines.join('\n');
@@ -967,18 +1285,51 @@ $('copyCap').onclick=function(){
   });
 };
 
+/* ---------------- Textos virales ---------------- */
+function genIdeas(){
+  var v=vars(), b=benefits(v), box=$('ideas'); box.innerHTML='';
+  var pool=HOOKS.filter(function(h){return h.obj.indexOf(S.objetivo)>-1;}).concat(HOOKS).filter(function(h,i,a){return a.indexOf(h)===i;});
+  pool.sort(function(){return Math.random()-0.5;});
+  var ANG=[
+    '{dato}. Y casi nadie lo aprovecha.',
+    'Te lo explico en 3 puntos:\n1️⃣ '+(b[0]||'')+'\n2️⃣ '+(b[1]||'')+'\n3️⃣ '+(b[2]||''),
+    'Lo probé durante 30 días. Esto es lo que aprendí 👇',
+    'Si eres {publico}, esto te interesa más de lo que crees.',
+    'La mayoría lo hace al revés. Tú no.',
+    'Nadie te lo cuenta así de claro: '+(b[0]||'{producto}')+'.'
+  ].sort(function(){return Math.random()-0.5;});
+  var tags=nicho().tags.slice(0,5).map(function(t){return '#'+t;}).join(' ');
+  var disc=nicho().disclaimer;
+  for(var i=0;i<6;i++){
+    var hook=plain(fill(pool[i%pool.length].t,v)), txt=fill(ANG[i%ANG.length],v), cta=plain(fill(CTAS[(S.cta+i)%CTAS.length],v));
+    var full=hook+'\n\n'+txt+'\n\n'+cta+'\n\n'+tags+(disc?'\n\n⚠️ '+disc:'');
+    var d=document.createElement('div'); d.className='idea';
+    d.innerHTML='<div class="lab">Gancho · primeros 3 s</div><div class="txt"></div><div class="lab">Texto</div><div class="txt"></div><div class="lab">Llamada a la acción</div><div class="txt"></div>'+
+      '<div class="row-actions"><button class="btn ghost sm" type="button">Copiar</button><button class="btn ghost sm" type="button">🎬 Usar como gancho</button></div>';
+    var t=d.querySelectorAll('.txt'); t[0].textContent=hook; t[1].textContent=txt; t[2].textContent=cta+'\n'+tags;
+    var bt=d.querySelectorAll('.btn');
+    (function(full,hook,btn){
+      bt[0].onclick=function(){(navigator.clipboard?navigator.clipboard.writeText(full):Promise.reject()).then(function(){btn.textContent='¡Copiado!';}).catch(function(){btn.textContent='No se pudo copiar';});};
+      bt[1].onclick=function(){if(S.scenes[0]){S.scenes[0].text=hook;renderScenes();refresh();seek(0);$('cv').scrollIntoView({behavior:'smooth',block:'center'});}};
+    })(full,hook,bt[0]);
+    box.appendChild(d);
+  }
+}
+$('genIdeas').onclick=genIdeas;
+
 /* ---------------- Eventos generales ---------------- */
 function refresh(){
   $('ttot').textContent=fmt(total());
   if(curT>total())curT=0;
   score(); caption(); draw();
-  store('state',{nicho:S.nicho,calidad:S.calidad,custom:$('durCustom').value,objetivo:S.objetivo,formato:S.formato,hook:S.hook,strat:S.strat,tactics:S.tactics,cta:S.cta,dur:$('dur').value});
+  store('state',{nicho:S.nicho,nichoPropio:S.nichoPropio,calidad:S.calidad,custom:$('durCustom').value,objetivo:S.objetivo,formato:S.formato,hook:S.hook,strat:S.strat,tactics:S.tactics,cta:S.cta,dur:$('dur').value});
 }
 document.querySelectorAll('[data-v]').forEach(function(el){
   var saved=load('v_'+el.dataset.v); if(saved!==null)el.value=saved;
   el.addEventListener('input',function(){store('v_'+el.dataset.v,el.value);renderHooks();renderCtas();caption();});
 });
 $('cta').onchange=function(){S.cta=+this.value;build();};
+document.querySelectorAll('[data-v^="t"]').forEach(function(el){el.addEventListener('change',build);el.addEventListener('input',function(){draw();});});
 $('dur').onchange=build;
 $('durCustom').onchange=build;
 $('auto').onclick=function(){autoStrat();$('randHook').onclick();$('cv').scrollIntoView({behavior:'smooth',block:'center'});play();};
@@ -991,9 +1342,9 @@ $('randHook').onclick=function(){
 
 /* ---------------- Inicio ---------------- */
 var st=load('state');
-buildHooks(NICHOS[0]);
+buildHooks(nicho());
 if(st){
-  ['nicho','calidad','objetivo','formato','hook','strat','cta'].forEach(function(k){if(st[k]!==undefined)S[k]=st[k];});
+  ['nicho','nichoPropio','calidad','objetivo','formato','hook','strat','cta'].forEach(function(k){if(st[k]!==undefined)S[k]=st[k];});
   if(st.tactics)Object.keys(st.tactics).forEach(function(k){S.tactics[k]=st.tactics[k];});
   if(st.dur)$('dur').value=st.dur;
   if(st.custom)$('durCustom').value=st.custom;
@@ -1001,6 +1352,7 @@ if(st){
   if(!HOOKS[S.hook])S.hook=0;
   if(!OBJETIVOS.some(function(o){return o.id===S.objetivo;}))S.objetivo='vender';
 }else{
+  applyNicho();
   autoStrat();
 }
 renderNichos(); renderObjetivos(); renderFormatos(); renderCalidades(); renderHooks(); renderStrats(); renderTactics(); renderCtas();
