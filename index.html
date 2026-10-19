@@ -63,6 +63,9 @@ details.tpl summary{cursor:pointer;font-weight:600;color:var(--ev-black);font-si
 .prompt .now{font-weight:800;font-size:20px;line-height:1.25;}
 .prompt .next{font-size:13px;opacity:.7;margin-top:6px;}
 .prompt .cd{position:absolute;left:0;right:0;bottom:45vh;font-size:72px;font-weight:900;}
+.prompt-inline{background:#111;color:#fff;border-radius:10px;padding:14px;text-align:center;margin-top:10px;}
+.prompt-inline .now{font-weight:800;font-size:20px;line-height:1.25;}
+.prompt-inline .next{font-size:13px;opacity:.7;margin-top:6px;}
 .ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px;max-height:300px;overflow:auto;padding:2px;margin-top:10px;}
 .nbtn{border:1px solid var(--ev-border);background:#fff;border-radius:9px;padding:9px 11px;font-size:13.5px;cursor:pointer;text-align:left;}
 .nbtn:hover{border-color:var(--ev-accent);}
@@ -313,9 +316,23 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
     <div style="height:12px"></div>
     <label class="f" for="presFile">O sube un vídeo de una persona hablando</label>
     <input type="file" id="presFile" accept="video/*">
+    <div class="idea" style="margin-top:14px">
+      <div class="lab">🎙 Voz en off gratis</div>
+      <p class="hint" style="margin:4px 0 10px">Graba tu voz mientras la app te enseña cada frase, o sube una voz hecha con una app gratis (por ejemplo, la función «Texto a voz» de <a href="https://www.capcut.com/" target="_blank" rel="noopener">CapCut</a>, que tiene voces de chico y de chica). La voz empieza al principio del vídeo.</p>
+      <div class="row-actions">
+        <button class="btn" id="micRec" type="button">🎙 Grabar mi voz con teleprompter</button>
+        <button class="btn ghost" id="micStop" type="button" disabled>■ Parar</button>
+      </div>
+      <div class="prompt-inline" id="micPrompt" hidden><div class="now" id="mNow"></div><div class="next" id="mNext"></div></div>
+      <label class="f" for="voiceFile" style="margin-top:10px">O sube una voz (audio)</label>
+      <input type="file" id="voiceFile" accept="audio/*,video/*">
+      <div class="hint" id="micStatus" aria-live="polite" style="margin-top:8px"></div>
+    </div>
+    <details class="tpl" style="margin-top:14px">
+    <summary>💳 Opciones con Gemini (de pago en España y el resto de Europa)</summary>
     <div class="idea ai" style="margin-top:14px">
       <div class="lab">🤖 Crear persona con IA (Gemini)</div>
-      <p class="hint" style="margin:4px 0 10px"><b>Gratis (sin tarjeta, con límite diario):</b> la clave, la foto de la persona y la voz en off. <b>De pago:</b> el vídeo de la persona (Veo), que solo funciona si activas la facturación en Google. Si no activas la facturación, Google no te puede cobrar nada.</p>
+      <p class="hint" style="margin:4px 0 10px">Según las condiciones de Google, en España y el resto de Europa la API de Gemini solo se puede usar de pago. Si no quieres pagar, no uses este bloque: todo lo demás de la app es gratis. Si no activas la facturación, Google no te puede cobrar nada.</p>
       <div class="grid2">
         <div><label class="f" for="gKey">Tu clave de Gemini (API key)</label><input type="password" id="gKey" autocomplete="off" placeholder="Pégala aquí, no en ningún chat">
           <p class="hint">Consíguela en <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>. Solo se envía a Google.</p>
@@ -333,13 +350,13 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
       <div class="row-actions">
         <button class="btn ghost sm" id="gUseHook" type="button">Usar el gancho del guion</button>
         <button class="btn ghost" id="gVideo" type="button">🎬 Crear vídeo de la persona (de pago)</button>
-        <button class="btn" id="gImage" type="button">🖼 Crear foto de la persona (gratis)</button>
+        <button class="btn ghost" id="gImage" type="button">🖼 Crear foto de la persona</button>
       </div>
       <div class="hint" id="gStatus" aria-live="polite" style="margin-top:8px"></div>
     </div>
     <div class="idea ai" style="margin-top:14px">
       <div class="lab">🗣 Voz en off con IA (Gemini)</div>
-      <p class="hint" style="margin:4px 0 10px"><b>Gratis con límite diario.</b> Una voz lee el texto de cada escena con el tono elegido (cercano o profesional). Si ya hay una persona hablando, la voz empieza cuando termina su vídeo. Usa la misma clave de Gemini de arriba.</p>
+      <p class="hint" style="margin:4px 0 10px">Una voz lee el texto de cada escena con el tono elegido (cercano o profesional). Si ya hay una persona hablando, la voz empieza cuando termina su vídeo. Usa la misma clave de Gemini de arriba.</p>
       <div class="grid2">
         <div><label class="f" for="vGender">Voz</label><select id="vGender">
           <option value="auto">Automática según el contexto</option><option value="m">Masculina</option><option value="f">Femenina</option></select></div>
@@ -348,6 +365,7 @@ Margen de beneficio | 24% | 36% | mayor</textarea>
       </div>
       <div class="hint" id="vStatus" aria-live="polite" style="margin-top:8px"></div>
     </div>
+    </details>
     <div class="idea" style="margin-top:14px">
       <div class="lab">Persona creada con IA en otra herramienta</div>
       <div class="txt" style="font-size:13.5px">1. Copia el guion con el botón de abajo. 2. Pégalo en una herramienta de avatares con IA (por ejemplo, <a href="https://www.capcut.com/" target="_blank" rel="noopener">CapCut</a> o <a href="https://www.heygen.com/" target="_blank" rel="noopener">HeyGen</a>; suelen tener una versión gratis con límites). 3. Elige una persona joven, formato vertical, y descarga el vídeo. 4. Súbelo aquí arriba y pulsa «Ajustar el guion a la duración de mi vídeo».</div>
@@ -755,7 +773,7 @@ function build(){
   });
   scenes.push({role:'cta',text:cta,dur:round1(ctaDur)});
   scenes.forEach(function(s,i){s.media=S.media.length?(i%S.media.length):-1;});
-  if(S.voice){voiceStop();S.voice=null;$('vDel').hidden=true;$('vStatus').textContent='El guion ha cambiado: vuelve a crear la voz en off.';}
+  if(S.voice&&S.voice.voice.g!=='own'){voiceStop();S.voice=null;$('vDel').hidden=true;$('vStatus').textContent='El guion ha cambiado: vuelve a crear la voz en off.';}
   S.scenes=scenes;
   renderScenes(); refresh(); seek(0);
   if($('gFrase')&&!$('gFrase').value)$('gFrase').value=hookPhrase();
@@ -972,6 +990,40 @@ $('vMake').onclick=function(){
     .catch(function(e){vStatus('❌ '+e.message);btn.disabled=false;});
   })();
 };
+// Voz gratis: micrófono con teleprompter o archivo de audio
+function setVoiceBlob(blob,label){
+  var A=audioGraph(); if(!A){$('micStatus').textContent='Tu navegador no permite audio aquí.';return;}
+  blob.arrayBuffer().then(function(ab){return A.decodeAudioData(ab);}).then(function(buf){
+    voiceStop(); S.voice={clips:[{i:0,buf:buf}],voice:{g:'own'}}; $('vDel').hidden=false;
+    $('micStatus').textContent='✅ '+label+' añadida ('+fmt(buf.duration)+'). Dale a Reproducir.';
+    if(buf.duration>total()+0.5)$('micStatus').textContent+=' Tu voz dura más que el vídeo: alarga las escenas o pulsa «Ajustar» abajo.';
+    refresh(); seek(0);
+  }).catch(function(){$('micStatus').textContent='No se pudo leer ese audio. Prueba con un MP3 o M4A.';});
+}
+$('voiceFile').onchange=function(e){var f=e.target.files[0];if(f)setVoiceBlob(f,'Voz');this.value='';};
+var mic={rec:null,chunks:[],raf:0};
+$('micRec').onclick=function(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){$('micStatus').textContent='Tu navegador no permite usar el micrófono aquí.';return;}
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(st){
+    var mime=['audio/mp4','audio/webm;codecs=opus','audio/webm'].filter(function(m){return MediaRecorder.isTypeSupported(m);})[0];
+    mic.chunks=[]; mic.rec=new MediaRecorder(st,mime?{mimeType:mime}:undefined);
+    mic.rec.ondataavailable=function(e){if(e.data.size)mic.chunks.push(e.data);};
+    mic.rec.onstop=function(){
+      cancelAnimationFrame(mic.raf); st.getTracks().forEach(function(t){t.stop();});
+      $('micPrompt').hidden=true; $('micRec').disabled=false; $('micStop').disabled=true;
+      setVoiceBlob(new Blob(mic.chunks,{type:mic.rec.mimeType||'audio/webm'}),'Tu voz');
+    };
+    $('micPrompt').hidden=false; $('micRec').disabled=true; $('micStop').disabled=false;
+    mic.rec.start(250); var t0=performance.now();
+    (function tick(){
+      var t=(performance.now()-t0)/1000, a=sceneAt(Math.min(t,total()-0.001));
+      if(a){$('mNow').textContent=spokenLine(a.s); var nx=S.scenes[a.i+1]; $('mNext').textContent=nx?'Siguiente: '+spokenLine(nx):'Último: ¡despídete!';}
+      if(t>=total()+0.8){$('micStop').onclick();return;}
+      mic.raf=requestAnimationFrame(tick);
+    })();
+  }).catch(function(){$('micStatus').textContent='No se pudo abrir el micrófono. Revisa los permisos del navegador.';});
+};
+$('micStop').onclick=function(){if(mic.rec&&mic.rec.state!=='inactive')mic.rec.stop();};
 $('vDel').onclick=function(){voiceStop();S.voice=null;this.hidden=true;vStatus('Voz quitada.');refresh();};
 // Reproduce las frases en su momento, desde la posición actual
 function voiceStart(){
